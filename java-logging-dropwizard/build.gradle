@@ -1,0 +1,7 @@
+def versions = [
+        dropwizard: '1.0.5'
+]
+
+dependencies {
+    compile group: 'io.dropwizard', name: 'dropwizard-core', version: versions.dropwizard
+}

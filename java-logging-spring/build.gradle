@@ -1,0 +1,14 @@
+def versions = [
+        spring: '1.4.4.RELEASE'
+]
+
+dependencies {
+    compile project(':')
+    compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.spring
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.spring
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.spring
+    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: "4.2.1.RELEASE"
+}

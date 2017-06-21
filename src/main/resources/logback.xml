@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="${LOGBACK_CONFIGURATION_DEBUG:-false}">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %level [%thread] %logger: %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <jsonGeneratorDecorator class="uk.gov.hmcts.reform.logging.PrettyPrintingDecorator"/>
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                            "level": "%level",
+                            "message": "%message",
+                            "type": "${REFORM_SERVICE_TYPE:-java}",
+                            "microservice": "${REFORM_SERVICE_NAME:-undefined}",
+                            "team": "${REFORM_TEAM:-undefined}",
+                            "hostname": "${HOSTNAME:-undefined}",
+                            "environment": "${REFORM_ENVIRONMENT:-undefined}",
+                            "sessionId": "%X{sessionId}",
+                            "requestId": "%X{requestId}",
+                            "rootRequestId": "%X{rootRequestId}",
+                            "originRequestId": "%X{originRequestId}"
+                        }
+                    </pattern>
+                </pattern>
+                <logstashMarkers/>
+                <arguments>
+                    <fieldName>fields</fieldName>
+                </arguments>
+                <stackTrace>
+                    <fieldName>stacktrace</fieldName>
+                </stackTrace>
+            </providers>
+        </encoder>
+    </appender>
+    <root level="${ROOT_LOGGING_LEVEL:-INFO}">
+        <appender-ref ref="${ROOT_APPENDER:-CONSOLE}" />
+    </root>
+    <include optional="true" resource="${LOGBACK_INCLUDES_FILE:-logback-includes.xml}"/>
+</configuration>
