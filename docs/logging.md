@@ -13,7 +13,7 @@ If JSON logging is not possible custom LogStash ‘grok’ filters need to be wr
 
 ### Log data flow
 
-![alt text](images/log-data-flow.png Log data flow diagram)
+![Data flow diagram](images/log-data-flow.png)
 
 ### Logging via Filebeat
 
