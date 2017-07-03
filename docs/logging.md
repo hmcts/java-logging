@@ -175,3 +175,9 @@ Below is an example Ansible entry for getting app logs into Filebeat:
 }
 ```
 
+### Data dictionary
+
+Field | Required | Description | Examples
+----- | -------- | ----------- | --------
+timestamp | Yes | Describe when the event took place. RFC3339 format, in UTC timezone with a microsecond time fraction. This time should be taken from the system clock, which should be synced with NTP. | "2008-09-08T22:47:31.012Z", "2008-09-08T22:47:31.012+00:00"
+
