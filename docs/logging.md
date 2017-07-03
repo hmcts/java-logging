@@ -233,3 +233,13 @@ A log message should give sufficient context to allow a reader to understand the
 
 Some requests will contain sensitive and personal identifiable information such as credit card or banking information or even a persons email address. These details should always be obfuscated. An id for a user account or the hash of the session id should provide enough information to then perform a lookup within a secure database by staff with the required security privileges where this information is crucial in debugging an issue.
 
+## Common tag names
+
+Below is a maintained list of the cross cutting tags to be used across the platform to avoid situations where services mean the same tag but use a pluralised or capitalised version of the tag.
+
+Tag name | Description
+-------- | -----------
+security | Events pertaining to security such as successful and failed login attempts
+performance | Errors around timeouts r metrics around response times
+infrastructure | Messages regarding infrastructure such as network failures or database connectivity
+database | Errors with connection pools or metrics around response times on queries
