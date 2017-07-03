@@ -4,6 +4,8 @@ A Java module which allows to configure [Logback](https://logback.qos.ch/) to lo
 Logstash. Uses the [logback-logstash-encoder](https://github.com/logstash/logstash-logback-encoder) to produce JSON
 output.
 
+Detailed documentation can be found [here](docs/logging.md)
+
 ## Prerequisites
 
 - [Java 8](https://www.oracle.com/java)
