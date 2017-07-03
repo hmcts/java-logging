@@ -208,3 +208,17 @@ Logging 3 request ids as defined above, allows for useful visual graphs to be ge
 
 ![Call tracer](images/call-tracer.png)
 
+## Logging levels
+
+Ensure the correct level is selecting when logging messages. It can be difficult to avoid having logs which are not complete enough for operations to detect and debug issues in production whilst not making the log too verbose. The following table looks to summarise what each level of logging is intended for.
+
+Level | Usage
+----- | -----
+FATAL | Indicates an unrecoverable error that has brought the system or user session to an immediate stand still. Immediate remedial action must be taken. Example: Process has died, database is unavailable, system resources are unavailable (e.g. OutOfMemoryError)
+ERROR | Something terribly wrong has happened, that must be investigated immediately. Such an error may be recoverable, but the user experience or the consistency of the system might be compromised. Example: NPE, mission critical use case cannot be continued.
+WARN | The process might be continued, but take extra caution. The application can tolerate warning messages, but they should always be justified and examined. Example: "Application running in development mode" or "Administration console is not secured with a password".
+INFO | Important business process has finished. In an ideal world, an administrator or advanced user should be able to understand INFO messages and quickly find out what the application is doing. Other definition of INFO message: each action that changes the state of the application significantly (database update, external system request). For example if an application is all about booking airplane tickets, there should be only one INFO statement per each ticket saying "\[Who\] booked ticket from \[Where\] to \[Where\]".
+DEBUG | Developers stuff. Generally intended in providing low-level details on the state of the application useful for investigating errors - e.g. input data, the result of important calculations, number of records returned from database query, etc
+TRACE | Very detailed information, intended only for development. You might keep trace messages for a short period of time after deployment on production environment, but treat these log statements as temporary, that should or might be turned-off eventually. The distinction between DEBUG and TRACE is the most difficult, but if you put logging statement and remove it after the feature has been developed and tested, it should probably be on TRACE level. 
+
+**Note**: Applications should not produce any FATAL, ERROR or WARN level logs during build. In the event of this occurring, the build should be automatically failed.
