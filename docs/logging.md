@@ -206,3 +206,5 @@ Logging 3 request ids as defined above, allows for useful visual graphs to be ge
 
 ![Request tree](images/request-tree.png)
 
+![Call tracer](images/call-tracer.png)
+
