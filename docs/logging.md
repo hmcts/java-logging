@@ -34,3 +34,144 @@ Below is an example Ansible entry for getting app logs into Filebeat:
                 environment: dev
         }
 ```
+
+### JSON Schema for error and event logs
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string"
+    },
+    "rootRequestId": {
+      "type": "string"
+    },
+    "requestId": {
+      "type": "string"
+    },
+    "originRequestId": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "microservice": {
+      "type": "string"
+    },
+    "level": {
+      "type": "string"
+    },
+    "errorCode": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "stackTrace": {
+      "type": "string"
+    },
+    "responseTime": {
+      "type": "integer"
+    },
+    "responseCode": {
+      "type": "integer"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "identity": {
+      "sessionId": {
+        "type": "string"
+      },
+      "clientIp": {
+        "type": "string"
+      },
+      "idamUuid": {
+        "type": "string"
+      }
+    },   
+    "hostname": {
+      "type": "string"
+    },
+    "docker": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "id",
+        "image",
+        "hostname"
+      ]
+    }
+  },
+  "required": [
+    "timestamp",
+    "rootRequestId",
+    "requestId",
+    "originRequestId",
+    "type",
+    "microservice",
+    "level",
+    "message",
+    "source",
+    "hostname"
+  ]
+}
+```
+
+### Example Log entry
+
+```json
+{
+  "timestamp": "2017-01-06T22:47:31.012+00:00",
+  "rootRequestId": "ee45c86c-05e3-4a93-b078-424e0790fcc9",
+  "requestId": "123e4567-e89b-12d3-a456-426655440000",
+  "originRequestId": "ee45c86c-05e3-4a93-b078-424e0790fcc9",
+  "type": "java",
+  "microservice": "payment",
+  "level": "ERROR",
+  "errorCode": "PAY0001",
+  "message": "Permission denied",
+  "source": "uk.got.hmcts.payment.Card::add:30",
+  "responseTime": 222,
+  "responseCode": 403,
+  "tags": [
+    "payment",
+    "security"
+  ],
+  "identity": {
+    "sessionId": "f215faf9d88b7f0a881632ee22459ee452a296c808d261b6cc993d3a1fd0600e",
+    "clientIp": "211.100.160.1",
+    "idamUuid": "950ad09b-7cdf-46ff-82a7-065fa6048aca"
+  },
+  "hostname": "prod-az1-div-app-01",
+  "docker": {
+    "name": "/payment_api_1",
+    "id": "2523e8b26e989b6b318d81eef4307f690111a414eca3ac1f5992367cabd70a73",
+    "image": "payment:1.1.1",
+    "hostname": "2523e8b26e98"
+  }
+}
+```
+
