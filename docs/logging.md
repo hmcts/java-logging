@@ -37,7 +37,7 @@ Below is an example Ansible entry for getting app logs into Filebeat:
 
 ### JSON Schema for error and event logs
 
-```json
+```javascript
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
@@ -142,7 +142,7 @@ Below is an example Ansible entry for getting app logs into Filebeat:
 
 ### Example Log entry
 
-```json
+```javascript
 {
   "timestamp": "2017-01-06T22:47:31.012+00:00",
   "rootRequestId": "ee45c86c-05e3-4a93-b078-424e0790fcc9",
