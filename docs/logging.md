@@ -202,3 +202,7 @@ docker.id | &#x2718; | Value of the `Id` field from `docker inspect` command |  
 docker.image | &#x2718; | Value of the `Config.Image` field from `docker inspect` command | "payment:1.1.1"
 docker.hostname	| &#x2718; | Value of $HOSTNAME environment variable | "2523e8b26e98"
 
+Logging 3 request ids as defined above, allows for useful visual graphs to be generated in microservice architectures. The 2 figures below explain how these request ids relate to each request and how that information could be used to build a visual graph of microservices communicating with one another during a single front end request. Tracing of calls is to be covered by a separate component to logging, at a later date.
+
+![Request tree](images/request-tree.png)
+
