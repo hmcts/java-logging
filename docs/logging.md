@@ -222,3 +222,14 @@ DEBUG | Developers stuff. Generally intended in providing low-level details on t
 TRACE | Very detailed information, intended only for development. You might keep trace messages for a short period of time after deployment on production environment, but treat these log statements as temporary, that should or might be turned-off eventually. The distinction between DEBUG and TRACE is the most difficult, but if you put logging statement and remove it after the feature has been developed and tested, it should probably be on TRACE level. 
 
 **Note**: Applications should not produce any FATAL, ERROR or WARN level logs during build. In the event of this occurring, the build should be automatically failed.
+
+## What to log
+
+Although it's important to log enough information to allow issue to be debugged and to understand events leading up to an error or interesting event, it's equally important not to log too much information so that it becomes unwieldy to understand and wasteful to store.
+
+Every log message to should have a purpose and be useful to the level at which it is being logged.
+
+A log message should give sufficient context to allow a reader to understand the current situation. For example, if someone saves a form it would make sense to log the information being saved within the same message.
+
+Some requests will contain sensitive and personal identifiable information such as credit card or banking information or even a persons email address. These details should always be obfuscated. An id for a user account or the hash of the session id should provide enough information to then perform a lookup within a secure database by staff with the required security privileges where this information is crucial in debugging an issue.
+
