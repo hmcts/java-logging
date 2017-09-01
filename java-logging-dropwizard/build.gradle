@@ -1,3 +1,31 @@
+publishing {
+    publications {
+        Dropwizard(MavenPublication) {
+            from components.java
+            groupId project.group
+            artifactId 'java-logging-dropwizard'
+            version project.version
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['Dropwizard']
+    publish = true
+    pkg {
+        repo = 'hmcts-maven'
+        name = 'java-logging-dropwizard'
+        userOrg = 'hmcts'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/hmcts/java-logging'
+        version {
+            name = project.version
+        }
+    }
+}
+
 def versions = [
         dropwizard: '1.0.5'
 ]

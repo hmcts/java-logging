@@ -2,6 +2,34 @@ def versions = [
         spring: '1.4.4.RELEASE'
 ]
 
+publishing {
+    publications {
+        Spring(MavenPublication) {
+            from components.java
+            groupId project.group
+            artifactId 'java-logging-spring'
+            version project.version
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['Spring']
+    publish = true
+    pkg {
+        repo = 'hmcts-maven'
+        name = 'java-logging-spring'
+        userOrg = 'hmcts'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/hmcts/java-logging'
+        version {
+            name = project.version
+        }
+    }
+}
+
 dependencies {
     compile project(':')
     compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
