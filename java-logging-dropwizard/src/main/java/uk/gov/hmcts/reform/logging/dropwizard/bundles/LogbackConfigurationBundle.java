@@ -15,12 +15,14 @@ import org.slf4j.LoggerFactory;
  * discard that config and use its own one. This is because of DW's design philosophy where they enforce all the
  * configuration to be in a YAML file.</p>
  *
- * <p>To use just add it like any other DW bundle:
+ * <p>
+ * To use just add it like any other DW bundle:
+ * </p>
  * <pre>
  *     bootstrap.addBundle(new LogbackConfigurationBundle());
  * </pre>
  * If you would like to provide your own {@code logback.xml} file, pass the name of the classpath resource as a
- * constructor argument.</p>
+ * constructor argument.
  */
 public class LogbackConfigurationBundle implements Bundle {
 
