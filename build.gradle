@@ -9,7 +9,7 @@ buildscript {
 
 allprojects {
     group 'uk.gov.hmcts.reform'
-    version '1.2.0'
+    version '1.2.1'
 
     apply plugin: 'java'
     apply plugin: 'java-library'
@@ -58,6 +58,8 @@ publishing {
     publications {
         Main(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
             groupId project.group
             artifactId 'java-logging'
             version project.version
@@ -89,4 +91,19 @@ dependencies {
     testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.10'
     testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.16.1'
     testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
 }
