@@ -6,10 +6,6 @@ output.
 
 Detailed documentation can be found [here](docs/logging.md)
 
-## Version
-
-The latest version at the time of writing is 1.2.1.
-
 ## Prerequisites
 
 - [Java 8](https://www.oracle.com/java)
@@ -21,7 +17,7 @@ stack. It allows a number of configuration options to customize the logging to y
 
 ### Basic usage
 
-The module comprises three components; simply add a component as your project's dependency to use it.
+The module comprises two components; simply add a component as your project's dependency to use it.
 
 #### java-logging-spring
 
@@ -43,7 +39,7 @@ compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '1.2
 
 #### java-logging-httpcomponents
 
-Use for formatting log output from HTTP / HTTPS requests made by back-end applications.
+Use for adding request IDs to external HTTP / HTTPS requests.
 
 Maven:
 ```xml
@@ -59,14 +55,7 @@ Gradle:
 compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '1.2.1'
 ```
 
-**Please note:** You will also need to implement a configuration class that adds interceptors for HTTP requests and responses; see https://git.reform.hmcts.net/common-components/payment-app/blob/master/api/src/main/java/uk/gov/hmcts/payment/api/configuration/RestTemplateConfiguration.java for an example, replacing the bean names appropriately.
-
-#### java-logging-dropwizard
-
-TBC
-
-**Please note:** at the moment we don't have a Reform-private Maven artifacts nexus. As a temporary work around the artifact
-will be made available via a Jenkins job which will install the jar to a local Maven repository on Jenkins.
+**Please note:** You will also need to implement a class that configures an HTTP client with interceptors for outbound HTTP requests and responses. See https://github.com/hmcts/cmc-claim-store/blob/master/src/main/java/uk/gov/hmcts/cmc/claimstore/clients/RestClient.java#L98 for an example.
 
 After that you can log like you would do with any [SLF4J](https://www.slf4j.org/) logger. Define it as a class field:
 
