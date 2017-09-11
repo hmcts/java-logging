@@ -6,6 +6,10 @@ output.
 
 Detailed documentation can be found [here](docs/logging.md)
 
+## Version
+
+The latest version at the time of writing is 1.2.1.
+
 ## Prerequisites
 
 - [Java 8](https://www.oracle.com/java)
@@ -17,23 +21,49 @@ stack. It allows a number of configuration options to customize the logging to y
 
 ### Basic usage
 
-You should be able to use the module by simply adding it as your project's dependency.
+The module comprises three components; simply add a component as your project's dependency to use it.
+
+#### java-logging-spring
+
+Use for formatting log output in Spring Boot applications.
 
 Maven:
-
 ```xml
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
-    <artifactId>java-logging</artifactId>
-    <version>1.0.0</version>
+    <artifactId>java-logging-spring</artifactId>
+    <version>1.2.1</version>
 </dependency>
 ```
 
 Gradle:
-
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging', version: '1.0.0'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '1.2.1'
 ```
+
+#### java-logging-httpcomponents
+
+Use for formatting log output from HTTP / HTTPS requests made by back-end applications.
+
+Maven:
+```xml
+<dependency>
+    <groupId>uk.gov.hmcts.reform</groupId>
+    <artifactId>java-logging-httpcomponents</artifactId>
+    <version>1.2.1</version>
+</dependency>
+```
+
+Gradle:
+```groovy
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '1.2.1'
+```
+
+**Please note:** You will also need to implement a configuration class that adds interceptors for HTTP requests and responses; see https://git.reform.hmcts.net/common-components/payment-app/blob/master/api/src/main/java/uk/gov/hmcts/payment/api/configuration/RestTemplateConfiguration.java for an example, replacing the bean names appropriately.
+
+#### java-logging-dropwizard
+
+TBC
 
 **Please note:** at the moment we don't have a Reform-private Maven artifacts nexus. As a temporary work around the artifact
 will be made available via a Jenkins job which will install the jar to a local Maven repository on Jenkins.
