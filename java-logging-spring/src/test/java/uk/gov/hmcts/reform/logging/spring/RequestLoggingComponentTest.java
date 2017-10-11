@@ -50,8 +50,13 @@ public class RequestLoggingComponentTest {
     @Test
     public void requestProcessedMessageShouldBeLoggedForPublicResource() throws Exception {
         ResponseEntity<String> response = restTemplate.getForEntity("/public", String.class);
+
         assertThat(response.getBody()).isEqualTo("OK");
-        assertThat(loggedEvents()).extracting("message").containsOnlyOnce("Request processed");
+
+        List<ILoggingEvent> events = loggedEvents();
+        events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /public processed"));
+
+        assertThat(events).size().isEqualTo(1);
     }
 
     @Test
@@ -59,8 +64,13 @@ public class RequestLoggingComponentTest {
         // making sure our Filters are placed outside SecurityFilterChain
         // and get executed no matter request is allowed or not
         ResponseEntity<String> response = restTemplate.getForEntity("/protected", String.class);
+
         assertThat(response.getBody()).isNotEqualTo("OK");
-        assertThat(loggedEvents()).extracting("message").containsOnlyOnce("Request processed");
+
+        List<ILoggingEvent> events = loggedEvents();
+        events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /protected processed"));
+
+        assertThat(events).size().isEqualTo(1);
     }
 
     @Test
