@@ -18,7 +18,7 @@ cache:
 script:
   - ./gradlew build
   - ./gradlew test
-  - ./gradlew jacocoTestReport
+  - ./gradlew codeCoverageReport
 
 after_success:
   - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter -l Java -r build/reports/jacoco/jacocoTestReport.xml
