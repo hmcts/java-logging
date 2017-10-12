@@ -15,6 +15,11 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
+branches:
+  only:
+    - master
+    - /^feature\/[a-zA-Z0-9\-]+$/
+
 script:
   - ./gradlew build
   - ./gradlew test
