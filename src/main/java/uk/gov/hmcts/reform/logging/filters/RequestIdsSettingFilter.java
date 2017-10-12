@@ -4,8 +4,6 @@ import uk.gov.hmcts.reform.logging.HttpHeaders;
 import uk.gov.hmcts.reform.logging.MdcFields;
 
 import java.io.IOException;
-import java.lang.annotation.Documented;
-import java.lang.annotation.Inherited;
 import java.util.UUID;
 import java.util.function.Supplier;
 import javax.servlet.Filter;

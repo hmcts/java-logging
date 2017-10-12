@@ -22,7 +22,6 @@ branches:
 
 script:
   - ./gradlew build
-  - ./gradlew test
   - ./gradlew codeCoverageReport
 
 after_success:

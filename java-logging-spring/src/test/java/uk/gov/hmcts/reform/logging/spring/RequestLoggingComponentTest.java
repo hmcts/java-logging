@@ -25,6 +25,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.Logger.ROOT_LOGGER_NAME;
@@ -61,10 +62,9 @@ public class RequestLoggingComponentTest {
         assertThat(response.getBody()).isEqualTo("OK");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        List<ILoggingEvent> events = loggedEvents();
-        events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /public processed"));
-
-        assertThat(events).size().isEqualTo(1);
+        assertThat(loggedEvents().stream().filter(
+            event -> event.getFormattedMessage().startsWith("Request GET /public processed")
+        ).collect(Collectors.toList())).size().isEqualTo(1);
     }
 
     @Test
@@ -76,10 +76,9 @@ public class RequestLoggingComponentTest {
         assertThat(response.getBody()).isNotEqualTo("OK");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
-        List<ILoggingEvent> events = loggedEvents();
-        events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /protected processed"));
-
-        assertThat(events).size().isEqualTo(1);
+        assertThat(loggedEvents().stream().filter(
+            event -> event.getFormattedMessage().startsWith("Request GET /protected processed")
+        ).collect(Collectors.toList())).size().isEqualTo(1);
     }
 
     @Test
@@ -89,10 +88,9 @@ public class RequestLoggingComponentTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        List<ILoggingEvent> events = loggedEvents();
-        events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /failing failed"));
-
-        assertThat(events).size().isEqualTo(1);
+        assertThat(loggedEvents().stream().filter(
+            event -> event.getFormattedMessage().startsWith("Request GET /failing failed")
+        ).collect(Collectors.toList())).size().isEqualTo(1);
     }
 
     @Test
@@ -108,9 +106,9 @@ public class RequestLoggingComponentTest {
         assertThat(events).extracting("level", "message")
             .containsOnlyOnce(Tuple.tuple(Level.DEBUG, "Status logging destroyed due to timeout or filter exit"));
 
-        events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /destroying processed"));
-
-        assertThat(events).size().isEqualTo(1);
+        assertThat(events.stream().filter(
+            event -> event.getFormattedMessage().startsWith("Request GET /destroying processed")
+        ).collect(Collectors.toList())).size().isEqualTo(1);
     }
 
     private List<ILoggingEvent> loggedEvents() {
