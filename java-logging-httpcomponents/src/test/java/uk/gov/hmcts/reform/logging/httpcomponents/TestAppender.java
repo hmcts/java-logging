@@ -35,4 +35,12 @@ class TestAppender extends AppenderBase<ILoggingEvent> {
     public ILoggingEvent event(int index) {
         return events.get(index);
     }
+
+    public void clearEvents() {
+        events.clear();
+    }
+
+    public List<ILoggingEvent> getEvents() {
+        return events;
+    }
 }
