@@ -44,7 +44,7 @@ public class LogbackConfigurationBundle implements Bundle {
     }
 
     @Override
-    public void run(Environment environment) {
+    public void run(Environment environment) throws RuntimeException {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         try {
             JoranConfigurator configurator = new JoranConfigurator();

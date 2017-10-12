@@ -4,6 +4,8 @@ import uk.gov.hmcts.reform.logging.HttpHeaders;
 import uk.gov.hmcts.reform.logging.MdcFields;
 
 import java.io.IOException;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Inherited;
 import java.util.UUID;
 import java.util.function.Supplier;
 import javax.servlet.Filter;
@@ -26,11 +28,9 @@ public class RequestIdsSettingFilter implements Filter {
         this.requestIdGenerator = requestIdGenerator;
     }
 
-    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
         try {
@@ -53,7 +53,6 @@ public class RequestIdsSettingFilter implements Filter {
         return session == null ? null : session.getId();
     }
 
-    @Override
     public void destroy() {
     }
 }

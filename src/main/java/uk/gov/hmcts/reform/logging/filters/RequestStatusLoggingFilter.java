@@ -33,11 +33,9 @@ public class RequestStatusLoggingFilter implements Filter {
         this.clock = clock;
     }
 
-    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         long startTime = clock.millis();
@@ -76,7 +74,6 @@ public class RequestStatusLoggingFilter implements Filter {
         return appendEntries(fields);
     }
 
-    @Override
     public void destroy() {
         LOG.debug("Status logging destroyed due to timeout or filter exit");
     }

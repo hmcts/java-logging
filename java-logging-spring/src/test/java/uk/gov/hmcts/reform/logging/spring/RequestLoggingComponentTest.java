@@ -39,6 +39,9 @@ public class RequestLoggingComponentTest {
     @Autowired
     private List<FilterRegistrationBean> filters;
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Before
     public void listenForEvents() throws JoranException, IOException {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -50,9 +53,6 @@ public class RequestLoggingComponentTest {
         configurator.doConfigure(configStream);
         configStream.close();
     }
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void requestProcessedMessageShouldBeLoggedForPublicResource() throws Exception {

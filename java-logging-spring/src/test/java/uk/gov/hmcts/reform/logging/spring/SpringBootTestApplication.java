@@ -28,7 +28,7 @@ public class SpringBootTestApplication {
         }
 
         @RequestMapping("/failing")
-        public String failingEndpoint() {
+        public String failingEndpoint() throws RuntimeException {
             throw new RuntimeException("Failing endpoint");
         }
     }
