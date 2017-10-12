@@ -44,17 +44,25 @@ public class RequestStatusLoggingFilter implements Filter {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String method = httpServletRequest.getMethod();
+        String uri = httpServletRequest.getRequestURI();
 
         // we use Marker instead of StructuredArgument because we want all
         // these fields to appear at the top level of the JSON
         try {
             chain.doFilter(request, response);
             long processed = clock.millis() - startTime;
-            LOG.info(markersFor(method, response), "Request {} {} processed in {}ms", method, httpServletRequest.getRequestURI(), processed);
+            LOG.info(markersFor(method, response), buildLogMessage(method, uri, processed, true));
         } catch (Exception e) {
-            LOG.error(markersFor(method, null), "Request failed", e);
+            long processed = clock.millis() - startTime;
+            LOG.error(markersFor(method, null), buildLogMessage(method, uri, processed, false), e);
             throw e;
         }
+    }
+
+    private String buildLogMessage(String requestMethod, String requestUri, long period, boolean isSuccess) {
+        String status = isSuccess ? "processed" : "failed";
+
+        return String.format("Request %s %s %s in %dms", requestMethod, requestUri, status, period);
     }
 
     private LogstashMarker markersFor(String requestMethod, ServletResponse response) {

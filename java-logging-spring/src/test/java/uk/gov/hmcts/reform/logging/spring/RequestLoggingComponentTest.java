@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
@@ -52,6 +53,7 @@ public class RequestLoggingComponentTest {
         ResponseEntity<String> response = restTemplate.getForEntity("/public", String.class);
 
         assertThat(response.getBody()).isEqualTo("OK");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         List<ILoggingEvent> events = loggedEvents();
         events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /public processed"));
@@ -66,6 +68,7 @@ public class RequestLoggingComponentTest {
         ResponseEntity<String> response = restTemplate.getForEntity("/protected", String.class);
 
         assertThat(response.getBody()).isNotEqualTo("OK");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
         List<ILoggingEvent> events = loggedEvents();
         events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /protected processed"));
@@ -77,7 +80,13 @@ public class RequestLoggingComponentTest {
     public void requestFailedMessageShouldBeLoggedForFailingResource() throws Exception {
         // making sure our Filters are not executed twice for failed requests
         ResponseEntity<String> response = restTemplate.getForEntity("/failing", String.class);
-        assertThat(loggedEvents()).extracting("message").containsOnlyOnce("Request failed");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        List<ILoggingEvent> events = loggedEvents();
+        events.removeIf(event -> !event.getFormattedMessage().startsWith("Request GET /failing failed"));
+
+        assertThat(events).size().isEqualTo(1);
     }
 
     private List<ILoggingEvent> loggedEvents() {
