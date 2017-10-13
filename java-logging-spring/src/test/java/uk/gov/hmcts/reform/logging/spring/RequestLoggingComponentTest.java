@@ -62,6 +62,8 @@ public class RequestLoggingComponentTest {
         assertThat(response.getBody()).isEqualTo("OK");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
+        Thread.sleep(10);// how to fix this? test fails to see the log message otherwise
+
         assertThat(loggedEvents().stream().filter(
             event -> event.getFormattedMessage().startsWith("Request GET /public processed")
         ).collect(Collectors.toList())).size().isEqualTo(1);
