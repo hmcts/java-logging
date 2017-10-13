@@ -1,3 +1,5 @@
+sudo: required
+
 language: java
 
 services:
@@ -19,6 +21,11 @@ branches:
   only:
     - master
     - /^feature\/[a-zA-Z0-9\-]+$/
+
+before_install:
+  - sudo apt-get install jq
+  - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
+
 
 script:
   - ./gradlew build
