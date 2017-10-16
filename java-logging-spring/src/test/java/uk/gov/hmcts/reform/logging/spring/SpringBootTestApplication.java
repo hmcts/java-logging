@@ -17,6 +17,13 @@ public class SpringBootTestApplication {
 
     @RestController
     public static class TestController {
+
+        private class RequestMappingException extends RuntimeException {
+            public RequestMappingException(String message) {
+                super(message);
+            }
+        }
+
         @RequestMapping("/public")
         public String publicEndpoint() {
             return "OK";
@@ -28,8 +35,8 @@ public class SpringBootTestApplication {
         }
 
         @RequestMapping("/failing")
-        public String failingEndpoint() {
-            throw new RuntimeException("Failing endpoint");
+        public String failingEndpoint() throws RequestMappingException {
+            throw new RequestMappingException("Failing endpoint");
         }
     }
 
