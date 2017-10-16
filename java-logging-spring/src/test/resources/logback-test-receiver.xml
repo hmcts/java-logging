@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
         <encoder>
-            <pattern>%d %level [%thread] %logger: %msg%n</pattern>
+            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{10}:%line: %msg%n</pattern>
         </encoder>
     </appender>
     <appender name="TEST_APPENDER" class="uk.gov.hmcts.reform.logging.spring.TestAppender"/>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="TEST_APPENDER"/>
     </root>
