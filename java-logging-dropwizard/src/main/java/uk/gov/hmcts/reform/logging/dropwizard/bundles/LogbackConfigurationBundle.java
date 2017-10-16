@@ -7,6 +7,7 @@ import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.LoggerFactory;
+import uk.gov.hmcts.reform.logging.dropwizard.exception.ConfigurationBundleException;
 
 /**
  * A Dropwizard bundle which ensures that Logback is configured via provided XML resource configuration.
@@ -44,7 +45,7 @@ public class LogbackConfigurationBundle implements Bundle {
     }
 
     @Override
-    public void run(Environment environment) throws RuntimeException {
+    public void run(Environment environment) throws ConfigurationBundleException {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         try {
             JoranConfigurator configurator = new JoranConfigurator();
@@ -52,7 +53,7 @@ public class LogbackConfigurationBundle implements Bundle {
             context.reset();
             configurator.doConfigure(ClassLoader.getSystemResourceAsStream(configurationFile));
         } catch (JoranException e) {
-            throw new RuntimeException(e);
+            throw new ConfigurationBundleException(e);
         }
     }
 
