@@ -28,10 +28,6 @@ class TestAppender extends AppenderBase<ILoggingEvent> {
         assertThat(event(index).getMarker()).isEqualTo(marker);
     }
 
-    private Object[] firstNonNull(Object[] first, Object[] second) {
-        return first != null ? first : second;
-    }
-
     public ILoggingEvent event(int index) {
         return events.get(index);
     }
