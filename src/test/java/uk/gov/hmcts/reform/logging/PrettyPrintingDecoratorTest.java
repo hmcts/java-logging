@@ -19,6 +19,13 @@ public class PrettyPrintingDecoratorTest {
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
+    private JsonGenerator jsonGenerator;
+
+    private PrettyPrintingDecorator decorator;
+
+    private String parameterValue;
+    private int invocationsCount;
+
     @Parameterized.Parameters(name = "Should pretty printing be enabled for \"{0}\"? {2}")
     public static Iterable<Object[]> data() {
         return Arrays.asList(new Object[][] {
@@ -28,13 +35,6 @@ public class PrettyPrintingDecoratorTest {
                 { "true", 1, "Yes" }
         });
     }
-
-    private JsonGenerator jsonGenerator;
-
-    private PrettyPrintingDecorator decorator;
-
-    private String parameterValue;
-    private int invocationsCount;
 
     public PrettyPrintingDecoratorTest(String parameterValue, int invocationsCount, String expectedResultLabel) {
         this.parameterValue = parameterValue;
