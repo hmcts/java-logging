@@ -17,6 +17,7 @@ allprojects {
   apply plugin: 'maven-publish'
   apply plugin: 'checkstyle'
   apply plugin: 'com.jfrog.bintray'
+  apply plugin: 'jacoco'
 
   checkstyle.toolVersion = '7.2'
   checkstyle.configFile = new File(rootDir, "checkstyle.xml")
@@ -48,6 +49,26 @@ allprojects {
     compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: versions.logstashLogbackEncoder
     compile group: 'org.slf4j', name: 'slf4j-api', version: versions.slf4j
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+  }
+}
+
+task codeCoverageReport(type: JacocoReport, dependsOn: allprojects*.test) {
+
+  // Gather execution data from all subprojects
+  // (change this if you e.g. want to calculate unit test/integration test coverage separately)
+  executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+  // Add all relevant sourcesets from the subprojects
+  allprojects.each {
+    sourceSets it.sourceSets.main
+  }
+
+  reports {
+    csv.enabled = false
+    html.enabled = true
+    html.destination = file("${buildDir}/reports/jacoco/html")
+    xml.enabled = true
+    xml.destination = file("${buildDir}/reports/jacoco/jacocoTestReport.xml")
   }
 }
 
