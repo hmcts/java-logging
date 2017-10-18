@@ -7,6 +7,10 @@ buildscript {
   }
 }
 
+plugins {
+  id 'org.owasp.dependencycheck' version '1.4.5.1'
+}
+
 allprojects {
   group 'uk.gov.hmcts.reform'
   version '1.2.2'
@@ -49,6 +53,13 @@ allprojects {
     compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: versions.logstashLogbackEncoder
     compile group: 'org.slf4j', name: 'slf4j-api', version: versions.slf4j
     compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+  }
+
+  dependencyCheck {
+    // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+    // range of 0-10 fails the build, anything greater and it doesn't fail the build
+    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+    suppressionFile = 'dependency-check-suppressions.xml'
   }
 }
 
