@@ -1,59 +1,59 @@
 def versions = [
-        spring: '1.5.6.RELEASE'
+  spring: '1.5.6.RELEASE'
 ]
 
 publishing {
-    publications {
-        Spring(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
-            groupId project.group
-            artifactId 'java-logging-spring'
-            version project.version
-        }
+  publications {
+    Spring(MavenPublication) {
+      from components.java
+      artifact sourcesJar
+      artifact javadocJar
+      groupId project.group
+      artifactId 'java-logging-spring'
+      version project.version
     }
+  }
 }
 
 bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    publications = ['Spring']
-    publish = true
-    pkg {
-        repo = 'hmcts-maven'
-        name = 'java-logging-spring'
-        userOrg = 'hmcts'
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/hmcts/java-logging'
-        version {
-            name = project.version
-        }
+  user = System.getenv('BINTRAY_USER')
+  key = System.getenv('BINTRAY_KEY')
+  publications = ['Spring']
+  publish = true
+  pkg {
+    repo = 'hmcts-maven'
+    name = 'java-logging-spring'
+    userOrg = 'hmcts'
+    licenses = ['MIT']
+    vcsUrl = 'https://github.com/hmcts/java-logging'
+    version {
+      name = project.version
     }
+  }
 }
 
 dependencies {
-    compile project(':')
-    compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
+  compile project(':')
+  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.spring
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.spring
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.spring
-    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.3.RELEASE'
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.spring
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.spring
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.spring
+  testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.3.RELEASE'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+  classifier = 'sources'
+  from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+  classifier = 'javadoc'
+  from javadoc.destinationDir
 }
 
 artifacts {
-    archives sourcesJar
-    archives javadocJar
+  archives sourcesJar
+  archives javadocJar
 }
