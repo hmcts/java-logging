@@ -33,10 +33,16 @@ public class RequestStatusLoggingFilter implements Filter {
         this.clock = clock;
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -67,6 +73,9 @@ public class RequestStatusLoggingFilter implements Filter {
         return appendEntries(fields);
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void destroy() {
     }

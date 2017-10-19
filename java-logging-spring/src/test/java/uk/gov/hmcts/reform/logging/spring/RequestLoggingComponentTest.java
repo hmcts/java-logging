@@ -29,8 +29,12 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = "logging.config=src/test/resources/logback-test-sender.xml")
 public class RequestLoggingComponentTest {
+
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void listenForEvents() throws JoranException, IOException {
@@ -43,9 +47,6 @@ public class RequestLoggingComponentTest {
         configurator.doConfigure(configStream);
         configStream.close();
     }
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void requestProcessedMessageShouldBeLoggedForPublicResource() throws Exception {
