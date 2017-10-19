@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.logging.filters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.logging.HttpHeaders;
 import uk.gov.hmcts.reform.logging.MdcFields;
 
@@ -16,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class RequestIdsSettingFilter implements Filter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RequestIdsSettingFilter.class);
+
     private final Supplier<String> requestIdGenerator;
 
     public RequestIdsSettingFilter() {
@@ -26,10 +31,16 @@ public class RequestIdsSettingFilter implements Filter {
         this.requestIdGenerator = requestIdGenerator;
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
@@ -53,7 +64,11 @@ public class RequestIdsSettingFilter implements Filter {
         return session == null ? null : session.getId();
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void destroy() {
+        LOG.debug("Settings logging destroyed due to timeout or filter exit");
     }
 }

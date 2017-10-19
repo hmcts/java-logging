@@ -33,41 +33,74 @@ public class RequestStatusLoggingFilter implements Filter {
         this.clock = clock;
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
         long startTime = clock.millis();
 
         // we use Marker instead of StructuredArgument because we want all
         // these fields to appear at the top level of the JSON
         try {
             chain.doFilter(request, response);
-            LOG.info(markersFor(request, response, startTime), "Request processed");
+
+            logMessage(request, response, startTime, true, null);
         } catch (Exception e) {
-            LOG.error(markersFor(request, null, startTime), "Request failed", e);
+            logMessage(request, null, startTime, false, e);
+
             throw e;
         }
     }
 
-    private LogstashMarker markersFor(ServletRequest request, ServletResponse response, long startTime) {
+    private void logMessage(ServletRequest request,
+                            ServletResponse response,
+                            long startTime,
+                            boolean isSuccess,
+                            Throwable cause) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        String requestMethod = httpServletRequest.getMethod();
+        String requestUri = httpServletRequest.getRequestURI();
+        long responseTime = clock.millis() - startTime;
 
+        // collect markers
         Map<String, Object> fields = new HashMap<>();
-        fields.put("requestMethod", httpServletRequest.getMethod());
-        fields.put("requestURI", httpServletRequest.getRequestURI());
-        fields.put("responseTime", clock.millis() - startTime);
+
+        fields.put("requestMethod", requestMethod);
+        fields.put("requestUri", requestUri);
+        fields.put("responseTime", responseTime);
+
         if (response != null) {
             fields.put("responseCode", ((HttpServletResponse) response).getStatus());
         }
 
-        return appendEntries(fields);
+        LogstashMarker marker = appendEntries(fields);
+
+        // format the message
+        String status = isSuccess ? "processed" : "failed";
+        String message = String.format("Request %s %s %s in %dms", requestMethod, requestUri, status, responseTime);
+
+        // log the event
+        if (isSuccess) {
+            LOG.info(marker, message);
+        } else {
+            LOG.error(marker, message, cause);
+        }
     }
 
+    /**
+     * {@inheritDoc}.
+     */
     @Override
     public void destroy() {
+        LOG.debug("Status logging destroyed due to timeout or filter exit");
     }
 }
