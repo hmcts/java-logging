@@ -6,11 +6,13 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.joran.spi.JoranException;
+import com.google.code.tempusfugit.temporal.Condition;
+import com.google.code.tempusfugit.temporal.Duration;
+import com.google.code.tempusfugit.temporal.Timeout;
+import com.google.code.tempusfugit.temporal.WaitFor;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,6 +56,16 @@ public class RequestLoggingComponentTest {
         configStream.close();
     }
 
+    private Condition eventCondition(String message) {
+        return () -> loggedEvents().stream().filter(
+            event -> event.getFormattedMessage().startsWith(message)
+        ).collect(Collectors.toList()).size() == 1;
+    }
+
+    private void awaitForMessage(String message) throws TimeoutException, InterruptedException {
+        WaitFor.waitOrTimeout(eventCondition(message), Timeout.timeout(Duration.seconds(5)));
+    }
+
     @Test
     public void requestProcessedMessageShouldBeLoggedForPublicResource() throws Exception {
         ResponseEntity<String> response = restTemplate.getForEntity("/public", String.class);
@@ -60,11 +73,7 @@ public class RequestLoggingComponentTest {
         assertThat(response.getBody()).isEqualTo("OK");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        Thread.sleep(10);// how to fix this? test fails to see the log message otherwise
-
-        assertThat(loggedEvents().stream().filter(
-            event -> event.getFormattedMessage().startsWith("Request GET /public processed")
-        ).collect(Collectors.toList())).size().isEqualTo(1);
+        awaitForMessage("Request GET /public processed");
     }
 
     @Test
@@ -76,9 +85,7 @@ public class RequestLoggingComponentTest {
         assertThat(response.getBody()).isNotEqualTo("OK");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
-        assertThat(loggedEvents().stream().filter(
-            event -> event.getFormattedMessage().startsWith("Request GET /protected processed")
-        ).collect(Collectors.toList())).size().isEqualTo(1);
+        awaitForMessage("Request GET /protected processed");
     }
 
     @Test
@@ -88,9 +95,7 @@ public class RequestLoggingComponentTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        assertThat(loggedEvents().stream().filter(
-            event -> event.getFormattedMessage().startsWith("Request GET /failing failed")
-        ).collect(Collectors.toList())).size().isEqualTo(1);
+        awaitForMessage("Request GET /failing failed");
     }
 
     @Test
@@ -107,9 +112,7 @@ public class RequestLoggingComponentTest {
             .containsOnlyOnce(Tuple.tuple(Level.DEBUG, "Settings logging destroyed due to timeout or filter exit"))
             .containsOnlyOnce(Tuple.tuple(Level.DEBUG, "Status logging destroyed due to timeout or filter exit"));
 
-        assertThat(events.stream().filter(
-            event -> event.getFormattedMessage().startsWith("Request GET /destroying processed")
-        ).collect(Collectors.toList())).size().isEqualTo(1);
+        awaitForMessage("Request GET /destroying processed");
     }
 
     private List<ILoggingEvent> loggedEvents() {
