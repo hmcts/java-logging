@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/hmcts/java-logging.svg?branch=master)](https://travis-ci.org/hmcts/java-logging)
+
 # Reform Java logging module
 
 A Java module which allows to configure [Logback](https://logback.qos.ch/) to log in a format which we can feed into
