@@ -45,27 +45,36 @@ public class RequestStatusLoggingFilter implements Filter {
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
         long startTime = clock.millis();
+
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        String method = httpServletRequest.getMethod();
+        String uri = httpServletRequest.getRequestURI();
 
         // we use Marker instead of StructuredArgument because we want all
         // these fields to appear at the top level of the JSON
         try {
             chain.doFilter(request, response);
-            LOG.info(markersFor(request, response, startTime), "Request processed");
+            long processed = clock.millis() - startTime;
+            LOG.info(markersFor(method, response), buildLogMessage(method, uri, processed, true));
         } catch (Exception e) {
-            LOG.error(markersFor(request, null, startTime), "Request failed", e);
+            long processed = clock.millis() - startTime;
+            LOG.error(markersFor(method, null), buildLogMessage(method, uri, processed, false), e);
             throw e;
         }
     }
 
-    private LogstashMarker markersFor(ServletRequest request, ServletResponse response, long startTime) {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+    private String buildLogMessage(String requestMethod, String requestUri, long period, boolean isSuccess) {
+        String status = isSuccess ? "processed" : "failed";
 
+        return String.format("Request %s %s %s in %dms", requestMethod, requestUri, status, period);
+    }
+
+    private LogstashMarker markersFor(String requestMethod, ServletResponse response) {
         Map<String, Object> fields = new HashMap<>();
-        fields.put("requestMethod", httpServletRequest.getMethod());
-        fields.put("requestURI", httpServletRequest.getRequestURI());
-        fields.put("responseTime", clock.millis() - startTime);
+        fields.put("requestMethod", requestMethod);
+
         if (response != null) {
             fields.put("responseCode", ((HttpServletResponse) response).getStatus());
         }

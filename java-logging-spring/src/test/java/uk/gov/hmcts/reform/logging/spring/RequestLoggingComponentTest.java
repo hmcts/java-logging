@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
@@ -21,6 +22,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.Logger.ROOT_LOGGER_NAME;
@@ -51,8 +53,15 @@ public class RequestLoggingComponentTest {
     @Test
     public void requestProcessedMessageShouldBeLoggedForPublicResource() throws Exception {
         ResponseEntity<String> response = restTemplate.getForEntity("/public", String.class);
+
         assertThat(response.getBody()).isEqualTo("OK");
-        assertThat(loggedEvents()).extracting("message").containsOnlyOnce("Request processed");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        Thread.sleep(10);// how to fix this? test fails to see the log message otherwise
+
+        assertThat(loggedEvents().stream().filter(
+            event -> event.getFormattedMessage().startsWith("Request GET /public processed")
+        ).collect(Collectors.toList())).size().isEqualTo(1);
     }
 
     @Test
@@ -60,15 +69,25 @@ public class RequestLoggingComponentTest {
         // making sure our Filters are placed outside SecurityFilterChain
         // and get executed no matter request is allowed or not
         ResponseEntity<String> response = restTemplate.getForEntity("/protected", String.class);
+
         assertThat(response.getBody()).isNotEqualTo("OK");
-        assertThat(loggedEvents()).extracting("message").containsOnlyOnce("Request processed");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+
+        assertThat(loggedEvents().stream().filter(
+            event -> event.getFormattedMessage().startsWith("Request GET /protected processed")
+        ).collect(Collectors.toList())).size().isEqualTo(1);
     }
 
     @Test
     public void requestFailedMessageShouldBeLoggedForFailingResource() throws Exception {
         // making sure our Filters are not executed twice for failed requests
         ResponseEntity<String> response = restTemplate.getForEntity("/failing", String.class);
-        assertThat(loggedEvents()).extracting("message").containsOnlyOnce("Request failed");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        assertThat(loggedEvents().stream().filter(
+            event -> event.getFormattedMessage().startsWith("Request GET /failing failed")
+        ).collect(Collectors.toList())).size().isEqualTo(1);
     }
 
     private List<ILoggingEvent> loggedEvents() {
