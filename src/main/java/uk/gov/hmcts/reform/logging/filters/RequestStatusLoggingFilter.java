@@ -69,13 +69,14 @@ public class RequestStatusLoggingFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String requestMethod = httpServletRequest.getMethod();
         String requestUri = httpServletRequest.getRequestURI();
-        String status = isSuccess ? "processed" : "failed";
         long responseTime = clock.millis() - startTime;
 
         // collect markers
         Map<String, Object> fields = new HashMap<>();
 
         fields.put("requestMethod", requestMethod);
+        fields.put("requestUri", requestUri);
+        fields.put("responseTime", responseTime);
 
         if (response != null) {
             fields.put("responseCode", ((HttpServletResponse) response).getStatus());
@@ -84,6 +85,7 @@ public class RequestStatusLoggingFilter implements Filter {
         LogstashMarker marker = appendEntries(fields);
 
         // format the message
+        String status = isSuccess ? "processed" : "failed";
         String message = String.format("Request %s %s %s in %dms", requestMethod, requestUri, status, responseTime);
 
         // log the event
