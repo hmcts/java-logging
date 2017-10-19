@@ -87,5 +87,6 @@ public class RequestStatusLoggingFilter implements Filter {
      */
     @Override
     public void destroy() {
+        LOG.debug("Status logging destroyed due to timeout or filter exit");
     }
 }

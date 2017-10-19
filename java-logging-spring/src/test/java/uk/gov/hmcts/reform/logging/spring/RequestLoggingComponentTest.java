@@ -1,10 +1,12 @@
 package uk.gov.hmcts.reform.logging.spring;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.joran.spi.JoranException;
+import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -35,8 +38,8 @@ public class RequestLoggingComponentTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    @Autowired
+    private List<FilterRegistrationBean> filters;
 
     @Before
     public void listenForEvents() throws JoranException, IOException {
@@ -87,6 +90,25 @@ public class RequestLoggingComponentTest {
 
         assertThat(loggedEvents().stream().filter(
             event -> event.getFormattedMessage().startsWith("Request GET /failing failed")
+        ).collect(Collectors.toList())).size().isEqualTo(1);
+    }
+
+    @Test
+    public void requestNotFoundMessageShouldBeLoggedForDestroyingResource() throws Exception {
+        // would be better to close context but fails completing tests
+        filters.forEach(filter -> filter.getFilter().destroy());
+        ResponseEntity<String> response = restTemplate.getForEntity("/destroying", String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+        List<ILoggingEvent> events = loggedEvents();
+
+        assertThat(events).extracting("level", "message")
+            .containsOnlyOnce(Tuple.tuple(Level.DEBUG, "Settings logging destroyed due to timeout or filter exit"))
+            .containsOnlyOnce(Tuple.tuple(Level.DEBUG, "Status logging destroyed due to timeout or filter exit"));
+
+        assertThat(events.stream().filter(
+            event -> event.getFormattedMessage().startsWith("Request GET /destroying processed")
         ).collect(Collectors.toList())).size().isEqualTo(1);
     }
 
