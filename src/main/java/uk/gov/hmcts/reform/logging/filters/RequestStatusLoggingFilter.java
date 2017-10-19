@@ -48,38 +48,50 @@ public class RequestStatusLoggingFilter implements Filter {
         throws IOException, ServletException {
         long startTime = clock.millis();
 
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String method = httpServletRequest.getMethod();
-        String uri = httpServletRequest.getRequestURI();
-
         // we use Marker instead of StructuredArgument because we want all
         // these fields to appear at the top level of the JSON
         try {
             chain.doFilter(request, response);
-            long processed = clock.millis() - startTime;
-            LOG.info(markersFor(method, response), buildLogMessage(method, uri, processed, true));
+
+            logMessage(request, response, startTime, true, null);
         } catch (Exception e) {
-            long processed = clock.millis() - startTime;
-            LOG.error(markersFor(method, null), buildLogMessage(method, uri, processed, false), e);
+            logMessage(request, null, startTime, false, e);
+
             throw e;
         }
     }
 
-    private String buildLogMessage(String requestMethod, String requestUri, long period, boolean isSuccess) {
+    private void logMessage(ServletRequest request,
+                            ServletResponse response,
+                            long startTime,
+                            boolean isSuccess,
+                            Throwable cause) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        String requestMethod = httpServletRequest.getMethod();
+        String requestUri = httpServletRequest.getRequestURI();
         String status = isSuccess ? "processed" : "failed";
+        long responseTime = clock.millis() - startTime;
 
-        return String.format("Request %s %s %s in %dms", requestMethod, requestUri, status, period);
-    }
-
-    private LogstashMarker markersFor(String requestMethod, ServletResponse response) {
+        // collect markers
         Map<String, Object> fields = new HashMap<>();
+
         fields.put("requestMethod", requestMethod);
 
         if (response != null) {
             fields.put("responseCode", ((HttpServletResponse) response).getStatus());
         }
 
-        return appendEntries(fields);
+        LogstashMarker marker = appendEntries(fields);
+
+        // format the message
+        String message = String.format("Request %s %s %s in %dms", requestMethod, requestUri, status, responseTime);
+
+        // log the event
+        if (isSuccess) {
+            LOG.info(marker, message);
+        } else {
+            LOG.error(marker, message, cause);
+        }
     }
 
     /**
