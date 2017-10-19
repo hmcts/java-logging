@@ -56,11 +56,9 @@ public class RequestStatusLoggingFilterTest {
 
         Map<String, Object> fields = new HashMap<>();
         fields.put("requestMethod", "GET");
-        fields.put("requestURI", "/some/path");
-        fields.put("responseTime", 0L);
         fields.put("responseCode", 400);
 
-        testAppender.assertEvent(0, INFO, "Request processed", appendEntries(fields));
+        testAppender.assertEvent(0, INFO, "Request GET /some/path processed in 0ms", appendEntries(fields));
     }
 
     @Test
@@ -75,10 +73,8 @@ public class RequestStatusLoggingFilterTest {
 
         Map<String, Object> fields = new HashMap<>();
         fields.put("requestMethod", "GET");
-        fields.put("requestURI", "/some/path");
-        fields.put("responseTime", 0L);
 
-        testAppender.assertEvent(0, ERROR, "Request failed", appendEntries(fields));
+        testAppender.assertEvent(0, ERROR, "Request GET /some/path failed in 0ms", appendEntries(fields));
     }
 
     private HttpServletRequest requestWithMethodAndUri(String method, String url) {
