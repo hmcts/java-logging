@@ -9,6 +9,7 @@ buildscript {
 
 plugins {
   id 'org.owasp.dependencycheck' version '1.4.5.1'
+  id 'com.github.ben-manes.versions' version '0.15.0'
 }
 
 allprojects {
@@ -22,6 +23,7 @@ allprojects {
   apply plugin: 'checkstyle'
   apply plugin: 'com.jfrog.bintray'
   apply plugin: 'jacoco'
+  apply plugin: 'com.github.ben-manes.versions'
 
   checkstyle.toolVersion = '7.2'
   checkstyle.configFile = new File(rootDir, "checkstyle.xml")
@@ -45,7 +47,7 @@ allprojects {
   }
 
   def versions = [
-    slf4j: '1.7.18',
+    slf4j: '1.7.25',
     logstashLogbackEncoder: '4.11'
   ]
 
@@ -115,9 +117,9 @@ bintray {
 
 dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.12'
-  testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
-  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.6.2'
-  testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.10'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.11.0'
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
+  testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
   testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.16.1'
   testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 }
