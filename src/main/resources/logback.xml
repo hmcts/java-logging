@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="${LOGBACK_CONFIGURATION_DEBUG:-false}">
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{10}:%line: %msg%n</pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="uk.gov.hmcts.reform.logging.layout.ReformLoggingLayout">
+                <requireThread>true</requireThread>
+            </layout>
         </encoder>
     </appender>
     <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

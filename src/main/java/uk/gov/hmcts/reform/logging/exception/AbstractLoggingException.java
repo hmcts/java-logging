@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.logging.exception;
 
-abstract class AbstractLoggingException extends RuntimeException {
+public abstract class AbstractLoggingException extends RuntimeException {
 
     public AlertLevel alertLevel = AlertLevel.P1;
 
