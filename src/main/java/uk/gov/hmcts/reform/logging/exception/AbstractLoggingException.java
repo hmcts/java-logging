@@ -44,10 +44,16 @@ public abstract class AbstractLoggingException extends RuntimeException {
 
         try {
             return (AbstractLoggingException) eventException;
-        } catch (ClassCastException e) {
-            triggerBadImplementationLog(eventException);
+        } catch (ClassCastException e1) {
+            // for spring boot projects there's a generic exception wrapper
+            // let's try to cast the cause instead
+            try {
+                return (AbstractLoggingException) eventException.getCause();
+            } catch (ClassCastException e2) {
+                triggerBadImplementationLog(eventException);
 
-            return null;
+                return null;
+            }
         }
     }
 }
