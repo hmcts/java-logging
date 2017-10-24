@@ -6,14 +6,14 @@ import org.junit.rules.ExpectedException;
 
 public class LoggingExceptionTest {
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     class DefaultP1Exception extends AbstractLoggingException {
         DefaultP1Exception(String message) {
             super(message);
         }
     }
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void createDefaultException() {
