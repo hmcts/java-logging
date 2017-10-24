@@ -11,6 +11,7 @@
             <providers class="uk.gov.hmcts.reform.logging.provider.EventJsonProviders">
                 <timestamp>
                     <fieldName>timestamp</fieldName>
+                    <pattern>yyyy-MM-DD HH:mm:ss.SSS</pattern>
                     <timeZone>UTC</timeZone>
                 </timestamp>
                 <alertLevel/>
