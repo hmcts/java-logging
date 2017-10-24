@@ -1,8 +1,15 @@
 package uk.gov.hmcts.reform.logging.exception;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.ThrowableProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class AbstractLoggingException extends RuntimeException {
 
     private final AlertLevel alertLevel;
+
+    private static Logger log = LoggerFactory.getLogger(AbstractLoggingException.class);
 
     protected AbstractLoggingException(AlertLevel alertLevel, Throwable cause) {
         super(cause);
@@ -24,5 +31,23 @@ public abstract class AbstractLoggingException extends RuntimeException {
 
     public AlertLevel getAlertLevel() {
         return alertLevel;
+    }
+
+    private static void triggerBadImplementationLog(Throwable cause) {
+        Throwable invalid = new InvalidExceptionImplementation("AlertLevel is mandatory as per configuration", cause);
+
+        log.error("Bad implementation of '" + cause.getClass().getCanonicalName() + "' in use", invalid);
+    }
+
+    public static AbstractLoggingException getFromLogEvent(ILoggingEvent event) {
+        Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
+
+        try {
+            return (AbstractLoggingException) eventException;
+        } catch (ClassCastException e) {
+            triggerBadImplementationLog(eventException);
+
+            return null;
+        }
     }
 }

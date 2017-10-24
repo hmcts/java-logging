@@ -101,7 +101,7 @@ public class ReformLoggingLayoutTest {
         String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
         String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
         String logger1 = this.getClass().getCanonicalName();
-        String logger2 = ReformLoggingLayout.class.getCanonicalName();
+        String logger2 = AbstractLoggingException.class.getCanonicalName();
         String errorClass = InvalidClassException.class.getCanonicalName();
         String message = String.format("Bad implementation of '%s' in use", errorClass);
 

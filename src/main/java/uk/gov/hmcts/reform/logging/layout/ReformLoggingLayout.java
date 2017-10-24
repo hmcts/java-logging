@@ -2,13 +2,9 @@ package uk.gov.hmcts.reform.logging.layout;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.classic.spi.ThrowableProxy;
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.LayoutBase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
-import uk.gov.hmcts.reform.logging.exception.InvalidExceptionImplementation;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,8 +12,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
-
-    private final Logger log = LoggerFactory.getLogger(ReformLoggingLayout.class);
 
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -43,12 +37,6 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         this.requireAlertLevel = requireAlertLevel;
     }
 
-    private void triggerBadImplementationLog(Throwable cause) {
-        Throwable invalid = new InvalidExceptionImplementation("AlertLevel is mandatory as per configuration", cause);
-
-        log.error("Bad implementation of '" + cause.getClass().getCanonicalName() + "' in use", invalid);
-    }
-
     @Override
     public String doLayout(ILoggingEvent event) {
         Instant instant = Instant.ofEpochMilli(event.getTimeStamp());
@@ -71,14 +59,10 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         log.append(String.format(" %s:%d: ", event.getLoggerName(), lineNumber));
 
         if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-            Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
+            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
 
-            if (eventException instanceof AbstractLoggingException) {
-                AbstractLoggingException exception = (AbstractLoggingException) eventException;
-
+            if (exception != null) {
                 log.append(String.format("[%s] ", exception.getAlertLevel().name()));
-            } else  {
-                triggerBadImplementationLog(eventException);
             }
         }
 

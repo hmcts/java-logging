@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.logging.provider;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.classic.spi.ThrowableProxy;
 import com.fasterxml.jackson.core.JsonGenerator;
 import net.logstash.logback.composite.AbstractFieldJsonProvider;
 import net.logstash.logback.composite.JsonWritingUtils;
@@ -25,13 +24,7 @@ public class AlertLevelJsonProvider extends AbstractFieldJsonProvider<ILoggingEv
         AbstractLoggingException exception = null;
 
         if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-            Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
-
-            if (eventException instanceof AbstractLoggingException) {
-                exception = (AbstractLoggingException) eventException;
-            } else {
-                //triggerBadImplementationLog(eventException);
-            }
+            exception = AbstractLoggingException.getFromLogEvent(event);
         }
 
         if (exception != null) {
