@@ -4,6 +4,7 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="uk.gov.hmcts.reform.logging.layout.ReformLoggingLayout">
                 <dateFormat>dd-MM-YYYY</dateFormat>
+                <requireThread>false</requireThread>
             </layout>
         </encoder>
     </appender>

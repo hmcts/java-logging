@@ -23,9 +23,9 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
     /**
-     * By default don't require thread to be logged.
+     * By default require thread to be logged.
      */
-    private boolean requireThread = false;
+    private boolean requireThread = true;
 
     /**
      * By default require an AlertLevel tag to be present for any exception log.
