@@ -83,7 +83,7 @@ public class ReformLoggingLayoutTest {
 
         log.error("message", new DummyP2Exception("oh no"));
 
-        String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
+        String timestamp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(\\+|-)\\d{4}";
         String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
         String logger = this.getClass().getCanonicalName();
 

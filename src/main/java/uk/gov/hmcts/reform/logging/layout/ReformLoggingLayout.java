@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
-    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
 
     /**
      * By default require thread to be logged.
