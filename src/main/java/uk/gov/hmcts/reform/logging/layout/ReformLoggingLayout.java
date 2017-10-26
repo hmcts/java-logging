@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.NoSuchElementException;
 
 public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
@@ -57,9 +56,9 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
             Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
 
-            try {
+            if (eventException instanceof AbstractLoggingException) {
                 exception = (AbstractLoggingException) eventException;
-            } catch (ClassCastException e) {
+            } else  {
                 triggerBadImplementationLog(eventException);
             }
         }
@@ -76,10 +75,8 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
         int lineNumber = 0;
 
-        try {
+        if (event.getCallerData().length > 0) {
             lineNumber = event.getCallerData()[0].getLineNumber();
-        } catch (NoSuchElementException e) {
-            // do nothing
         }
 
         log += " " + event.getLoggerName() + ":" + lineNumber + ": ";
