@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 
 public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
-    private Logger log = LoggerFactory.getLogger(ReformLoggingLayout.class);
+    private final Logger log = LoggerFactory.getLogger(ReformLoggingLayout.class);
 
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
