@@ -25,19 +25,10 @@ allprojects {
   apply plugin: 'jacoco'
   apply plugin: 'com.github.ben-manes.versions'
 
-  checkstyle.toolVersion = '7.2'
-  checkstyle.configFile = new File(rootDir, "checkstyle.xml")
-
-  // make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
-  tasks.withType(Checkstyle).each { checkstyleTask ->
-    checkstyleTask.doLast {
-      reports.all { report ->
-        def outputFile = report.destination
-        if (outputFile.exists() && outputFile.text.contains("<error ")) {
-          throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
-        }
-      }
-    }
+  checkstyle {
+    toolVersion = '8.3'
+    maxWarnings = 0
+    configDir = new File(rootDir, "config/checkstyle")
   }
 
   sourceCompatibility = 1.8
