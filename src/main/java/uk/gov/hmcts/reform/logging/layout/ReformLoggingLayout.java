@@ -7,8 +7,8 @@ import ch.qos.logback.core.LayoutBase;
 import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
@@ -40,8 +40,8 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
     @Override
     public String doLayout(ILoggingEvent event) {
         Instant instant = Instant.ofEpochMilli(event.getTimeStamp());
-        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        StringBuilder log = new StringBuilder(dateFormat.format(dateTime));
+        ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
+        StringBuilder log = new StringBuilder(dateTime.format(dateFormat));
 
         log.append(" ");
         log.append(String.format("%-5s", event.getLevel().levelStr));
