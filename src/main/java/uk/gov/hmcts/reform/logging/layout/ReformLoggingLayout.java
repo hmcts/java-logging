@@ -10,17 +10,17 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
 import uk.gov.hmcts.reform.logging.exception.InvalidExceptionImplementation;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
 
 public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
     private Logger log = LoggerFactory.getLogger(ReformLoggingLayout.class);
 
-    private Calendar calendar = Calendar.getInstance();
-
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     /**
      * By default require thread to be logged.
@@ -33,7 +33,7 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
     private boolean requireAlertLevel = true;
 
     public void setDateFormat(String format) {
-        dateFormat = new SimpleDateFormat(format);
+        dateFormat = DateTimeFormatter.ofPattern(format);
     }
 
     public void setRequireThread(boolean requireThread) {
@@ -64,8 +64,9 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
             }
         }
 
-        calendar.setTimeInMillis(event.getTimeStamp());
-        String log = dateFormat.format(calendar.getTime());
+        Instant instant = Instant.ofEpochMilli(event.getTimeStamp());
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        String log = dateFormat.format(dateTime);
 
         log += " " + String.format("%-5s", event.getLevel().levelStr);
 
