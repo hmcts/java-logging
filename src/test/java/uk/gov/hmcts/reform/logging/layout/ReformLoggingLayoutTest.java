@@ -100,8 +100,11 @@ public class ReformLoggingLayoutTest {
             level = "ERROR";
 
             if (priority.equals(AlertLevel.P4)) {
-                message = "\\[" + AlertLevel.P1.name() + "\\] Bad implementation of '"
-                    + InvalidClassException.class.getCanonicalName() + "' in use";
+                message = String.format(
+                    "\\[%s\\] Bad implementation of '%s' in use",
+                    AlertLevel.P1.name(),
+                    InvalidClassException.class.getCanonicalName()
+                );
 
                 log.error("error", new InvalidClassException("oh no"));
             } else {

@@ -65,12 +65,13 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
         Instant instant = Instant.ofEpochMilli(event.getTimeStamp());
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        String log = dateFormat.format(dateTime);
+        StringBuilder log = new StringBuilder(dateFormat.format(dateTime));
 
-        log += " " + String.format("%-5s", event.getLevel().levelStr);
+        log.append(" ");
+        log.append(String.format("%-5s", event.getLevel().levelStr));
 
         if (requireThread) {
-            log += " [" + event.getThreadName() + "]";
+            log.append(String.format(" [%s]", event.getThreadName()));
         }
 
         int lineNumber = 0;
@@ -79,15 +80,15 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
             lineNumber = event.getCallerData()[0].getLineNumber();
         }
 
-        log += " " + event.getLoggerName() + ":" + lineNumber + ": ";
+        log.append(String.format(" %s:%d: ", event.getLoggerName(), lineNumber));
 
         if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR) && exception != null) {
-            log += "[" + exception.getAlertLevel().name() + "] ";
+            log.append(String.format("[%s] ", exception.getAlertLevel().name()));
         }
 
-        log += event.getFormattedMessage();
-        log += CoreConstants.LINE_SEPARATOR;
+        log.append(event.getFormattedMessage());
+        log.append(CoreConstants.LINE_SEPARATOR);
 
-        return log;
+        return log.toString();
     }
 }
