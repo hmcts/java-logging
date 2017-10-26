@@ -36,7 +36,7 @@ public class ReformLoggingLayoutTest {
         DummyP2Exception(String message) {
             super(message);
 
-            this.alertLevel = AlertLevel.P2;
+            setAlertLevel(AlertLevel.P2);
         }
     }
 
@@ -44,7 +44,7 @@ public class ReformLoggingLayoutTest {
         DummyP3Exception(String message) {
             super(message);
 
-            this.alertLevel = AlertLevel.P3;
+            setAlertLevel(AlertLevel.P3);
         }
     }
 

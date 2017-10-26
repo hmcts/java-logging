@@ -84,7 +84,7 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         log += " " + event.getLoggerName() + ":" + lineNumber + ": ";
 
         if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR) && exception != null) {
-            log += "[" + exception.alertLevel.name() + "] ";
+            log += "[" + exception.getAlertLevel().name() + "] ";
         }
 
         log += event.getFormattedMessage();
