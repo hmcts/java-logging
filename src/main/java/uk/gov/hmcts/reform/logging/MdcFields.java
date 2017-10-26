@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.logging;
 
 import org.slf4j.MDC;
 
+@SuppressWarnings("HideUtilityClassConstructor")
 public class MdcFields {
 
     private static final String FIELD_SESSION_ID = "sessionId";
