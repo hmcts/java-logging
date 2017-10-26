@@ -11,7 +11,7 @@ public class LoggingExceptionTest {
 
     class DefaultP1Exception extends AbstractLoggingException {
         DefaultP1Exception(String message) {
-            super(message);
+            super(AlertLevel.P1, message);
         }
     }
 

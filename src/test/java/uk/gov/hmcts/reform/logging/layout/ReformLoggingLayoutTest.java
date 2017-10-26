@@ -34,17 +34,13 @@ public class ReformLoggingLayoutTest {
 
     private class DummyP2Exception extends AbstractLoggingException {
         DummyP2Exception(String message) {
-            super(message);
-
-            setAlertLevel(AlertLevel.P2);
+            super(AlertLevel.P2, message);
         }
     }
 
     private class DummyP3Exception extends AbstractLoggingException {
         DummyP3Exception(String message) {
-            super(message);
-
-            setAlertLevel(AlertLevel.P3);
+            super(AlertLevel.P3, message);
         }
     }
 

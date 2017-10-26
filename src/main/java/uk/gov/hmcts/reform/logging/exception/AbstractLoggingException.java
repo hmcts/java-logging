@@ -2,25 +2,27 @@ package uk.gov.hmcts.reform.logging.exception;
 
 public abstract class AbstractLoggingException extends RuntimeException {
 
-    private AlertLevel alertLevel = AlertLevel.P1;
+    private final AlertLevel alertLevel;
 
-    protected AbstractLoggingException(Throwable cause) {
+    protected AbstractLoggingException(AlertLevel alertLevel, Throwable cause) {
         super(cause);
+
+        this.alertLevel = alertLevel;
     }
 
-    protected AbstractLoggingException(String message) {
+    protected AbstractLoggingException(AlertLevel alertLevel, String message) {
         super(message);
+
+        this.alertLevel = alertLevel;
     }
 
-    protected AbstractLoggingException(String message, Throwable cause) {
+    protected AbstractLoggingException(AlertLevel alertLevel, String message, Throwable cause) {
         super(message, cause);
+
+        this.alertLevel = alertLevel;
     }
 
     public AlertLevel getAlertLevel() {
         return alertLevel;
-    }
-
-    public void setAlertLevel(AlertLevel alertLevel) {
-        this.alertLevel = alertLevel;
     }
 }
