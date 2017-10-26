@@ -9,6 +9,9 @@ public class MdcFields {
     private static final String FIELD_ORIGIN_REQUEST_ID = "originRequestId";
     private static final String FIELD_REQUEST_ID = "requestId";
 
+    private MdcFields() {
+    }
+
     public static void setSessionId(String sessionId) {
         MDC.put(FIELD_SESSION_ID, sessionId);
     }
