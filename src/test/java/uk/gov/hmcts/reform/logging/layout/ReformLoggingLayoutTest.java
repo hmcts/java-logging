@@ -4,9 +4,10 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import org.junit.After;
-import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
@@ -17,20 +18,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
 import java.io.PrintStream;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(Parameterized.class)
+@RunWith(Theories.class)
 public class ReformLoggingLayoutTest {
 
     private PrintStream old = System.out;
     private ByteArrayOutputStream baos = null;
+    private final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
 
-    private boolean withThread;
-    private String dateFormat;
-    private AlertLevel priority;
-    private boolean withAlertLevel;
+    private enum LogbackConfig {
+        C1("logback-test-enable-thread.xml"),
+        C2("logback-test-custom-date-format.xml"),
+        C3("logback-test-disable-alert-level.xml");
+
+        private String value;
+
+        private LogbackConfig(String configResource) {
+            value = configResource;
+        }
+    }
+
+    @DataPoints
+    public static LogbackConfig[] configValues = LogbackConfig.values();
 
     private class DummyP2Exception extends AbstractLoggingException {
         DummyP2Exception(String message) {
@@ -44,26 +55,11 @@ public class ReformLoggingLayoutTest {
         }
     }
 
-    @Parameterized.Parameters(name = "Parsing logback configuration \"{0}\"")
-    public static Iterable<Object[]> data() {
-        return Arrays.asList(new Object[][] {
-            { "logback-test-enable-thread.xml", true, null, null, true },
-            { "logback-test-enable-thread.xml", true, null, AlertLevel.P2, true},
-            { "logback-test-enable-thread.xml", true, null, AlertLevel.P4, true },// will use some other ex
-            { "logback-test-custom-date-format.xml", false, "\\d{2}-\\d{2}-\\d{4}", null, true},
-            { "logback-test-disable-alert-level.xml", false, null, AlertLevel.P3, false }
-        });
-    }
-
-    public ReformLoggingLayoutTest(String resource,
-                                   boolean withThread,
-                                   String dateFormat,
-                                   AlertLevel priority,
-                                   boolean withAlertLevel) throws JoranException, IOException {
+    private void configLogback(LogbackConfig config) throws JoranException, IOException {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         JoranConfigurator configurator = new JoranConfigurator();
 
-        InputStream configStream = getClass().getClassLoader().getResourceAsStream(resource);
+        InputStream configStream = getClass().getClassLoader().getResourceAsStream(config.value);
         configurator.setContext(loggerContext);
         configurator.doConfigure(configStream);
         configStream.close();
@@ -73,13 +69,6 @@ public class ReformLoggingLayoutTest {
         baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
         System.setOut(ps);
-
-        // set logger parameters
-
-        this.withThread = withThread;
-        this.dateFormat = dateFormat;
-        this.priority = priority;
-        this.withAlertLevel = withAlertLevel;
     }
 
     @After
@@ -88,54 +77,78 @@ public class ReformLoggingLayoutTest {
         System.setOut(old);
     }
 
-    @Test
-    public void testMessagePatterns() {
-        Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
+    @Theory
+    public void testDefaultOutput() throws JoranException, IOException {
+        configLogback(LogbackConfig.C1);
 
-        String message = "message";
-        String level = "INFO ";
-
-        if (withAlertLevel && priority != null) {
-            message = "\\[" + priority.name() + "\\] error";
-            level = "ERROR";
-
-            if (priority.equals(AlertLevel.P4)) {
-                message = String.format(
-                    "\\[%s\\] Bad implementation of '%s' in use",
-                    AlertLevel.P1.name(),
-                    InvalidClassException.class.getCanonicalName()
-                );
-
-                log.error("error", new InvalidClassException("oh no"));
-            } else {
-                log.error("error", new DummyP2Exception("oh no"));
-            }
-        } else if (priority != null) {
-            level = "ERROR";
-
-            log.error(message, new DummyP3Exception("oh no"));
-        } else {
-            log.info(message);
-        }
+        log.info("message");
 
         String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
         String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
         String logger = this.getClass().getCanonicalName();
 
-        if (!withThread) {
-            thread = "";
-        }
+        assertThat(baos.toString()).containsPattern(
+            timestamp + " INFO  " + thread + logger + ":\\d+: message\n"
+        );
+    }
 
-        if (dateFormat != null) {
-            timestamp = dateFormat;
-        }
+    @Theory
+    public void testDefaultOutputWithP2Exception() throws JoranException, IOException {
+        configLogback(LogbackConfig.C1);
 
-        if (priority != null && priority.equals(AlertLevel.P4)) {
-            logger = ReformLoggingLayout.class.getCanonicalName();
-        }
+        log.error("message", new DummyP2Exception("oh no"));
+
+        String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
+        String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
+        String logger = this.getClass().getCanonicalName();
 
         assertThat(baos.toString()).containsPattern(
-            timestamp + " " + level + " " + thread + logger + ":\\d+: " + message + "\n"
+            timestamp + " ERROR " + thread + logger + ":\\d+: \\[P2\\] message\n"
+        );
+    }
+
+    @Theory
+    public void testDefaultOutputWithBadException() throws JoranException, IOException {
+        configLogback(LogbackConfig.C1);
+
+        log.error("message", new InvalidClassException("oh no"));
+
+        String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
+        String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
+        String logger = ReformLoggingLayout.class.getCanonicalName();
+        String errorClass = InvalidClassException.class.getCanonicalName();
+        String message = String.format("Bad implementation of '%s' in use", errorClass);
+
+        assertThat(baos.toString()).containsPattern(
+            timestamp + " ERROR " + thread + logger + ":\\d+: \\[P1\\] " + message + "\n"
+        );
+    }
+
+    @Theory
+    public void testNoThreadCustomDateFormatOutput() throws JoranException, IOException {
+        configLogback(LogbackConfig.C2);
+
+        log.info("message");
+
+        String timestamp = "\\d{2}-\\d{2}-\\d{4}";
+        String logger = this.getClass().getCanonicalName();
+
+        assertThat(baos.toString()).containsPattern(
+            timestamp + " INFO  " + logger + ":\\d+: message\n"
+        );
+    }
+
+    @Theory
+    public void testOutputWhenAlertLevelIsDisabled() throws JoranException, IOException {
+        configLogback(LogbackConfig.C3);
+
+        log.error("message", new DummyP3Exception("oh no"));
+
+        String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
+        String logger = this.getClass().getCanonicalName();
+
+        assertThat(baos.toString()).containsPattern(
+            timestamp + " ERROR " + logger + ":\\d+: message\n"
         );
     }
 }
