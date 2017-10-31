@@ -51,18 +51,6 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
     @Override
     public String doLayout(ILoggingEvent event) {
-        AbstractLoggingException exception = null;
-
-        if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-            Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
-
-            if (eventException instanceof AbstractLoggingException) {
-                exception = (AbstractLoggingException) eventException;
-            } else  {
-                triggerBadImplementationLog(eventException);
-            }
-        }
-
         Instant instant = Instant.ofEpochMilli(event.getTimeStamp());
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         StringBuilder log = new StringBuilder(dateFormat.format(dateTime));
@@ -82,8 +70,16 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
         log.append(String.format(" %s:%d: ", event.getLoggerName(), lineNumber));
 
-        if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR) && exception != null) {
-            log.append(String.format("[%s] ", exception.getAlertLevel().name()));
+        if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
+            Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
+
+            if (eventException instanceof AbstractLoggingException) {
+                AbstractLoggingException exception = (AbstractLoggingException) eventException;
+
+                log.append(String.format("[%s] ", exception.getAlertLevel().name()));
+            } else  {
+                triggerBadImplementationLog(eventException);
+            }
         }
 
         log.append(event.getFormattedMessage());
