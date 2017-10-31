@@ -24,17 +24,9 @@ public class ReformLoggingLayoutTest {
     private ByteArrayOutputStream baos = null;
     private final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
 
-    private enum LogbackConfig {
-        C1("logback-test-enable-thread.xml"),
-        C2("logback-test-custom-date-format.xml"),
-        C3("logback-test-disable-alert-level.xml");
-
-        private String value;
-
-        private LogbackConfig(String configResource) {
-            value = configResource;
-        }
-    }
+    private static final String LOGBACK_WITH_THREAD = "logback-test-enable-thread.xml";
+    private static final String LOGBACK_WITH_CUSTOM_DATE_FORMAT = "logback-test-custom-date-format.xml";
+    private static final String LOGBACK_WITHOUT_ALERT_LEVEL = "logback-test-disable-alert-level.xml";
 
     private class DummyP2Exception extends AbstractLoggingException {
         DummyP2Exception(String message) {
@@ -48,11 +40,11 @@ public class ReformLoggingLayoutTest {
         }
     }
 
-    private void configLogback(LogbackConfig config) throws JoranException, IOException {
+    private void configLogback(String config) throws JoranException, IOException {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         JoranConfigurator configurator = new JoranConfigurator();
 
-        InputStream configStream = getClass().getClassLoader().getResourceAsStream(config.value);
+        InputStream configStream = getClass().getClassLoader().getResourceAsStream(config);
         configurator.setContext(loggerContext);
         configurator.doConfigure(configStream);
         configStream.close();
@@ -72,7 +64,7 @@ public class ReformLoggingLayoutTest {
 
     @Test
     public void testDefaultOutput() throws JoranException, IOException {
-        configLogback(LogbackConfig.C1);
+        configLogback(LOGBACK_WITH_THREAD);
 
         log.info("message");
 
@@ -87,7 +79,7 @@ public class ReformLoggingLayoutTest {
 
     @Test
     public void testDefaultOutputWithP2Exception() throws JoranException, IOException {
-        configLogback(LogbackConfig.C1);
+        configLogback(LOGBACK_WITH_THREAD);
 
         log.error("message", new DummyP2Exception("oh no"));
 
@@ -102,7 +94,7 @@ public class ReformLoggingLayoutTest {
 
     @Test
     public void testDefaultOutputWithBadException() throws JoranException, IOException {
-        configLogback(LogbackConfig.C1);
+        configLogback(LOGBACK_WITH_THREAD);
 
         log.error("message", new InvalidClassException("oh no"));
 
@@ -119,7 +111,7 @@ public class ReformLoggingLayoutTest {
 
     @Test
     public void testNoThreadCustomDateFormatOutput() throws JoranException, IOException {
-        configLogback(LogbackConfig.C2);
+        configLogback(LOGBACK_WITH_CUSTOM_DATE_FORMAT);
 
         log.info("message");
 
@@ -133,7 +125,7 @@ public class ReformLoggingLayoutTest {
 
     @Test
     public void testOutputWhenAlertLevelIsDisabled() throws JoranException, IOException {
-        configLogback(LogbackConfig.C3);
+        configLogback(LOGBACK_WITHOUT_ALERT_LEVEL);
 
         log.error("message", new DummyP3Exception("oh no"));
 
