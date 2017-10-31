@@ -4,10 +4,7 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import org.junit.After;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
@@ -21,7 +18,6 @@ import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(Theories.class)
 public class ReformLoggingLayoutTest {
 
     private PrintStream old = System.out;
@@ -39,9 +35,6 @@ public class ReformLoggingLayoutTest {
             value = configResource;
         }
     }
-
-    @DataPoints
-    public static LogbackConfig[] configValues = LogbackConfig.values();
 
     private class DummyP2Exception extends AbstractLoggingException {
         DummyP2Exception(String message) {
@@ -77,7 +70,7 @@ public class ReformLoggingLayoutTest {
         System.setOut(old);
     }
 
-    @Theory
+    @Test
     public void testDefaultOutput() throws JoranException, IOException {
         configLogback(LogbackConfig.C1);
 
@@ -92,7 +85,7 @@ public class ReformLoggingLayoutTest {
         );
     }
 
-    @Theory
+    @Test
     public void testDefaultOutputWithP2Exception() throws JoranException, IOException {
         configLogback(LogbackConfig.C1);
 
@@ -107,7 +100,7 @@ public class ReformLoggingLayoutTest {
         );
     }
 
-    @Theory
+    @Test
     public void testDefaultOutputWithBadException() throws JoranException, IOException {
         configLogback(LogbackConfig.C1);
 
@@ -124,7 +117,7 @@ public class ReformLoggingLayoutTest {
         );
     }
 
-    @Theory
+    @Test
     public void testNoThreadCustomDateFormatOutput() throws JoranException, IOException {
         configLogback(LogbackConfig.C2);
 
@@ -138,7 +131,7 @@ public class ReformLoggingLayoutTest {
         );
     }
 
-    @Theory
+    @Test
     public void testOutputWhenAlertLevelIsDisabled() throws JoranException, IOException {
         configLogback(LogbackConfig.C3);
 
