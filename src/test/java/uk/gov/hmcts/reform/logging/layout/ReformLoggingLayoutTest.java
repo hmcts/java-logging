@@ -100,12 +100,20 @@ public class ReformLoggingLayoutTest {
 
         String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
         String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
-        String logger = ReformLoggingLayout.class.getCanonicalName();
+        String logger1 = this.getClass().getCanonicalName();
+        String logger2 = ReformLoggingLayout.class.getCanonicalName();
         String errorClass = InvalidClassException.class.getCanonicalName();
         String message = String.format("Bad implementation of '%s' in use", errorClass);
 
-        assertThat(baos.toString()).containsPattern(
-            timestamp + " ERROR " + thread + logger + ":\\d+: \\[P1\\] " + message + "\n"
+        String output = baos.toString();
+
+        // there must be original log
+        assertThat(output).containsPattern(
+            timestamp + " ERROR " + thread + logger1 + ":\\d+: message\n"
+        );
+        // alongside log about alert level misuse
+        assertThat(output).containsPattern(
+            timestamp + " ERROR " + thread + logger2 + ":\\d+: \\[P1\\] " + message + "\n"
         );
     }
 
