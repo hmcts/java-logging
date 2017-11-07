@@ -68,7 +68,7 @@ public class ReformLoggingLayoutTest {
 
         log.info("message");
 
-        String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
+        String timestamp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(\\+|-)\\d{4}";
         String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
         String logger = this.getClass().getCanonicalName();
 
@@ -98,7 +98,7 @@ public class ReformLoggingLayoutTest {
 
         log.error("message", new InvalidClassException("oh no"));
 
-        String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
+        String timestamp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(\\+|-)\\d{4}";
         String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
         String logger1 = this.getClass().getCanonicalName();
         String logger2 = AbstractLoggingException.class.getCanonicalName();
@@ -137,7 +137,7 @@ public class ReformLoggingLayoutTest {
 
         log.error("message", new DummyP3Exception("oh no"));
 
-        String timestamp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}";
+        String timestamp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(\\+|-)\\d{4}";
         String logger = this.getClass().getCanonicalName();
 
         assertThat(baos.toString()).containsPattern(
