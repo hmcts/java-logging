@@ -8,11 +8,13 @@
     <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <jsonGeneratorDecorator class="uk.gov.hmcts.reform.logging.PrettyPrintingDecorator"/>
-            <providers>
+            <providers class="uk.gov.hmcts.reform.logging.provider.EventJsonProviders">
                 <timestamp>
                     <fieldName>timestamp</fieldName>
+                    <pattern>yyyy-MM-DD HH:mm:ss.SSS</pattern>
                     <timeZone>UTC</timeZone>
                 </timestamp>
+                <alertLevel/>
                 <pattern>
                     <pattern>
                         {
