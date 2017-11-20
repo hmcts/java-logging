@@ -1,12 +1,12 @@
 buildscript {
   dependencies {
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
   }
 }
 
 plugins {
-  id 'org.owasp.dependencycheck' version '1.4.5.1'
-  id 'com.github.ben-manes.versions' version '0.15.0'
+  id 'org.owasp.dependencycheck' version '2.1.0'
+  id 'com.github.ben-manes.versions' version '0.17.0'
 }
 
 allprojects {
@@ -44,7 +44,20 @@ allprojects {
     compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: versions.logstashLogbackEncoder
     compile group: 'org.slf4j', name: 'slf4j-api', version: versions.slf4j
     compile group: 'ch.qos.logback', name: 'logback-classic', version: versions.logback
-    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.0'
+  }
+
+  dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+      rules.all { ComponentSelection selection ->
+        boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+          selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+        }
+        if (rejected) {
+          selection.reject('Release candidate')
+        }
+      }
+    }
   }
 
   dependencyCheck {
@@ -107,11 +120,11 @@ bintray {
 
 dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.12'
-  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.11.0'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.12.0'
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
   testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-  testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.16.1'
-  testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+  testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.17.0'
+  testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.0'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
