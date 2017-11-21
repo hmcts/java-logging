@@ -16,18 +16,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
 
+    private static final Logger log = LoggerFactory.getLogger(AlertLevelJsonProviderTest.class);
+
     @Before
     public void setUp() throws IOException, JoranException {
         System.setProperty("ROOT_APPENDER", "JSON_CONSOLE");
-
-        captureOutput("logback.xml");
     }
 
     @Test
-    public void testAlertLevel() throws IOException {
-        assertThat(System.getProperty("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
+    public void testAlertLevel() throws IOException, JoranException {
+        captureOutput();
 
-        Logger log = LoggerFactory.getLogger(AlertLevelJsonProviderTest.class);
+        assertThat(System.getProperty("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
 
         log.error("test", new ProviderException("oh no"));
 
@@ -36,5 +36,19 @@ public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
 
         assertThat(node.at("/alertLevel").asText()).isEqualTo(AlertLevel.P1.name());
         assertThat(node.at("/message").asText()).isEqualTo("test");
+    }
+
+    @Test
+    public void testDisableAlertLevel() throws IOException, JoranException {
+        System.setProperty("LOGBACK_REQUIRE_ALERT_LEVEL", "false");
+        captureOutput();
+
+        log.error("no test", new ProviderException("oh no"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(baos.toString());
+
+        assertThat(node.at("/alertLevel").isMissingNode()).isTrue();
+        assertThat(node.at("/message").asText()).isEqualTo("no test");
     }
 }

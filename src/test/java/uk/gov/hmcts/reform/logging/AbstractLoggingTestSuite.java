@@ -25,14 +25,14 @@ public abstract class AbstractLoggingTestSuite {
         }
     }
 
-    protected void captureOutput(String resource) throws IOException, JoranException {
+    protected void captureOutput() throws IOException, JoranException {
         System.setProperty("ROOT_APPENDER", "JSON_CONSOLE");
 
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.reset();
         JoranConfigurator configurator = new JoranConfigurator();
 
-        InputStream configStream = getClass().getClassLoader().getResourceAsStream(resource);
+        InputStream configStream = getClass().getClassLoader().getResourceAsStream("logback.xml");
         configurator.setContext(loggerContext);
         configurator.doConfigure(configStream);
         configStream.close();
@@ -45,6 +45,8 @@ public abstract class AbstractLoggingTestSuite {
     @After
     public void resetConsole() {
         System.clearProperty("ROOT_APPENDER");
+        System.clearProperty("LOGBACK_REQUIRE_ALERT_LEVEL");
+        System.clearProperty("LOGBACK_REQUIRE_ERROR_CODE");
         System.out.flush();
         System.setOut(old);
     }

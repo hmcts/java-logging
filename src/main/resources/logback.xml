@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="${LOGBACK_CONFIGURATION_DEBUG:-false}">
+    <include optional="true" resource="${LOGBACK_INCLUDES_FILE:-logback-includes.xml}"/>
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="uk.gov.hmcts.reform.logging.layout.ReformLoggingLayout"/>
+            <layout class="uk.gov.hmcts.reform.logging.layout.ReformLoggingLayout">
+                <requireAlertLevel>${LOGBACK_REQUIRE_ALERT_LEVEL:-true}</requireAlertLevel>
+                <requireErrorCode>${LOGBACK_REQUIRE_ERROR_CODE:-true}</requireErrorCode>
+            </layout>
         </encoder>
     </appender>
     <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -13,8 +18,12 @@
                     <fieldName>timestamp</fieldName>
                     <timeZone>UTC</timeZone>
                 </timestamp>
-                <alertLevel/>
-                <errorCode/>
+                <alertLevel>
+                    <require>${LOGBACK_REQUIRE_ALERT_LEVEL:-true}</require>
+                </alertLevel>
+                <errorCode>
+                    <require>${LOGBACK_REQUIRE_ERROR_CODE:-true}</require>
+                </errorCode>
                 <pattern>
                     <pattern>
                         {
@@ -45,5 +54,4 @@
     <root level="${ROOT_LOGGING_LEVEL:-INFO}">
         <appender-ref ref="${ROOT_APPENDER:-CONSOLE}" />
     </root>
-    <include optional="true" resource="${LOGBACK_INCLUDES_FILE:-logback-includes.xml}"/>
 </configuration>

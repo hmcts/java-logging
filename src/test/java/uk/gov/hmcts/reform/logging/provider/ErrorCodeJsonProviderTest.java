@@ -15,18 +15,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
 
-    @Before
-    public void setUp() throws IOException, JoranException {
-        System.setProperty("ROOT_APPENDER", "JSON_CONSOLE");
+    private static final Logger log = LoggerFactory.getLogger(ErrorCodeJsonProviderTest.class);
 
-        captureOutput("logback.xml");
+    @Before
+    public void setUp() {
+        System.setProperty("ROOT_APPENDER", "JSON_CONSOLE");
     }
 
     @Test
-    public void testAlertLevel() throws IOException {
-        assertThat(System.getProperty("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
+    public void testErrorCode() throws IOException, JoranException {
+        captureOutput();
 
-        Logger log = LoggerFactory.getLogger(ErrorCodeJsonProviderTest.class);
+        assertThat(System.getProperty("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
 
         log.error("test", new ProviderException("oh no"));
 
@@ -35,5 +35,19 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
 
         assertThat(node.at("/errorCode").asText()).isEqualTo("0");
         assertThat(node.at("/message").asText()).isEqualTo("test");
+    }
+
+    @Test
+    public void testDisableErrorCode() throws IOException, JoranException {
+        System.setProperty("LOGBACK_REQUIRE_ERROR_CODE", "false");
+        captureOutput();
+
+        log.error("no test", new ProviderException("oh no"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(baos.toString());
+
+        assertThat(node.at("/errorCode").isMissingNode()).isTrue();
+        assertThat(node.at("/message").asText()).isEqualTo("no test");
     }
 }

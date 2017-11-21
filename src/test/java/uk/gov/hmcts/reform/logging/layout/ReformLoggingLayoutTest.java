@@ -24,10 +24,9 @@ public class ReformLoggingLayoutTest {
     private ByteArrayOutputStream baos;
     private static final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
 
+    private static final String LOGBACK = "logback.xml";
     private static final String LOGBACK_WITH_THREAD = "logback-test-enable-thread.xml";
     private static final String LOGBACK_WITH_CUSTOM_DATE_FORMAT = "logback-test-custom-date-format.xml";
-    private static final String LOGBACK_WITHOUT_ALERT_LEVEL = "logback-test-disable-alert-level.xml";
-    private static final String LOGBACK_WITHOUT_ERROR_CODE = "logback-test-disable-error-code.xml";
 
     private class DummyP2Exception extends AbstractLoggingException {
         DummyP2Exception(String message) {
@@ -61,6 +60,8 @@ public class ReformLoggingLayoutTest {
     public void resetConsole() {
         System.out.flush();
         System.setOut(old);
+        System.clearProperty("LOGBACK_REQUIRE_ALERT_LEVEL");
+        System.clearProperty("LOGBACK_REQUIRE_ERROR_CODE");
     }
 
     @Test
@@ -134,29 +135,33 @@ public class ReformLoggingLayoutTest {
 
     @Test
     public void testOutputWhenAlertLevelIsDisabled() throws JoranException, IOException {
-        configLogback(LOGBACK_WITHOUT_ALERT_LEVEL);
+        System.setProperty("LOGBACK_REQUIRE_ALERT_LEVEL", "false");
+        configLogback(LOGBACK);
 
         log.error("message", new DummyP3Exception("oh no"));
 
         String timestamp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(\\+|-)\\d{4}";
+        String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
         String logger = this.getClass().getCanonicalName();
 
         assertThat(baos.toString()).containsPattern(
-            timestamp + " ERROR " + logger + ":\\d+: 0. message\n"
+            timestamp + " ERROR " + thread + logger + ":\\d+: 0. message\n"
         );
     }
 
     @Test
     public void testOutputWhenErrorCodeIsDisabled() throws JoranException, IOException {
-        configLogback(LOGBACK_WITHOUT_ERROR_CODE);
+        System.setProperty("LOGBACK_REQUIRE_ERROR_CODE", "false");
+        configLogback(LOGBACK);
 
         log.error("message", new DummyP3Exception("oh no"));
 
         String timestamp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(\\+|-)\\d{4}";
+        String thread = "\\[" + Thread.currentThread().getName() + "\\] ";
         String logger = this.getClass().getCanonicalName();
 
         assertThat(baos.toString()).containsPattern(
-            timestamp + " ERROR " + logger + ":\\d+: \\[P3\\] message\n"
+            timestamp + " ERROR " + thread + logger + ":\\d+: \\[P3\\] message\n"
         );
     }
 
