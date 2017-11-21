@@ -159,4 +159,24 @@ public class ReformLoggingLayoutTest {
             timestamp + " ERROR " + logger + ":\\d+: \\[P3\\] message\n"
         );
     }
+
+    @Test
+    public void testOutputForOptionalErrorValues() throws JoranException, IOException {
+        configLogback(LOGBACK_WITH_CUSTOM_DATE_FORMAT);
+
+        log.info("message");
+        log.info("message", new DummyP3Exception("ping not allowed"));
+
+        String timestamp = "\\d{2}-\\d{2}-\\d{4}";
+        String logger = this.getClass().getCanonicalName();
+
+        String output = baos.toString();
+
+        assertThat(output).containsPattern(
+            timestamp + " INFO  " + logger + ":\\d+: message\n"
+        );
+        assertThat(output).containsPattern(
+            timestamp + " INFO  " + logger + ":\\d+: \\[P3\\] 0. message\n"
+        );
+    }
 }
