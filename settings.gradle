@@ -1,5 +1,4 @@
 rootProject.name = 'java-logging'
-include 'java-logging-dropwizard'
+
 include 'java-logging-httpcomponents'
 include 'java-logging-spring'
-
