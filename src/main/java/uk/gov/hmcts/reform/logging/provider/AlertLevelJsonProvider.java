@@ -21,14 +21,12 @@ public class AlertLevelJsonProvider extends AbstractFieldJsonProvider<ILoggingEv
 
     @Override
     public void writeTo(JsonGenerator generator, ILoggingEvent event) throws IOException {
-        AbstractLoggingException exception = null;
-
         if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-            exception = AbstractLoggingException.getFromLogEvent(event);
-        }
+            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
 
-        if (exception != null) {
-            JsonWritingUtils.writeStringField(generator, getFieldName(), exception.getAlertLevel().name());
+            if (exception != null) {
+                JsonWritingUtils.writeStringField(generator, getFieldName(), exception.getAlertLevel().name());
+            }
         }
     }
 
