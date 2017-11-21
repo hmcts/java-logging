@@ -25,6 +25,11 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
      */
     private boolean requireAlertLevel = true;
 
+    /**
+     * By default require an Error Code to be present for any exception log.
+     */
+    private boolean requireErrorCode = true;
+
     public void setDateFormat(String format) {
         dateFormat = DateTimeFormatter.ofPattern(format);
     }
@@ -35,6 +40,26 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
     public void setRequireAlertLevel(boolean requireAlertLevel) {
         this.requireAlertLevel = requireAlertLevel;
+    }
+
+    public void setRequireErrorCode(boolean requireErrorCode) {
+        this.requireErrorCode = requireErrorCode;
+    }
+
+    private void appendExtraExceptionFlags(StringBuilder log, ILoggingEvent event) {
+        AbstractLoggingException exception = null;
+
+        if (requireAlertLevel || requireErrorCode) {
+            exception = AbstractLoggingException.getFromLogEvent(event);
+        }
+
+        if (exception != null && requireAlertLevel) {
+            log.append(String.format("[%s] ", exception.getAlertLevel().name()));
+        }
+
+        if (exception != null && requireErrorCode) {
+            log.append(String.format("%s. ", exception.getErrorCode()));
+        }
     }
 
     @Override
@@ -58,12 +83,8 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
         log.append(String.format(" %s:%d: ", event.getLoggerName(), lineNumber));
 
-        if (requireAlertLevel && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
-
-            if (exception != null) {
-                log.append(String.format("[%s] ", exception.getAlertLevel().name()));
-            }
+        if (event.getLevel().isGreaterOrEqual(Level.ERROR)) {
+            appendExtraExceptionFlags(log, event);
         }
 
         log.append(event.getFormattedMessage());

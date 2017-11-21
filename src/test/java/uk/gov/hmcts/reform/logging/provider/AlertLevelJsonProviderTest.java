@@ -27,7 +27,7 @@ public class AlertLevelJsonProviderTest {
 
     class AlertLevelException extends AbstractLoggingException {
         AlertLevelException(String message) {
-            super(AlertLevel.P1, message);
+            super(AlertLevel.P1, "0", message);
         }
     }
 

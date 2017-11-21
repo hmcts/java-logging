@@ -7,4 +7,8 @@ public class EventJsonProviders extends LoggingEventJsonProviders {
     public void addAlertLevel(AlertLevelJsonProvider provider) {
         addProvider(provider);
     }
+
+    public void addErrorCode(ErrorCodeJsonProvider provider) {
+        addProvider(provider);
+    }
 }
