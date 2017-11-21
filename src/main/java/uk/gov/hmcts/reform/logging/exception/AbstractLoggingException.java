@@ -48,18 +48,24 @@ public abstract class AbstractLoggingException extends RuntimeException {
     }
 
     public static AbstractLoggingException getFromLogEvent(ILoggingEvent event) {
-        Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
+        ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
 
-        if (eventException instanceof AbstractLoggingException) {
-            return (AbstractLoggingException) eventException;
-        } else if (eventException.getCause() instanceof AbstractLoggingException) {
-            // for spring boot projects there's a generic exception wrapper
-            // let's try to cast the cause instead
-            return (AbstractLoggingException) eventException.getCause();
-        } else {
-            triggerBadImplementationLog(eventException);
+        if (proxy != null) {
+            Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
 
-            return null;
+            if (eventException instanceof AbstractLoggingException) {
+                return (AbstractLoggingException) eventException;
+            } else if (eventException.getCause() instanceof AbstractLoggingException) {
+                // for spring boot projects there's a generic exception wrapper
+                // let's try to cast the cause instead
+                return (AbstractLoggingException) eventException.getCause();
+            } else {
+                triggerBadImplementationLog(eventException);
+
+                return null;
+            }
         }
+
+        return null;
     }
 }

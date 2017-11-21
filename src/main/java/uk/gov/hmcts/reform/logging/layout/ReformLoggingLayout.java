@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.logging.layout;
 
-import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.LayoutBase;
@@ -67,8 +66,8 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
         log.append(String.format(" %s:%d: ", event.getLoggerName(), lineNumber));
 
-        if (event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-            appendExtraExceptionFlags(log, event);
+        if (requireAlertLevel || requireErrorCode) {
+            appendExtraExceptionFlags(log, AbstractLoggingException.getFromLogEvent(event));
         }
 
         log.append(event.getFormattedMessage());
@@ -77,17 +76,13 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         return log.toString();
     }
 
-    private void appendExtraExceptionFlags(StringBuilder log, ILoggingEvent event) {
-        if (requireAlertLevel || requireErrorCode) {
-            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
+    private void appendExtraExceptionFlags(StringBuilder log, AbstractLoggingException exception) {
+        if (exception != null && requireAlertLevel) {
+            log.append(String.format("[%s] ", exception.getAlertLevel().name()));
+        }
 
-            if (exception != null && requireAlertLevel) {
-                log.append(String.format("[%s] ", exception.getAlertLevel().name()));
-            }
-
-            if (exception != null && requireErrorCode) {
-                log.append(String.format("%s. ", exception.getErrorCode()));
-            }
+        if (exception != null && requireErrorCode) {
+            log.append(String.format("%s. ", exception.getErrorCode()));
         }
     }
 }

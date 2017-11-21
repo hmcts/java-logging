@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.logging.provider;
 
-import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import com.fasterxml.jackson.core.JsonGenerator;
 import net.logstash.logback.composite.AbstractFieldJsonProvider;
@@ -21,7 +20,7 @@ public class ErrorCodeJsonProvider extends AbstractFieldJsonProvider<ILoggingEve
 
     @Override
     public void writeTo(JsonGenerator generator, ILoggingEvent event) throws IOException {
-        if (requireErrorCode && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
+        if (requireErrorCode) {
             AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
 
             if (exception != null) {
