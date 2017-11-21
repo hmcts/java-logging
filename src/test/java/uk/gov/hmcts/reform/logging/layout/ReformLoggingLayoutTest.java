@@ -27,16 +27,17 @@ public class ReformLoggingLayoutTest {
     private static final String LOGBACK_WITH_THREAD = "logback-test-enable-thread.xml";
     private static final String LOGBACK_WITH_CUSTOM_DATE_FORMAT = "logback-test-custom-date-format.xml";
     private static final String LOGBACK_WITHOUT_ALERT_LEVEL = "logback-test-disable-alert-level.xml";
+    private static final String LOGBACK_WITHOUT_ERROR_CODE = "logback-test-disable-error-code.xml";
 
     private class DummyP2Exception extends AbstractLoggingException {
         DummyP2Exception(String message) {
-            super(AlertLevel.P2, message);
+            super(AlertLevel.P2, "0", message);
         }
     }
 
     private class DummyP3Exception extends AbstractLoggingException {
         DummyP3Exception(String message) {
-            super(AlertLevel.P3, message);
+            super(AlertLevel.P3, "0", message);
         }
     }
 
@@ -88,7 +89,7 @@ public class ReformLoggingLayoutTest {
         String logger = this.getClass().getCanonicalName();
 
         assertThat(baos.toString()).containsPattern(
-            timestamp + " ERROR " + thread + logger + ":\\d+: \\[P2\\] message\n"
+            timestamp + " ERROR " + thread + logger + ":\\d+: \\[P2\\] 0. message\n"
         );
     }
 
@@ -113,7 +114,7 @@ public class ReformLoggingLayoutTest {
         );
         // alongside log about alert level misuse
         assertThat(output).containsPattern(
-            timestamp + " ERROR " + thread + logger2 + ":\\d+: \\[P1\\] " + message + "\n"
+            timestamp + " ERROR " + thread + logger2 + ":\\d+: \\[P1\\] 0. " + message + "\n"
         );
     }
 
@@ -141,7 +142,21 @@ public class ReformLoggingLayoutTest {
         String logger = this.getClass().getCanonicalName();
 
         assertThat(baos.toString()).containsPattern(
-            timestamp + " ERROR " + logger + ":\\d+: message\n"
+            timestamp + " ERROR " + logger + ":\\d+: 0. message\n"
+        );
+    }
+
+    @Test
+    public void testOutputWhenErrorCodeIsDisabled() throws JoranException, IOException {
+        configLogback(LOGBACK_WITHOUT_ERROR_CODE);
+
+        log.error("message", new DummyP3Exception("oh no"));
+
+        String timestamp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(\\+|-)\\d{4}";
+        String logger = this.getClass().getCanonicalName();
+
+        assertThat(baos.toString()).containsPattern(
+            timestamp + " ERROR " + logger + ":\\d+: \\[P3\\] message\n"
         );
     }
 }

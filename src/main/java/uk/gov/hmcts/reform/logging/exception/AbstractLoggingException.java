@@ -8,29 +8,37 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractLoggingException extends RuntimeException {
 
     private final AlertLevel alertLevel;
+    private final String errorCode;
 
     private static Logger log = LoggerFactory.getLogger(AbstractLoggingException.class);
 
-    protected AbstractLoggingException(AlertLevel alertLevel, Throwable cause) {
+    protected AbstractLoggingException(AlertLevel alertLevel, String errorCode, Throwable cause) {
         super(cause);
 
         this.alertLevel = alertLevel;
+        this.errorCode = errorCode;
     }
 
-    protected AbstractLoggingException(AlertLevel alertLevel, String message) {
+    protected AbstractLoggingException(AlertLevel alertLevel, String errorCode, String message) {
         super(message);
 
         this.alertLevel = alertLevel;
+        this.errorCode = errorCode;
     }
 
-    protected AbstractLoggingException(AlertLevel alertLevel, String message, Throwable cause) {
+    protected AbstractLoggingException(AlertLevel alertLevel, String errorCode, String message, Throwable cause) {
         super(message, cause);
 
         this.alertLevel = alertLevel;
+        this.errorCode = errorCode;
     }
 
     public AlertLevel getAlertLevel() {
         return alertLevel;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
     }
 
     private static void triggerBadImplementationLog(Throwable cause) {

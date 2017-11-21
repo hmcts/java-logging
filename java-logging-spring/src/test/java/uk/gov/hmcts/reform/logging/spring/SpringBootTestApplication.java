@@ -23,7 +23,7 @@ public class SpringBootTestApplication {
 
         private class RequestMappingException extends AbstractLoggingException {
             RequestMappingException(String message) {
-                super(AlertLevel.P1, message);
+                super(AlertLevel.P1, "0", message);
             }
         }
 
