@@ -46,20 +46,6 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         this.requireErrorCode = requireErrorCode;
     }
 
-    private void appendExtraExceptionFlags(StringBuilder log, ILoggingEvent event) {
-        if (requireAlertLevel || requireErrorCode) {
-            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
-
-            if (exception != null && requireAlertLevel) {
-                log.append(String.format("[%s] ", exception.getAlertLevel().name()));
-            }
-
-            if (exception != null && requireErrorCode) {
-                log.append(String.format("%s. ", exception.getErrorCode()));
-            }
-        }
-    }
-
     @Override
     public String doLayout(ILoggingEvent event) {
         Instant instant = Instant.ofEpochMilli(event.getTimeStamp());
@@ -89,5 +75,19 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         log.append(CoreConstants.LINE_SEPARATOR);
 
         return log.toString();
+    }
+
+    private void appendExtraExceptionFlags(StringBuilder log, ILoggingEvent event) {
+        if (requireAlertLevel || requireErrorCode) {
+            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
+
+            if (exception != null && requireAlertLevel) {
+                log.append(String.format("[%s] ", exception.getAlertLevel().name()));
+            }
+
+            if (exception != null && requireErrorCode) {
+                log.append(String.format("%s. ", exception.getErrorCode()));
+            }
+        }
     }
 }
