@@ -21,14 +21,12 @@ public class ErrorCodeJsonProvider extends AbstractFieldJsonProvider<ILoggingEve
 
     @Override
     public void writeTo(JsonGenerator generator, ILoggingEvent event) throws IOException {
-        AbstractLoggingException exception = null;
-
         if (requireErrorCode && event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-            exception = AbstractLoggingException.getFromLogEvent(event);
-        }
+            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
 
-        if (exception != null) {
-            JsonWritingUtils.writeStringField(generator, getFieldName(), exception.getErrorCode());
+            if (exception != null) {
+                JsonWritingUtils.writeStringField(generator, getFieldName(), exception.getErrorCode());
+            }
         }
     }
 

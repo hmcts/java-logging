@@ -47,18 +47,16 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
     }
 
     private void appendExtraExceptionFlags(StringBuilder log, ILoggingEvent event) {
-        AbstractLoggingException exception = null;
-
         if (requireAlertLevel || requireErrorCode) {
-            exception = AbstractLoggingException.getFromLogEvent(event);
-        }
+            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
 
-        if (exception != null && requireAlertLevel) {
-            log.append(String.format("[%s] ", exception.getAlertLevel().name()));
-        }
+            if (exception != null && requireAlertLevel) {
+                log.append(String.format("[%s] ", exception.getAlertLevel().name()));
+            }
 
-        if (exception != null && requireErrorCode) {
-            log.append(String.format("%s. ", exception.getErrorCode()));
+            if (exception != null && requireErrorCode) {
+                log.append(String.format("%s. ", exception.getErrorCode()));
+            }
         }
     }
 
