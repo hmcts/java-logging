@@ -29,7 +29,7 @@ public class AlertLevelJsonProvider extends AbstractFieldJsonProvider<ILoggingEv
         }
     }
 
-    public boolean getRequireAlertLevel() {
+    public boolean isRequireAlertLevel() {
         return requireAlertLevel;
     }
 

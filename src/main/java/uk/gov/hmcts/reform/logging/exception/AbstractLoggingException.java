@@ -10,7 +10,7 @@ public abstract class AbstractLoggingException extends RuntimeException {
     private final AlertLevel alertLevel;
     private final String errorCode;
 
-    private static Logger log = LoggerFactory.getLogger(AbstractLoggingException.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractLoggingException.class);
 
     protected AbstractLoggingException(AlertLevel alertLevel, String errorCode, Throwable cause) {
         super(cause);

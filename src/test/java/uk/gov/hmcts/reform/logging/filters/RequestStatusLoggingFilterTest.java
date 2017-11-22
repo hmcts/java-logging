@@ -37,12 +37,12 @@ public class RequestStatusLoggingFilterTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void addAppender() throws Exception {
+    public void addAppender() {
         ((Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME)).addAppender(testAppender);
     }
 
     @After
-    public void removeAppender() throws Exception {
+    public void removeAppender() {
         ((Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME)).detachAppender(testAppender);
     }
 

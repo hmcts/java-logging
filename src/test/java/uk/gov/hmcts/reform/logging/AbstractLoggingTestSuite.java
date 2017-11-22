@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-public class AbstractLoggingTestSuite {
+public abstract class AbstractLoggingTestSuite {
 
     protected ByteArrayOutputStream baos;
 
