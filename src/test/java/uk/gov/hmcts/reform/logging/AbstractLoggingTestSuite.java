@@ -15,7 +15,7 @@ import java.io.PrintStream;
 
 public class AbstractLoggingTestSuite {
 
-    protected ByteArrayOutputStream baos = null;
+    protected ByteArrayOutputStream baos;
 
     private PrintStream old = System.out;
 

@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ReformLoggingLayoutTest {
 
     private PrintStream old = System.out;
-    private ByteArrayOutputStream baos = null;
+    private ByteArrayOutputStream baos;
     private final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
 
     private static final String LOGBACK_WITH_THREAD = "logback-test-enable-thread.xml";
