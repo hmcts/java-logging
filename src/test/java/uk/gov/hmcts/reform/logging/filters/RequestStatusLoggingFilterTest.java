@@ -31,7 +31,7 @@ import static org.slf4j.Logger.ROOT_LOGGER_NAME;
 public class RequestStatusLoggingFilterTest {
     private static final Clock FROZEN_CLOCK = Clock.fixed(Instant.EPOCH, ZoneId.systemDefault());
 
-    private TestAppender testAppender = new TestAppender();
+    private final TestAppender testAppender = new TestAppender();
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

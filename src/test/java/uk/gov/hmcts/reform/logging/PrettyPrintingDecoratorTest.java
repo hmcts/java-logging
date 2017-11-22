@@ -19,12 +19,12 @@ public class PrettyPrintingDecoratorTest {
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
-    private JsonGenerator jsonGenerator;
+    private final JsonGenerator jsonGenerator;
 
-    private PrettyPrintingDecorator decorator;
+    private final PrettyPrintingDecorator decorator;
 
-    private String parameterValue;
-    private int invocationsCount;
+    private final String parameterValue;
+    private final int invocationsCount;
 
     @Parameterized.Parameters(name = "Is pretty printing be enabled for \"{0}\"? {2}")
     public static Iterable<Object[]> data() {

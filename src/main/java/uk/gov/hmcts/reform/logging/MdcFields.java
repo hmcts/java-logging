@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.logging;
 
 import org.slf4j.MDC;
 
-public class MdcFields {
+public final class MdcFields {
 
     private static final String FIELD_SESSION_ID = "sessionId";
     private static final String FIELD_ROOT_REQUEST_ID = "rootRequestId";

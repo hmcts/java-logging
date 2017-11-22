@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReformLoggingLayoutTest {
 
-    private PrintStream old = System.out;
+    private final PrintStream old = System.out;
     private ByteArrayOutputStream baos;
     private final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
 

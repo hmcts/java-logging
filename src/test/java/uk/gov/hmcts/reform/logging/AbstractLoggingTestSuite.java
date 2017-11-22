@@ -17,7 +17,7 @@ public class AbstractLoggingTestSuite {
 
     protected ByteArrayOutputStream baos;
 
-    private PrintStream old = System.out;
+    private final PrintStream old = System.out;
 
     protected class ProviderException extends AbstractLoggingException {
         public ProviderException(String message) {

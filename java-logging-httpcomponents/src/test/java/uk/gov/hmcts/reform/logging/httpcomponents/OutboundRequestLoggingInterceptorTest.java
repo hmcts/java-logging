@@ -26,7 +26,7 @@ public class OutboundRequestLoggingInterceptorTest {
 
     private static final ProtocolVersion ANY_PROTOCOL = new ProtocolVersion("any", 0, 0);
 
-    private TestAppender testAppender = new TestAppender();
+    private final TestAppender testAppender = new TestAppender();
 
     @Before
     public void addAppender() throws Exception {
