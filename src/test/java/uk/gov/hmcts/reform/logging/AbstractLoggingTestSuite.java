@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-public class AbstractLoggingTestSuite {
+public abstract class AbstractLoggingTestSuite {
 
-    protected ByteArrayOutputStream baos = null;
+    protected ByteArrayOutputStream baos;
 
-    private PrintStream old = System.out;
+    private final PrintStream old = System.out;
 
     protected class ProviderException extends AbstractLoggingException {
         public ProviderException(String message) {

@@ -29,7 +29,7 @@ public class ErrorCodeJsonProvider extends AbstractFieldJsonProvider<ILoggingEve
         }
     }
 
-    public boolean getRequireErrorCode() {
+    public boolean isRequireErrorCode() {
         return requireErrorCode;
     }
 

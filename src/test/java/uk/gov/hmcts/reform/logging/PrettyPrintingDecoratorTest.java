@@ -19,26 +19,26 @@ public class PrettyPrintingDecoratorTest {
     @Rule
     public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
-    private JsonGenerator jsonGenerator;
+    private final JsonGenerator jsonGenerator;
 
-    private PrettyPrintingDecorator decorator;
+    private final PrettyPrintingDecorator decorator;
 
-    private String parameterValue;
-    private int invocationsCount;
+    private final String parameterValue;
+    private final int invocationsCount;
 
-    @Parameterized.Parameters(name = "Should pretty printing be enabled for \"{0}\"? {2}")
+    @Parameterized.Parameters(name = "Is pretty printing be enabled for \"{0}\"? {2}")
     public static Iterable<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                { "", 0, "No" },
-                { "false", 0, "No" },
-                { "fdjksfdks", 0, "No" },
-                { "true", 1, "Yes" }
+                { "", false },
+                { "false", false },
+                { "fdjksfdks", false },
+                { "true", true }
         });
     }
 
-    public PrettyPrintingDecoratorTest(String parameterValue, int invocationsCount, String expectedResultLabel) {
+    public PrettyPrintingDecoratorTest(String parameterValue, boolean expectedPrettyPrint) {
         this.parameterValue = parameterValue;
-        this.invocationsCount = invocationsCount;
+        this.invocationsCount = expectedPrettyPrint ? 1 : 0;
         jsonGenerator = mock(JsonGenerator.class);
         decorator = new PrettyPrintingDecorator();
     }

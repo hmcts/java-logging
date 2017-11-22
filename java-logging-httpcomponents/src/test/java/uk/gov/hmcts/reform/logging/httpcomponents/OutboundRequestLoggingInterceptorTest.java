@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.logging.httpcomponents;
 
 import ch.qos.logback.classic.Logger;
+import org.apache.http.HttpException;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.message.BasicHttpResponse;
@@ -13,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,20 +28,20 @@ public class OutboundRequestLoggingInterceptorTest {
 
     private static final ProtocolVersion ANY_PROTOCOL = new ProtocolVersion("any", 0, 0);
 
-    private TestAppender testAppender = new TestAppender();
+    private final TestAppender testAppender = new TestAppender();
 
     @Before
-    public void addAppender() throws Exception {
+    public void addAppender() {
         ((Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME)).addAppender(testAppender);
     }
 
     @After
-    public void removeAppender() throws Exception {
+    public void removeAppender() {
         ((Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME)).detachAppender(testAppender);
     }
 
     @Test
-    public void logsRequestAndResponseFields() throws Exception {
+    public void logsRequestAndResponseFields() throws IOException, HttpException {
         HttpContext context = new BasicHttpContext();
         context.setAttribute(HTTP_TARGET_HOST, "http://www.google.com");
 
@@ -59,7 +61,7 @@ public class OutboundRequestLoggingInterceptorTest {
     }
 
     @Test
-    public void allowEmptyConstructorToBuildDefaultClock() throws Exception {
+    public void allowEmptyConstructorToBuildDefaultClock() throws IOException, HttpException {
         testAppender.clearEvents();
 
         HttpContext context = new BasicHttpContext();

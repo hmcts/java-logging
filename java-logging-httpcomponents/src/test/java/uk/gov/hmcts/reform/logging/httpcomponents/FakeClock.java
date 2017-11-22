@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 class FakeClock extends Clock {
-    private long elapsed = 0;
+    private long elapsed;
     private final long increment;
 
     FakeClock(int increment) {

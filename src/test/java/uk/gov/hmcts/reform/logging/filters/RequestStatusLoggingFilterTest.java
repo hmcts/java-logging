@@ -31,18 +31,18 @@ import static org.slf4j.Logger.ROOT_LOGGER_NAME;
 public class RequestStatusLoggingFilterTest {
     private static final Clock FROZEN_CLOCK = Clock.fixed(Instant.EPOCH, ZoneId.systemDefault());
 
-    private TestAppender testAppender = new TestAppender();
+    private final TestAppender testAppender = new TestAppender();
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void addAppender() throws Exception {
+    public void addAppender() {
         ((Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME)).addAppender(testAppender);
     }
 
     @After
-    public void removeAppender() throws Exception {
+    public void removeAppender() {
         ((Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME)).detachAppender(testAppender);
     }
 

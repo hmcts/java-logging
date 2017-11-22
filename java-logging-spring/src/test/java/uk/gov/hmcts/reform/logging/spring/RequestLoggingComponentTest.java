@@ -67,7 +67,7 @@ public class RequestLoggingComponentTest {
     }
 
     @Test
-    public void requestProcessedMessageShouldBeLoggedForPublicResource() throws Exception {
+    public void requestProcessedMessageShouldBeLoggedForPublicResource() throws InterruptedException, TimeoutException {
         ResponseEntity<String> response = restTemplate.getForEntity("/public", String.class);
 
         assertThat(response.getBody()).isEqualTo("OK");
@@ -77,7 +77,9 @@ public class RequestLoggingComponentTest {
     }
 
     @Test
-    public void requestProcessedMessageShouldBeLoggedForProtectedResource() throws Exception {
+    public void requestProcessedMessageShouldBeLoggedForProtectedResource()
+        throws InterruptedException, TimeoutException {
+
         // making sure our Filters are placed outside SecurityFilterChain
         // and get executed no matter request is allowed or not
         ResponseEntity<String> response = restTemplate.getForEntity("/protected", String.class);
@@ -89,7 +91,7 @@ public class RequestLoggingComponentTest {
     }
 
     @Test
-    public void requestFailedMessageShouldBeLoggedForFailingResource() throws Exception {
+    public void requestFailedMessageShouldBeLoggedForFailingResource() throws InterruptedException, TimeoutException {
         // making sure our Filters are not executed twice for failed requests
         ResponseEntity<String> response = restTemplate.getForEntity("/failing", String.class);
 
@@ -99,7 +101,9 @@ public class RequestLoggingComponentTest {
     }
 
     @Test
-    public void requestNotFoundMessageShouldBeLoggedForDestroyingResource() throws Exception {
+    public void requestNotFoundMessageShouldBeLoggedForDestroyingResource()
+        throws InterruptedException, TimeoutException {
+
         // would be better to close context but fails completing tests
         filters.forEach(filter -> filter.getFilter().destroy());
         ResponseEntity<String> response = restTemplate.getForEntity("/destroying", String.class);

@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReformLoggingLayoutTest {
 
-    private PrintStream old = System.out;
-    private ByteArrayOutputStream baos = null;
-    private final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
+    private final PrintStream old = System.out;
+    private ByteArrayOutputStream baos;
+    private static final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
 
     private static final String LOGBACK_WITH_THREAD = "logback-test-enable-thread.xml";
     private static final String LOGBACK_WITH_CUSTOM_DATE_FORMAT = "logback-test-custom-date-format.xml";
