@@ -23,7 +23,7 @@ allprojects {
   apply plugin: 'com.github.ben-manes.versions'
 
   checkstyle {
-    toolVersion = '8.3'
+    toolVersion = '8.4'
     maxWarnings = 0
     configDir = new File(rootDir, "config/checkstyle")
   }
