@@ -51,7 +51,7 @@ public abstract class AbstractLoggingException extends RuntimeException {
         ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
 
         if (proxy != null) {
-            Throwable eventException = ((ThrowableProxy) event.getThrowableProxy()).getThrowable();
+            Throwable eventException = proxy.getThrowable();
 
             if (eventException instanceof AbstractLoggingException) {
                 return (AbstractLoggingException) eventException;
