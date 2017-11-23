@@ -57,11 +57,7 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
             log.append(String.format(" [%s]", event.getThreadName()));
         }
 
-        int lineNumber = 0;
-
-        if (event.getCallerData().length > 0) {
-            lineNumber = event.getCallerData()[0].getLineNumber();
-        }
+        int lineNumber = event.getCallerData().length > 0 ? event.getCallerData()[0].getLineNumber() : 0;
 
         log.append(String.format(" %s:%d: ", event.getLoggerName(), lineNumber));
 
