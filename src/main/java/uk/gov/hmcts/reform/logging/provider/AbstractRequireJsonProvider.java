@@ -13,6 +13,7 @@ public abstract class AbstractRequireJsonProvider extends AbstractFieldJsonProvi
     private boolean require = true;
 
     AbstractRequireJsonProvider(String fieldName) {
+        super();
         setFieldName(fieldName);
     }
 

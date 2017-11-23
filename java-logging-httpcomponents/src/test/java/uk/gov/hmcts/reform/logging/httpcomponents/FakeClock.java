@@ -9,6 +9,7 @@ class FakeClock extends Clock {
     private final long increment;
 
     FakeClock(int increment) {
+        super();
         this.increment = increment;
     }
 
