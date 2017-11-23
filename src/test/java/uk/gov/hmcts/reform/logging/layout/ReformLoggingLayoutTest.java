@@ -48,7 +48,7 @@ public class ReformLoggingLayoutTest {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         JoranConfigurator configurator = new JoranConfigurator();
 
-        InputStream configStream = getClass().getClassLoader().getResourceAsStream(config);
+        InputStream configStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(config);
         configurator.setContext(loggerContext);
         configurator.doConfigure(configStream);
         configStream.close();
