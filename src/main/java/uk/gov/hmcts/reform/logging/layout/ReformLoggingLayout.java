@@ -51,8 +51,7 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
         StringBuilder log = new StringBuilder(dateTime.format(dateFormat));
 
-        log.append(" ");
-        log.append(String.format("%-5s", event.getLevel().levelStr));
+        log.append(String.format(" %-5s", event.getLevel().levelStr));
 
         if (requireThread) {
             log.append(String.format(" [%s]", event.getThreadName()));
@@ -70,8 +69,7 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
             appendExtraExceptionFlags(log, AbstractLoggingException.getFromLogEvent(event));
         }
 
-        log.append(event.getFormattedMessage());
-        log.append(CoreConstants.LINE_SEPARATOR);
+        log.append(event.getFormattedMessage()).append(CoreConstants.LINE_SEPARATOR);
 
         return log.toString();
     }
