@@ -30,6 +30,8 @@ import static org.slf4j.Logger.ROOT_LOGGER_NAME;
 
 public class RequestStatusLoggingFilterTest {
     private static final Clock FROZEN_CLOCK = Clock.fixed(Instant.EPOCH, ZoneId.systemDefault());
+    private static final String GET = "GET";
+    private static final String SOME_PATH = "/some/path";
 
     private final TestAppender testAppender = new TestAppender();
 
@@ -49,18 +51,20 @@ public class RequestStatusLoggingFilterTest {
     @Test
     public void logsSuccessfulRequest() throws IOException, ServletException {
         new RequestStatusLoggingFilter(FROZEN_CLOCK).doFilter(
-                requestWithMethodAndUri("GET", "/some/path"),
+                requestWithMethodAndUri(GET, SOME_PATH),
                 responseWithStatus(400),
                 mock(FilterChain.class)
         );
 
         Map<String, Object> fields = new ConcurrentHashMap<>();
-        fields.put("requestMethod", "GET");
-        fields.put("requestUri", "/some/path");
+        fields.put("requestMethod", GET);
+        fields.put("requestUri", SOME_PATH);
         fields.put("responseTime", 0L);
         fields.put("responseCode", 400);
 
-        testAppender.assertEvent(0, INFO, "Request GET /some/path processed in 0ms", appendEntries(fields));
+        String message = "Request " + GET + " " + SOME_PATH + " processed in 0ms";
+
+        testAppender.assertEvent(0, INFO, message, appendEntries(fields));
     }
 
     @Test
@@ -68,17 +72,19 @@ public class RequestStatusLoggingFilterTest {
         thrown.expect(RuntimeException.class);
 
         new RequestStatusLoggingFilter(FROZEN_CLOCK).doFilter(
-                requestWithMethodAndUri("GET", "/some/path"),
+                requestWithMethodAndUri("GET", SOME_PATH),
                 responseWithStatus(-1),
                 failingFilterChain()
         );
 
         Map<String, Object> fields = new ConcurrentHashMap<>();
         fields.put("requestMethod", "GET");
-        fields.put("requestUri", "/some/path");
+        fields.put("requestUri", SOME_PATH);
         fields.put("responseTime", 0L);
 
-        testAppender.assertEvent(0, ERROR, "Request GET /some/path failed in 0ms", appendEntries(fields));
+        String message = "Request " + GET + " " + SOME_PATH + " failed in 0ms";
+
+        testAppender.assertEvent(0, ERROR, message, appendEntries(fields));
     }
 
     private HttpServletRequest requestWithMethodAndUri(String method, String url) {
