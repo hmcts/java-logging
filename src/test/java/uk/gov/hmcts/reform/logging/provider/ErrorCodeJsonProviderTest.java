@@ -28,13 +28,15 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
 
         assertThat(System.getProperty("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
 
-        log.error("test", new ProviderException("oh no"));
+        String message = "test error code is present";
+
+        log.error(message, new ProviderException("oh no"));
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(baos.toString());
 
         assertThat(node.at("/errorCode").asText()).isEqualTo("0");
-        assertThat(node.at("/message").asText()).isEqualTo("test");
+        assertThat(node.at("/message").asText()).isEqualTo(message);
     }
 
     @Test
@@ -42,12 +44,14 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
         System.setProperty("LOGBACK_REQUIRE_ERROR_CODE", "false");
         captureOutput();
 
-        log.error("no test", new ProviderException("oh no"));
+        String message = "test error code is not present";
+
+        log.error(message, new ProviderException("oh no"));
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(baos.toString());
 
         assertThat(node.at("/errorCode").isMissingNode()).isTrue();
-        assertThat(node.at("/message").asText()).isEqualTo("no test");
+        assertThat(node.at("/message").asText()).isEqualTo(message);
     }
 }
