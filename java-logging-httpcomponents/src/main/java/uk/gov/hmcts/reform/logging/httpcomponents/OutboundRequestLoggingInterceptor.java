@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.Clock;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.time.Clock.systemUTC;
 
@@ -56,7 +56,7 @@ public class OutboundRequestLoggingInterceptor implements HttpRequestInterceptor
     }
 
     private Map<String, Object> requestMarkers(HttpContext context) {
-        Map<String, Object> markers = new HashMap<>();
+        Map<String, Object> markers = new ConcurrentHashMap<>();
         markers.put("requestMethod", context.getAttribute("method"));
         markers.put("requestURI", context.getAttribute("url"));
         return markers;

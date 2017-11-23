@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +54,7 @@ public class RequestStatusLoggingFilterTest {
                 mock(FilterChain.class)
         );
 
-        Map<String, Object> fields = new HashMap<>();
+        Map<String, Object> fields = new ConcurrentHashMap<>();
         fields.put("requestMethod", "GET");
         fields.put("requestUri", "/some/path");
         fields.put("responseTime", 0L);
@@ -73,7 +73,7 @@ public class RequestStatusLoggingFilterTest {
                 failingFilterChain()
         );
 
-        Map<String, Object> fields = new HashMap<>();
+        Map<String, Object> fields = new ConcurrentHashMap<>();
         fields.put("requestMethod", "GET");
         fields.put("requestUri", "/some/path");
         fields.put("responseTime", 0L);
