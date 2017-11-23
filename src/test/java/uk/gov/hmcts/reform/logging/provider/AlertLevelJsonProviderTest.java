@@ -36,7 +36,7 @@ public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(baos.toString());
 
-        assertThat(node.at("/alertLevel").asText()).isEqualTo(AlertLevel.P1.name());
+        assertThat(AlertLevel.valueOf(node.at("/alertLevel").asText())).isEqualByComparingTo(AlertLevel.P1);
         assertThat(node.at("/message").asText()).isEqualTo(message);
     }
 
