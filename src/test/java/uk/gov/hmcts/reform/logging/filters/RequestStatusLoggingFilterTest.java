@@ -51,7 +51,7 @@ public class RequestStatusLoggingFilterTest {
     @Test
     public void logsSuccessfulRequest() throws IOException, ServletException {
         new RequestStatusLoggingFilter(FROZEN_CLOCK).doFilter(
-                requestWithMethodAndUri(GET, SOME_PATH),
+                requestWithMethodAndUri(),
                 responseWithStatus(400),
                 mock(FilterChain.class)
         );
@@ -72,13 +72,13 @@ public class RequestStatusLoggingFilterTest {
         thrown.expect(RuntimeException.class);
 
         new RequestStatusLoggingFilter(FROZEN_CLOCK).doFilter(
-                requestWithMethodAndUri("GET", SOME_PATH),
+                requestWithMethodAndUri(),
                 responseWithStatus(-1),
                 failingFilterChain()
         );
 
         Map<String, Object> fields = new ConcurrentHashMap<>();
-        fields.put("requestMethod", "GET");
+        fields.put("requestMethod", GET);
         fields.put("requestUri", SOME_PATH);
         fields.put("responseTime", 0L);
 
@@ -87,10 +87,10 @@ public class RequestStatusLoggingFilterTest {
         testAppender.assertEvent(0, ERROR, message, appendEntries(fields));
     }
 
-    private HttpServletRequest requestWithMethodAndUri(String method, String url) {
+    private HttpServletRequest requestWithMethodAndUri() {
         HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getMethod()).thenReturn(method);
-        when(request.getRequestURI()).thenReturn(url);
+        when(request.getMethod()).thenReturn(GET);
+        when(request.getRequestURI()).thenReturn(SOME_PATH);
         return request;
     }
 
