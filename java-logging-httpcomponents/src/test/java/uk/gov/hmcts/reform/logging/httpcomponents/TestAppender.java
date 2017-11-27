@@ -14,6 +14,7 @@ class TestAppender extends AppenderBase<ILoggingEvent> {
     private final List<ILoggingEvent> events = new ArrayList<>();
 
     TestAppender() {
+        super();
         start();
     }
 

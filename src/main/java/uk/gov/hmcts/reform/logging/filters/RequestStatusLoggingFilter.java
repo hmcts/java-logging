@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.Clock;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -72,7 +72,7 @@ public class RequestStatusLoggingFilter implements Filter {
         long responseTime = clock.millis() - startTime;
 
         // collect markers
-        Map<String, Object> fields = new HashMap<>();
+        Map<String, Object> fields = new ConcurrentHashMap<>();
 
         fields.put("requestMethod", requestMethod);
         fields.put("requestUri", requestUri);

@@ -209,7 +209,7 @@ To run all unit tests:
 ./gradlew test
 ```
 
-To execute [Checkstyle](http://checkstyle.sourceforge.net/) checks:
+To execute [Checkstyle](http://checkstyle.sourceforge.net/) and [PMD](http://pmd.sourceforge.net/) checks:
 
 ```bash
 ./gradlew check

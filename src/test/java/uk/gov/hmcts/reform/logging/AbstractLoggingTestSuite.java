@@ -32,7 +32,7 @@ public abstract class AbstractLoggingTestSuite {
         loggerContext.reset();
         JoranConfigurator configurator = new JoranConfigurator();
 
-        InputStream configStream = getClass().getClassLoader().getResourceAsStream("logback.xml");
+        InputStream configStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("logback.xml");
         configurator.setContext(loggerContext);
         configurator.doConfigure(configStream);
         configStream.close();

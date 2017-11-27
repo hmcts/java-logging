@@ -14,11 +14,13 @@ public class OutboundRequestIdSettingInterceptorTest {
 
     private final OutboundRequestIdSettingInterceptor interceptor = new OutboundRequestIdSettingInterceptor();
 
+    private static final String ANY = "any";
+
     @Test
     public void rootRequestIdShouldBeSet() throws IOException, HttpException {
         MdcFields.setRootRequestId("ROOT_REQUEST_ID");
 
-        BasicHttpRequest request = new BasicHttpRequest("ANY", "ANY");
+        BasicHttpRequest request = new BasicHttpRequest(ANY, ANY);
         interceptor.process(request, null);
 
         assertThat(request.getHeaders(HttpHeaders.ROOT_REQUEST_ID)).hasSize(1);
@@ -29,7 +31,7 @@ public class OutboundRequestIdSettingInterceptorTest {
     public void originRequestIdShouldBeSet() throws IOException, HttpException {
         MdcFields.setRequestId("CURRENT_REQUEST_ID");
 
-        BasicHttpRequest request = new BasicHttpRequest("ANY", "ANY");
+        BasicHttpRequest request = new BasicHttpRequest(ANY, ANY);
         interceptor.process(request, null);
 
         assertThat(request.getHeaders(HttpHeaders.ORIGIN_REQUEST_ID)).hasSize(1);

@@ -15,8 +15,8 @@ import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static ch.qos.logback.classic.Level.INFO;
 import static net.logstash.logback.marker.Markers.appendEntries;
@@ -50,7 +50,7 @@ public class OutboundRequestLoggingInterceptorTest {
         interceptor.process(new BasicHttpRequest("GET", "/something"), context);
         interceptor.process(new BasicHttpResponse(new BasicStatusLine(ANY_PROTOCOL, 200, "any")), context);
 
-        Map<String, Object> fields = new HashMap<>();
+        Map<String, Object> fields = new ConcurrentHashMap<>();
         fields.put("requestMethod", "GET");
         fields.put("requestURI", "http://www.google.com/something");
         testAppender.assertEvent(0, INFO, "Outbound request start", appendEntries(fields));
