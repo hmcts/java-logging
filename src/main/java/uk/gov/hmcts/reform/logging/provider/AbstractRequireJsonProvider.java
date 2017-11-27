@@ -22,7 +22,10 @@ public abstract class AbstractRequireJsonProvider extends AbstractFieldJsonProvi
     public void writeTo(JsonGenerator generator, ILoggingEvent event) throws IOException {
         if (require) {
             ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
-            AbstractLoggingException exception = AbstractLoggingException.getFromThrowableProxy(proxy);
+            AbstractLoggingException exception = AbstractLoggingException.getFromThrowableProxy(
+                proxy,
+                event.getLevel()
+            );
 
             if (exception != null) {
                 JsonWritingUtils.writeStringField(generator, getFieldName(), getValue(exception));

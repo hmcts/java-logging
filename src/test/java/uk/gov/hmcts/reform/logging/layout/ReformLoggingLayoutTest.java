@@ -3,10 +3,10 @@ package uk.gov.hmcts.reform.logging.layout;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import org.junit.After;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.hmcts.reform.logging.AbstractLoggingTestSuite;
 import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
 import uk.gov.hmcts.reform.logging.exception.AlertLevel;
 
@@ -18,10 +18,8 @@ import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReformLoggingLayoutTest {
+public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
-    private final PrintStream old = System.out;
-    private ByteArrayOutputStream baos;
     private static final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
 
     private static final String LOGBACK = "logback.xml";
@@ -58,14 +56,6 @@ public class ReformLoggingLayoutTest {
         baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
         System.setOut(ps);
-    }
-
-    @After
-    public void resetConsole() {
-        System.out.flush();
-        System.setOut(old);
-        System.clearProperty("LOGBACK_REQUIRE_ALERT_LEVEL");
-        System.clearProperty("LOGBACK_REQUIRE_ERROR_CODE");
     }
 
     @Test
@@ -142,10 +132,8 @@ public class ReformLoggingLayoutTest {
 
         log.error(message, new DummyP3Exception());
 
-        String logger = this.getClass().getCanonicalName();
-
         assertThat(baos.toString()).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + logger + ":\\d+: 0. " + message + "\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + getLogger() + "0. " + message + "\n"
         );
     }
 
@@ -158,10 +146,8 @@ public class ReformLoggingLayoutTest {
 
         log.error(message, new DummyP3Exception());
 
-        String logger = this.getClass().getCanonicalName();
-
         assertThat(baos.toString()).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + logger + ":\\d+: \\[P3\\] " + message + "\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + getLogger() + "\\[P3\\] " + message + "\n"
         );
     }
 
@@ -175,15 +161,35 @@ public class ReformLoggingLayoutTest {
         log.info(message, new DummyP3Exception());
 
         String timestamp = "\\d{2}-\\d{2}-\\d{4}";
-        String logger = this.getClass().getCanonicalName();
 
         String output = baos.toString();
 
         assertThat(output).containsPattern(
-            timestamp + INFO + logger + ":\\d+: " + message + "\n"
+            timestamp + INFO + getLogger() + message + "\n"
         );
         assertThat(output).containsPattern(
-            timestamp + INFO + logger + ":\\d+: \\[P3\\] 0. " + message + "\n"
+            timestamp + INFO + getLogger() + "\\[P3\\] 0. " + message + "\n"
+        );
+    }
+
+    @Test
+    public void testExtraLogForEmptyCause() throws JoranException, IOException {
+        configLogback(LOGBACK);
+
+        String message = "test exception not found log";
+
+        log.error(message);
+
+        String logger = AbstractLoggingException.class.getCanonicalName();
+        String output = baos.toString();
+
+        // there must be original log
+        assertThat(output).containsPattern(
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + getLogger() + message + "\n"
+        );
+        // alongside log about alert level misuse
+        assertThat(output).containsPattern(
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + logger + ":\\d+: \\[P1\\] 0. Exception not found\n"
         );
     }
 
