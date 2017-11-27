@@ -30,8 +30,12 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
     private static final String INFO = " INFO  ";
     private static final String ERROR = " ERROR ";
 
-    private static final String LOGGER = String.format("%s:\\d+: ", ReformLoggingLayoutTest.class.getCanonicalName());
-    private static final String LOGGER2 = String.format("%s:\\d+: ", AbstractLoggingException.class.getCanonicalName());
+    private static final String CURRENT_CLASS_LOGGER = String.format(
+        "%s:\\d+: ", ReformLoggingLayoutTest.class.getCanonicalName()
+    );
+    private static final String ERROR_CLASS_LOGGER = String.format(
+        "%s:\\d+: ", AbstractLoggingException.class.getCanonicalName()
+    );
 
     private class DummyP2Exception extends AbstractLoggingException {
         DummyP2Exception() {
@@ -70,7 +74,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         log.info(message);
 
         assertThat(baos.toString()).containsPattern(
-            DEFAULT_DATE_FORMAT + INFO + getThreadName() + LOGGER + message + "\n"
+            DEFAULT_DATE_FORMAT + INFO + getThreadName() + CURRENT_CLASS_LOGGER + message + "\n"
         );
     }
 
@@ -83,7 +87,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         log.error(message, new DummyP2Exception());
 
         assertThat(baos.toString()).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + LOGGER + "\\[P2\\] 0. " + message + "\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "\\[P2\\] 0. " + message + "\n"
         );
     }
 
@@ -102,11 +106,11 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         // there must be original log
         assertThat(output).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + LOGGER + message + "\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + message + "\n"
         );
         // alongside log about alert level misuse
         assertThat(output).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + LOGGER2 + "\\[P1\\] 0. " + message2 + "\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + ERROR_CLASS_LOGGER + "\\[P1\\] 0. " + message2 + "\n"
         );
     }
 
@@ -121,7 +125,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         String timestamp = "\\d{2}-\\d{2}-\\d{4}";
 
         assertThat(baos.toString()).containsPattern(
-            timestamp + INFO + LOGGER + message + "\n"
+            timestamp + INFO + CURRENT_CLASS_LOGGER + message + "\n"
         );
     }
 
@@ -135,7 +139,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         log.error(message, new DummyP3Exception());
 
         assertThat(baos.toString()).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + LOGGER + "0. " + message + "\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "0. " + message + "\n"
         );
     }
 
@@ -149,7 +153,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         log.error(message, new DummyP3Exception());
 
         assertThat(baos.toString()).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + LOGGER + "\\[P3\\] " + message + "\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "\\[P3\\] " + message + "\n"
         );
     }
 
@@ -167,10 +171,10 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         String output = baos.toString();
 
         assertThat(output).containsPattern(
-            timestamp + INFO + LOGGER + message + "\n"
+            timestamp + INFO + CURRENT_CLASS_LOGGER + message + "\n"
         );
         assertThat(output).containsPattern(
-            timestamp + INFO + LOGGER + "\\[P3\\] 0. " + message + "\n"
+            timestamp + INFO + CURRENT_CLASS_LOGGER + "\\[P3\\] 0. " + message + "\n"
         );
     }
 
@@ -186,11 +190,11 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         // there must be original log
         assertThat(output).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + LOGGER + message + "\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + message + "\n"
         );
         // alongside log about alert level misuse
         assertThat(output).containsPattern(
-            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + LOGGER2 + "\\[P1\\] 0. Exception not found\n"
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + ERROR_CLASS_LOGGER + "\\[P1\\] 0. Exception not found\n"
         );
     }
 
