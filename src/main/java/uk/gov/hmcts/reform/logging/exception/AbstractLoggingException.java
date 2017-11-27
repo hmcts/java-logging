@@ -40,12 +40,6 @@ public abstract class AbstractLoggingException extends RuntimeException {
         return errorCode;
     }
 
-    private static void triggerBadImplementationLog(Throwable cause) {
-        Throwable invalid = new InvalidExceptionImplementation("AlertLevel is mandatory as per configuration", cause);
-
-        log.error("Bad implementation of '" + cause.getClass().getCanonicalName() + "' in use", invalid);
-    }
-
     public static AbstractLoggingException getFromThrowableProxy(ThrowableProxy proxy) {
         if (proxy != null) {
             Throwable eventException = proxy.getThrowable();
@@ -64,5 +58,11 @@ public abstract class AbstractLoggingException extends RuntimeException {
         }
 
         return null;
+    }
+
+    private static void triggerBadImplementationLog(Throwable cause) {
+        Throwable invalid = new InvalidExceptionImplementation("AlertLevel is mandatory as per configuration", cause);
+
+        log.error("Bad implementation of '" + cause.getClass().getCanonicalName() + "' in use", invalid);
     }
 }
