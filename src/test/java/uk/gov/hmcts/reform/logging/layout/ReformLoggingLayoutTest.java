@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.logging.exception.AlertLevel;
 
 import java.io.IOException;
 import java.io.InvalidClassException;
+import java.util.concurrent.TimeoutException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -80,7 +81,9 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
     }
 
     @Test
-    public void testDefaultOutputWithBadException() throws JoranException, IOException {
+    public void testDefaultOutputWithBadException()
+        throws JoranException, IOException, InterruptedException, TimeoutException {
+
         captureOutput(LOGBACK_WITH_THREAD);
 
         String message = "test output with bad exception";
@@ -90,14 +93,12 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         String errorClass = InvalidClassException.class.getCanonicalName();
         String message2 = String.format("Bad implementation of '%s' in use", errorClass);
 
-        String output = baos.toString();
-
         // there must be original log
-        assertThat(output).containsPattern(
+        assertThat(baos.toString()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + message + "\n"
         );
         // alongside log about alert level misuse
-        assertThat(output).containsPattern(
+        awaitForOutputPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + ERROR_CLASS_LOGGER + "\\[P1\\] 0. " + message2 + "\n"
         );
     }
@@ -167,21 +168,19 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
     }
 
     @Test
-    public void testExtraLogForEmptyCause() throws JoranException, IOException {
+    public void testExtraLogForEmptyCause() throws JoranException, IOException, InterruptedException, TimeoutException {
         captureOutput();
 
         String message = "test exception not found log";
 
         log.error(message);
 
-        String output = baos.toString();
-
         // there must be original log
-        assertThat(output).containsPattern(
+        assertThat(baos.toString()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + message + "\n"
         );
         // alongside log about alert level misuse
-        assertThat(output).containsPattern(
+        awaitForOutputPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + ERROR_CLASS_LOGGER + "\\[P1\\] 0. Exception not found\n"
         );
     }

@@ -3,6 +3,9 @@ package uk.gov.hmcts.reform.logging;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import com.google.code.tempusfugit.temporal.Duration;
+import com.google.code.tempusfugit.temporal.Timeout;
+import com.google.code.tempusfugit.temporal.WaitFor;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
@@ -14,6 +17,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class AbstractLoggingTestSuite {
 
@@ -75,6 +81,14 @@ public abstract class AbstractLoggingTestSuite {
      */
     protected void captureOutput() throws IOException, JoranException {
         captureOutput(DEFAULT_LOGBACK_CONFIG);
+    }
+
+    protected void awaitForOutputPattern(String regex) throws TimeoutException, InterruptedException {
+        WaitFor.waitOrTimeout(() -> {
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(baos.toString());
+            return matcher.find();
+        }, Timeout.timeout(Duration.seconds(5)));
     }
 
     @After
