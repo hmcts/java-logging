@@ -5,6 +5,8 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="uk.gov.hmcts.reform.logging.layout.ReformLoggingLayout">
+                <dateFormat>${LOGBACK_DATE_FORMAT:-yyyy-MM-dd'T'HH:mm:ss.SSSZZ}</dateFormat>
+                <requireThread>${LOGBACK_REQUIRE_THREAD:-true}</requireThread>
                 <requireAlertLevel>${LOGBACK_REQUIRE_ALERT_LEVEL:-true}</requireAlertLevel>
                 <requireErrorCode>${LOGBACK_REQUIRE_ERROR_CODE:-true}</requireErrorCode>
             </layout>

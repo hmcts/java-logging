@@ -19,9 +19,6 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
     private static final Logger log = LoggerFactory.getLogger(ReformLoggingLayoutTest.class);
 
-    private static final String LOGBACK_WITH_THREAD = "logback-test-enable-thread.xml";
-    private static final String LOGBACK_WITH_CUSTOM_DATE_FORMAT = "logback-test-custom-date-format.xml";
-
     private static final String DEFAULT_DATE_FORMAT = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(\\+|-)\\d{4}";
     private static final String INFO = " INFO  ";
     private static final String ERROR = " ERROR ";
@@ -56,7 +53,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
     @Test
     public void testDefaultOutput() throws JoranException, IOException {
-        captureOutput(LOGBACK_WITH_THREAD);
+        captureOutput();
 
         String message = "test default output";
 
@@ -69,7 +66,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
     @Test
     public void testDefaultOutputWithP2Exception() throws JoranException, IOException {
-        captureOutput(LOGBACK_WITH_THREAD);
+        captureOutput();
 
         String message = "test output with P2 exception and error code";
 
@@ -84,7 +81,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
     public void testDefaultOutputWithBadException()
         throws JoranException, IOException, InterruptedException, TimeoutException {
 
-        captureOutput(LOGBACK_WITH_THREAD);
+        captureOutput();
 
         String message = "test output with bad exception";
 
@@ -105,7 +102,9 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
     @Test
     public void testNoThreadCustomDateFormatOutput() throws JoranException, IOException {
-        captureOutput(LOGBACK_WITH_CUSTOM_DATE_FORMAT);
+        environmentVariables.set("LOGBACK_DATE_FORMAT", "dd-MM-YYYY");
+        disableThreadNameOutputPrint();
+        captureOutput();
 
         String message = "test custom date";
 
@@ -148,7 +147,9 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
     @Test
     public void testOutputForOptionalErrorValues() throws JoranException, IOException {
-        captureOutput(LOGBACK_WITH_CUSTOM_DATE_FORMAT);
+        environmentVariables.set("LOGBACK_DATE_FORMAT", "dd-MM-YYYY");
+        disableThreadNameOutputPrint();
+        captureOutput();
 
         String message = "test alert level and error code for regular log level";
 
