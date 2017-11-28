@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
+import uk.gov.hmcts.reform.logging.TestAppender;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -122,6 +123,6 @@ public class RequestLoggingComponentTest {
     private List<ILoggingEvent> loggedEvents() {
         Logger rootLogger = (Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME);
         TestAppender testAppender = (TestAppender) rootLogger.getAppender("TEST_APPENDER");
-        return testAppender.loggedEvents();
+        return testAppender.getEvents();
     }
 }
