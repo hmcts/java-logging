@@ -36,6 +36,12 @@ public abstract class AbstractLoggingTestSuite {
         }
     }
 
+    @After
+    public void resetConsole() {
+        System.out.flush();
+        System.setOut(old);
+    }
+
     protected void setDefaultConsoleAppender() {
         environmentVariables.set("ROOT_APPENDER", "CONSOLE");
     }
@@ -79,12 +85,6 @@ public abstract class AbstractLoggingTestSuite {
             Matcher matcher = pattern.matcher(baos.toString());
             return matcher.find();
         }, Timeout.timeout(Duration.seconds(5)));
-    }
-
-    @After
-    public void resetConsole() {
-        System.out.flush();
-        System.setOut(old);
     }
 
 }
