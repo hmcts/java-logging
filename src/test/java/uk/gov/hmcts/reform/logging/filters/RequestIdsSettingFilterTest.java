@@ -1,6 +1,10 @@
 package uk.gov.hmcts.reform.logging.filters;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.logging.HttpHeaders;
 import uk.gov.hmcts.reform.logging.MdcFields;
 
@@ -11,77 +15,81 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class RequestIdsSettingFilterTest {
 
     private static final String GENERATED_REQUEST_ID = "some-generated-request-id";
-    private static final ServletResponse ANY_RESPONSE = null;
+
+    @Mock
+    private ServletResponse response;
+
+    @Mock
+    private HttpServletRequest request;
+    @Mock
+    private HttpSession httpSession;
 
     private final RequestIdsSettingFilter filter = new RequestIdsSettingFilter(() -> GENERATED_REQUEST_ID);
 
-    @Test
-    public void generateAndLogRequestId() throws IOException, ServletException {
-        HttpServletRequest request = mock(HttpServletRequest.class);
+    @Before
+    public void beforeEach() {
+        MdcFields.removeAll();
+    }
 
-        filter.doFilter(request, ANY_RESPONSE, (req, resp) -> {
+    @Test
+    public void allRequestHeadersShouldBeReusedIfRequestIdHeaderIsProvided() throws Exception {
+        HttpServletRequest request = requestWithHeaders("id", "originId", "rootId");
+        filter.doFilter(request, response, (req, resp) -> {
+            assertThat(MdcFields.getRequestId()).isEqualTo("id");
+            assertThat(MdcFields.getOriginRequestId()).isEqualTo("originId");
+            assertThat(MdcFields.getRootRequestId()).isEqualTo("rootId");
+        });
+    }
+
+    @Test
+    public void originIdShouldNotBeSetWhenItsBlankAndRequestIdIsPresent() throws Exception {
+        HttpServletRequest request = requestWithHeaders("id", null, null);
+        filter.doFilter(request, response, (req, resp) -> {
+            assertThat(MdcFields.getRequestId()).isEqualTo("id");
+            assertThat(MdcFields.getOriginRequestId()).isNullOrEmpty();
+        });
+    }
+
+    @Test
+    public void rootIdShouldBeSetToRequestIdWhenItsBlankAndRequestIdIsPresent() throws Exception {
+        HttpServletRequest request = requestWithHeaders("id", null, null);
+        filter.doFilter(request, response, (req, resp) -> {
+            assertThat(MdcFields.getRequestId()).isEqualTo("id");
+            assertThat(MdcFields.getRootRequestId()).isEqualTo(MdcFields.getRequestId());
+        });
+    }
+
+    @Test
+    public void requestAndRootRequestIdsShouldBeSetWhenRequestIdIsNull() throws Exception {
+        HttpServletRequest request = requestWithHeaders(null, null, null);
+        filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getRequestId()).isEqualTo(GENERATED_REQUEST_ID);
+            assertThat(MdcFields.getRootRequestId()).isEqualTo(MdcFields.getRequestId());
+            assertThat(MdcFields.getOriginRequestId()).isNullOrEmpty();
         });
-
-        assertThat(MdcFields.getRequestId()).isNull();
     }
 
     @Test
-    public void rootRequestIdShouldBeReusedIfHeaderPresent() throws IOException, ServletException {
-        HttpServletRequest request = requestWithRootRequestId("root-request-id");
-
-        filter.doFilter(request, ANY_RESPONSE, (req, resp) -> {
-            assertThat(MdcFields.getRootRequestId()).isEqualTo("root-request-id");
-        });
-
-        assertThat(MdcFields.getRootRequestId()).isNull();
-    }
-
-    @Test
-    public void rootRequestIdShouldBeGeneratedIfHeaderNotPresent() throws IOException, ServletException {
-        HttpServletRequest request = requestWithRootRequestId(null);
-
-        filter.doFilter(request, ANY_RESPONSE, (req, resp) -> {
+    public void requestAndRootRequestIdsShouldBeSetWhenRequestIdIsBlank() throws Exception {
+        HttpServletRequest request = requestWithHeaders("", null, null);
+        filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getRequestId()).isEqualTo(GENERATED_REQUEST_ID);
-            assertThat(MdcFields.getRootRequestId()).isEqualTo(GENERATED_REQUEST_ID);
+            assertThat(MdcFields.getRootRequestId()).isEqualTo(MdcFields.getRequestId());
+            assertThat(MdcFields.getOriginRequestId()).isNullOrEmpty();
         });
-
-        assertThat(MdcFields.getRootRequestId()).isNull();
-    }
-
-    @Test
-    public void originRequestIdShouldBeUsedIfHeaderPresent() throws IOException, ServletException {
-        HttpServletRequest request = requestWithOriginRequestId("origin-request-id");
-
-        filter.doFilter(request, ANY_RESPONSE, (req, resp) -> {
-            assertThat(MdcFields.getOriginRequestId()).isEqualTo("origin-request-id");
-        });
-
-        assertThat(MdcFields.getOriginRequestId()).isNull();
-    }
-
-    @Test
-    public void originRequestIdShouldNotBeGeneratedIfHeaderNotPresent() throws IOException, ServletException {
-        HttpServletRequest request = requestWithOriginRequestId(null);
-
-        filter.doFilter(request, ANY_RESPONSE, (req, resp) -> {
-            assertThat(MdcFields.getOriginRequestId()).isEqualTo(null);
-        });
-
-        assertThat(MdcFields.getOriginRequestId()).isNull();
     }
 
     @Test
     public void sessionIdShouldBeLoggedIfTheSessionExists() throws IOException, ServletException {
         HttpServletRequest request = requestWithSessionId("some-session-id");
 
-        filter.doFilter(request, ANY_RESPONSE, (req, resp) -> {
+        filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getSessionId()).isEqualTo("some-session-id");
         });
 
@@ -90,32 +98,23 @@ public class RequestIdsSettingFilterTest {
 
     @Test
     public void sessionIdShouldNotBeLoggedIfSessionDoesNotExist() throws IOException, ServletException {
-        HttpServletRequest request = mock(HttpServletRequest.class);
-
-        filter.doFilter(request, ANY_RESPONSE, (req, resp) -> {
+        filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getSessionId()).isNull();
         });
 
         assertThat(MdcFields.getSessionId()).isNull();
     }
 
-    private HttpServletRequest requestWithRootRequestId(String requestId) {
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getHeader(HttpHeaders.ROOT_REQUEST_ID)).thenReturn(requestId);
-        return request;
-    }
-
-    private HttpServletRequest requestWithOriginRequestId(String requestId) {
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getHeader(HttpHeaders.ORIGIN_REQUEST_ID)).thenReturn(requestId);
+    private HttpServletRequest requestWithHeaders(String requestId, String originRequestId, String rootRequestId) {
+        when(request.getHeader(HttpHeaders.REQUEST_ID)).thenReturn(requestId);
+        when(request.getHeader(HttpHeaders.ORIGIN_REQUEST_ID)).thenReturn(originRequestId);
+        when(request.getHeader(HttpHeaders.ROOT_REQUEST_ID)).thenReturn(rootRequestId);
         return request;
     }
 
     private HttpServletRequest requestWithSessionId(String sessionId) {
-        HttpSession httpSession = mock(HttpSession.class);
         when(httpSession.getId()).thenReturn(sessionId);
 
-        HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getSession(false)).thenReturn(httpSession);
         return request;
     }

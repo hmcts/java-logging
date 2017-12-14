@@ -35,27 +35,40 @@ public class RequestIdsSettingFilter implements Filter {
      * {@inheritDoc}.
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
+        // Nothing to do
     }
 
     /**
      * {@inheritDoc}.
      */
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException {
+    public void doFilter(
+        ServletRequest request,
+        ServletResponse response,
+        FilterChain chain
+    ) throws IOException, ServletException {
         try {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-            String rootRequestId = httpServletRequest.getHeader(HttpHeaders.ROOT_REQUEST_ID);
-
             MdcFields.setSessionId(getSessionId(httpServletRequest));
-            MdcFields.setRequestId(requestIdGenerator.get());
-            MdcFields.setRootRequestId(rootRequestId == null ? MdcFields.getRequestId() : rootRequestId);
-            MdcFields.setOriginRequestId(httpServletRequest.getHeader(HttpHeaders.ORIGIN_REQUEST_ID));
+            setRequestTracingHeaders(httpServletRequest);
 
             chain.doFilter(request, response);
         } finally {
             MdcFields.removeAll();
+        }
+    }
+
+    private void setRequestTracingHeaders(HttpServletRequest httpServletRequest) {
+        String requestId = httpServletRequest.getHeader(HttpHeaders.REQUEST_ID);
+        if (isPresent(requestId)) {
+            MdcFields.setRequestId(requestId);
+            String rootRequestId = httpServletRequest.getHeader(HttpHeaders.ROOT_REQUEST_ID);
+            MdcFields.setRootRequestId(isPresent(rootRequestId) ? rootRequestId : requestId);
+            MdcFields.setOriginRequestId(httpServletRequest.getHeader(HttpHeaders.ORIGIN_REQUEST_ID));
+        } else {
+            MdcFields.setRequestId(requestIdGenerator.get());
+            MdcFields.setRootRequestId(MdcFields.getRequestId());
         }
     }
 
@@ -64,9 +77,10 @@ public class RequestIdsSettingFilter implements Filter {
         return session == null ? null : session.getId();
     }
 
-    /**
-     * {@inheritDoc}.
-     */
+    private boolean isPresent(String string) {
+        return string != null && !string.isEmpty();
+    }
+
     @Override
     public void destroy() {
         LOG.debug("Settings logging destroyed due to timeout or filter exit");

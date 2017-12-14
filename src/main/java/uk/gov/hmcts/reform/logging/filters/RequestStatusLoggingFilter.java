@@ -37,7 +37,7 @@ public class RequestStatusLoggingFilter implements Filter {
      * {@inheritDoc}.
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
     /**
