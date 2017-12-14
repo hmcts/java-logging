@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.logging.httpcomponents;
 
-import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
@@ -10,7 +9,6 @@ import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.time.Clock;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +31,7 @@ public class OutboundRequestLoggingInterceptor implements HttpRequestInterceptor
     }
 
     @Override
-    public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
+    public void process(HttpRequest request, HttpContext context) {
         RequestLine requestLine = request.getRequestLine();
 
         context.setAttribute("startedOn", clock.millis());
@@ -44,7 +42,7 @@ public class OutboundRequestLoggingInterceptor implements HttpRequestInterceptor
     }
 
     @Override
-    public void process(HttpResponse response, HttpContext context) throws HttpException, IOException {
+    public void process(HttpResponse response, HttpContext context) {
         LOG.info(appendEntries(responseMarkers(context, response)), "Outbound request finish");
     }
 

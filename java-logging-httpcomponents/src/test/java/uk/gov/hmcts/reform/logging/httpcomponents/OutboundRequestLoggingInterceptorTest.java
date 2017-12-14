@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.logging.httpcomponents;
 
 import ch.qos.logback.classic.Logger;
-import org.apache.http.HttpException;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.message.BasicHttpResponse;
@@ -14,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,7 +39,7 @@ public class OutboundRequestLoggingInterceptorTest {
     }
 
     @Test
-    public void logsRequestAndResponseFields() throws IOException, HttpException {
+    public void logsRequestAndResponseFields() {
         HttpContext context = new BasicHttpContext();
         context.setAttribute(HTTP_TARGET_HOST, "http://www.google.com");
 
@@ -61,7 +59,7 @@ public class OutboundRequestLoggingInterceptorTest {
     }
 
     @Test
-    public void allowEmptyConstructorToBuildDefaultClock() throws IOException, HttpException {
+    public void allowEmptyConstructorToBuildDefaultClock() {
         testAppender.clearEvents();
 
         HttpContext context = new BasicHttpContext();

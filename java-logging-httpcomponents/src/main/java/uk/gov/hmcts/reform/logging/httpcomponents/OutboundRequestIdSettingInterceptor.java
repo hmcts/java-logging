@@ -1,13 +1,10 @@
 package uk.gov.hmcts.reform.logging.httpcomponents;
 
-import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
 import uk.gov.hmcts.reform.logging.HttpHeaders;
 import uk.gov.hmcts.reform.logging.MdcFields;
-
-import java.io.IOException;
 
 public class OutboundRequestIdSettingInterceptor implements HttpRequestInterceptor {
 

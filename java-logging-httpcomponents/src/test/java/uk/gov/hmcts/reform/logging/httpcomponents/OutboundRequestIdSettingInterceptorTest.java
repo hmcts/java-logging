@@ -1,12 +1,9 @@
 package uk.gov.hmcts.reform.logging.httpcomponents;
 
-import org.apache.http.HttpException;
 import org.apache.http.message.BasicHttpRequest;
 import org.junit.Test;
 import uk.gov.hmcts.reform.logging.HttpHeaders;
 import uk.gov.hmcts.reform.logging.MdcFields;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +14,7 @@ public class OutboundRequestIdSettingInterceptorTest {
     private static final String ANY = "any";
 
     @Test
-    public void rootRequestIdShouldBeSet() throws IOException, HttpException {
+    public void rootRequestIdShouldBeSet() {
         MdcFields.setRootRequestId("ROOT_REQUEST_ID");
 
         BasicHttpRequest request = new BasicHttpRequest(ANY, ANY);
@@ -28,7 +25,7 @@ public class OutboundRequestIdSettingInterceptorTest {
     }
 
     @Test
-    public void originRequestIdShouldBeSet() throws IOException, HttpException {
+    public void originRequestIdShouldBeSet() {
         MdcFields.setRequestId("CURRENT_REQUEST_ID");
 
         BasicHttpRequest request = new BasicHttpRequest(ANY, ANY);
