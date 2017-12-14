@@ -14,7 +14,7 @@ public class OutboundRequestIdSettingInterceptorTest {
     private static final String ANY = "any";
 
     @Test
-    public void rootRequestIdShouldBeSet() {
+    public void rootRequestIdShouldBeSetFromRootRequest() {
         MdcFields.setRootRequestId("ROOT_REQUEST_ID");
 
         BasicHttpRequest request = new BasicHttpRequest(ANY, ANY);
@@ -25,7 +25,7 @@ public class OutboundRequestIdSettingInterceptorTest {
     }
 
     @Test
-    public void originRequestIdShouldBeSet() {
+    public void originRequestIdShouldBeSetFromCurrentRequest() {
         MdcFields.setRequestId("CURRENT_REQUEST_ID");
 
         BasicHttpRequest request = new BasicHttpRequest(ANY, ANY);
