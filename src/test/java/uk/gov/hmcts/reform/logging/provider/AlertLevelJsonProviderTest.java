@@ -19,7 +19,7 @@ public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
     private static final Logger log = LoggerFactory.getLogger(AlertLevelJsonProviderTest.class);
 
     @Before
-    public void setUp() throws IOException, JoranException {
+    public void setUp() {
         System.setProperty("ROOT_APPENDER", "JSON_CONSOLE");
     }
 

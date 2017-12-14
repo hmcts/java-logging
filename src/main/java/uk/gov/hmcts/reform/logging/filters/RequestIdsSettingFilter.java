@@ -35,7 +35,8 @@ public class RequestIdsSettingFilter implements Filter {
      * {@inheritDoc}.
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
+        // Nothing to do
     }
 
     /**
