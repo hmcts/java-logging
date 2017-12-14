@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.logging.HttpHeaders;
 import uk.gov.hmcts.reform.logging.MdcFields;
+import uk.gov.hmcts.reform.logging.tracing.RequestIdGenerator;
 
 import java.io.IOException;
-import java.util.UUID;
 import java.util.function.Supplier;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -24,7 +24,7 @@ public class RequestIdsSettingFilter implements Filter {
     private final Supplier<String> requestIdGenerator;
 
     public RequestIdsSettingFilter() {
-        this(() -> UUID.randomUUID().toString());
+        this(RequestIdGenerator::next);
     }
 
     public RequestIdsSettingFilter(Supplier<String> requestIdGenerator) {
