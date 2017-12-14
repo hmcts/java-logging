@@ -12,7 +12,7 @@ import java.io.IOException;
 public class OutboundRequestIdSettingInterceptor implements HttpRequestInterceptor {
 
     @Override
-    public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
+    public void process(HttpRequest request, HttpContext context) {
         request.setHeader(HttpHeaders.ROOT_REQUEST_ID, MdcFields.getRootRequestId());
         request.setHeader(HttpHeaders.ORIGIN_REQUEST_ID, MdcFields.getRequestId());
     }
