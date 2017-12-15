@@ -23,11 +23,32 @@ before_install:
   - sudo apt-get install jq
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
 
-
 script:
   - ./gradlew build
   - ./gradlew codeCoverageReport
 
 after_success:
   - java -cp ~/codacy-coverage-reporter-assembly-latest.jar com.codacy.CodacyCoverageReporter -l Java -r build/reports/jacoco/jacocoTestReport.xml
-  - test "$TRAVIS_BRANCH" = "master" && test "$TRAVIS_PULL_REQUEST" = "false" && ./gradlew publish
+
+deploy:
+  - provider: script
+    script: ./gradlew bintrayUpload
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: releases
+    api_key:
+      secure: SZ5PeoUWTB0LAhFNPuzZwu699GYVISe/fjOj3ll9K8fqvrPTtYlYSOd/fWirgMqfYhinWk3hbPY5kDj9VMkUpWNOqVljmAsdkzw2Qv37QpZZ5cKmrJCQAo/SDD/lHI/nNhB5//Gjtn6+Eoi3cged3hpDa/YqpkDRKoIsVENejssf6KL4B31omYt7LuNdMkIz/rqhVAtbUdpq8J2l0Y5ab1WzYPapSo47xkCqliyo4PvOnZr7zBU8Yb/8b660FShTe+ULRgp+Eh0hwJzqyY2BaSxIzbt/bynMV9yTpsLox4MSyGrAXJ9Wlrwsk85r24/LJIJ9pLVkSuECb8IHg3f8NdyUcajMv9+8PPJpCwH86ytnRnF72/EDNZbzQAFvCVrSh8qOgX/WROLjZtazel8NxtKsXrK0rq5/zA5f6zH77WREz/TM4QnNlgxg94TnjGl/qvi8J5HPUYQ4ucOIy7NrxDASan7DA2/VTX2jYn63C3o/gG1ndUbqIbLMPb/jQ5yV51Ahh243hHwOiLwGeKzNUE6qVQiRhWAWo9drA99oPMINY2X/JfYzKThcIqzdSinHhpVynRNzYPx+r+1FdpnlcL0GkvS2X1yWAxFgUgO9ktyrrXA6xynH6rOwVxV1y1NQaA35hIR/FwiM6i/C5HhbpqUMiWwE1mLsCH3FCJ4tRO0=
+    file_glob: true
+    file:
+      - build/libs/java-logging-*.jar
+      - java-logging-httpcomponents/build/libs/java-logging-httpcomponents-*.jar
+      - java-logging-spring/build/libs/java-logging-spring-*.jar
+    skip_cleanup: true
+    on:
+      tags: true
+
+env:
+  global:
+    - secure: rr6EIMfs/vbkZzbbYKUeYW1Xi/PrXu+P8G28tSj6PY4vBEdRvWNsdtjNtuRXrqh4TTUxONiGA6JfBjVZSIPUH+X/aufCyHJbdej8JDK4kmaxaLCAFC8D3O5++3PQFNAy0cBExPH1yeNXELHhBZgl2rpbVsid+3TTO5T5A68nup3zjZ/3MnRiez9RSX9YGc7vqo7eC4zxyBW/XykXy26+ruiTslezahpdqkjtvMC+xRnX96lXBcdrniwChymxIt625pHfPa9g86/4l+e7aFCZtvqtgw1g9Nff376CZ2QCAHWqnfh2+lnIiHoDj1RJ9hHqHjRNFyqfb69sqq1o4szhj7Aiy1+6yEjSO70KMKpMIFvBiyyjkgsAErDPl8FjRYAtA+WH5Z8hU/sg3vldRLbeX5ZLDIkLAmV8urEA6gNKUagitgfy2sIAgtj6m41+9wSuUHlbW5Vom/0oD6Gs0BLHSMS22sk8wYAAZxLC7C7ykN78cx76JRWS2oiAVD+pZFYDcnyAGf+Ag1hIddx+k1ezivSF7dbw7r/9rtJ+PHMwToG5w8z2QFIdPZKXuEfGjfRx8LOGi6EDI/TiQ69scTC5ErOdVBYI3HCT5L4k3sMYMtyYwd1aFZ6Kq35ZfB7BUZxBB0aa9UREGMmgxDwIrrwKq98ZEJsfKFm5WnxKoEZyig0=
+    - secure: V2qExfd7a/+0MbZyeqTk7Zft0AkECSuVDot+OyYnTpubnLTYGOw/TeJwlV6hALaFB8mTTX7KZOwxZKoSlBylfCKLLNPl4Y2qzJ1S0cZZ29GsCRixCkQC9UxmLhTQwgmUoGgYX3wPrVE7OpZ3iovsa8FEN4EAyJ11MjApQmRzU2oPC08tfZgzmgyGLmH/4Y+P5BKnZHFkRzVzlfYQzHAd99i7Y7lYHwlkdvdBiDX/OBYvFF+9AqtVArtik2B7qpwU7XEFjSd3RSH8xEKqyuwyqwX6/gwfSn+Hj0s1PTe/cbszACw9U24asrxgW/CmUV60cojDzlnjghehnvuQ8ISmALh8nZChrXAtwpzbuFvClkPlcPOKW/7hii4M3lyp/HLuC5zmJc5v56YYmirxklSfGBRmP2vFG00J1j2DWEKpaMXqQXlrKuVyc2sGbFUOXMwKQhcbqn/L1I2QiKzi1Y/DMe3y2saHDL6AmUwdar69Fx1lOaBmIf7fcXNrUVkCf/oCNR8YVidp2jKM51NOER5cVev20csVvoVvPMrZZt/aO0bC6vkN9zvYcATf9UVyY52pnN1jT32Ec0UN0pVhPEvN8RyTmROxWgQaqxiq/4RIyrKis10ZfdBjweHeG+mLOYPMhjRSqLCtNDcHeEcgZgyTzPf+kMcfXhXTuo939ehy6Y0=
