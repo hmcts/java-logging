@@ -28,10 +28,11 @@ deploy:
   script: ./gradlew bintrayUpload
   skip_cleanup: true
   on:
+    repo: hmcts/java-logging
     tags: true
 - provider: releases
   api_key:
-    secure: SZ5PeoUWTB0LAhFNPuzZwu699GYVISe/fjOj3ll9K8fqvrPTtYlYSOd/fWirgMqfYhinWk3hbPY5kDj9VMkUpWNOqVljmAsdkzw2Qv37QpZZ5cKmrJCQAo/SDD/lHI/nNhB5//Gjtn6+Eoi3cged3hpDa/YqpkDRKoIsVENejssf6KL4B31omYt7LuNdMkIz/rqhVAtbUdpq8J2l0Y5ab1WzYPapSo47xkCqliyo4PvOnZr7zBU8Yb/8b660FShTe+ULRgp+Eh0hwJzqyY2BaSxIzbt/bynMV9yTpsLox4MSyGrAXJ9Wlrwsk85r24/LJIJ9pLVkSuECb8IHg3f8NdyUcajMv9+8PPJpCwH86ytnRnF72/EDNZbzQAFvCVrSh8qOgX/WROLjZtazel8NxtKsXrK0rq5/zA5f6zH77WREz/TM4QnNlgxg94TnjGl/qvi8J5HPUYQ4ucOIy7NrxDASan7DA2/VTX2jYn63C3o/gG1ndUbqIbLMPb/jQ5yV51Ahh243hHwOiLwGeKzNUE6qVQiRhWAWo9drA99oPMINY2X/JfYzKThcIqzdSinHhpVynRNzYPx+r+1FdpnlcL0GkvS2X1yWAxFgUgO9ktyrrXA6xynH6rOwVxV1y1NQaA35hIR/FwiM6i/C5HhbpqUMiWwE1mLsCH3FCJ4tRO0=
+    secure: v1gAVCFHdpRMYEyD2R4zOqxNAkd+TL+RFndzlTw0kUtQT+SbTNfLhnxiMwHfFeIn3ivqQ1MLt8zXo5zDtFHHRGp6QX/kA9I0mIj74rf/sj0z0ElXCDtiB41NVcq9++X1OmvP4qniWxcvi03e4TMg0HIiLGzD41437NVN1So/PUYFVxgvyeENL6JUIe7d2y48ZP2YvWh1tvwj5Z3p/bEd2Kp7H0aTP58l1kSkSHoSonNHpB/yjT9qN6VSWTyMl8GxeRPX4FSYEGBpDy7+8wxVO/MVOMwu0X2T6vgYlmkXj4U7bmXf0kMkvbeBQC/yZEH8D2y1W3piERw0b17kc9t7tigULBXIEhUNUgKFVEdTDSAEJASpytlxKfsaNVjsUx9n9kWhSUqtFgIz9msS4iJpImkSLTr20BivJ829zNfcG1wbHyIqlV5MQKTAqCwU6RWvRrT0OwhCT38R0lzmyDKEUbRbz+kGW4Vqo5BaPRMrxZZFRMtSHDuh8HCp2LzefUcfUX7LCvSd4z0MFK0o1WEn1lEuB1haViF2JWiov973JFqH7FjJe0iF172GOaMMFRR6ck8g8omfGO+ufZtxPeW5Zw47IridV9HaOhN/K8wkT7xVgdKy+qZmRdzdEHOo2hT2n9mbagIFmqc4yKN91elhAc/vzieE1WNx0n8+Aj9joyY=
   file_glob: true
   file:
   - build/libs/java-logging-*.jar
@@ -39,6 +40,7 @@ deploy:
   - java-logging-spring/build/libs/java-logging-spring-*.jar
   skip_cleanup: true
   on:
+    repo: hmcts/java-logging
     tags: true
 env:
   global:
