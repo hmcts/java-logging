@@ -196,8 +196,8 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         assertThat(baos.toString()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "\\[P2\\] 0. " + message + "\n"
-                + "\tat " + this.getClass().getCanonicalName() + ".testStacktraceExistsAfterTheLogEntry(.*"
-                + this.getClass().getSimpleName() + ".java:\\d+.*)\n"
+                + "\tat " + this.getClass().getCanonicalName() + ".testStacktraceExistsAfterTheLogEntry\\("
+                + this.getClass().getSimpleName() + ".java:\\d+\\)\n"
         );
 
         log.error(message, new DummyP2Exception(new ArithmeticException("There is no such operation ':'")));
