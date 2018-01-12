@@ -20,14 +20,14 @@ public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
 
     @Before
     public void setUp() {
-        System.setProperty("ROOT_APPENDER", "JSON_CONSOLE");
+        setJsonConsoleAppender();
     }
 
     @Test
     public void testAlertLevel() throws IOException, JoranException {
         captureOutput();
 
-        assertThat(System.getProperty("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
+        assertThat(System.getenv("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
 
         String message = "test alert level is present";
 
@@ -42,7 +42,7 @@ public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
 
     @Test
     public void testDisableAlertLevel() throws IOException, JoranException {
-        System.setProperty("LOGBACK_REQUIRE_ALERT_LEVEL", "false");
+        environmentVariables.set("LOGBACK_REQUIRE_ALERT_LEVEL", "false");
         captureOutput();
 
         String message = "test alert level is not present";

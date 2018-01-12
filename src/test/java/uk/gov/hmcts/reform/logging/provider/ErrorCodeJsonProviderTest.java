@@ -19,14 +19,14 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
 
     @Before
     public void setUp() {
-        System.setProperty("ROOT_APPENDER", "JSON_CONSOLE");
+        setJsonConsoleAppender();
     }
 
     @Test
     public void testErrorCode() throws IOException, JoranException {
         captureOutput();
 
-        assertThat(System.getProperty("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
+        assertThat(System.getenv("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
 
         String message = "test error code is present";
 
@@ -41,7 +41,7 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
 
     @Test
     public void testDisableErrorCode() throws IOException, JoranException {
-        System.setProperty("LOGBACK_REQUIRE_ERROR_CODE", "false");
+        environmentVariables.set("LOGBACK_REQUIRE_ERROR_CODE", "false");
         captureOutput();
 
         String message = "test error code is not present";
