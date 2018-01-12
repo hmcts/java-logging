@@ -187,6 +187,25 @@ public class ReformLoggingLayoutTest {
         );
     }
 
+    @Test
+    public void testStacktraceExists() throws JoranException, IOException {
+        configLogback(LOGBACK);
+
+        String message = "test stacktrace";
+
+        log.error(message, new DummyP2Exception());
+
+        String logger = this.getClass().getCanonicalName();
+        String output = baos.toString();
+
+        assertThat(output).containsPattern(
+            DEFAULT_DATE_FORMAT + ERROR + getThreadName() + logger + ":\\d+: \\[P2\\] 0. " + message + "\n"
+        );
+        assertThat(output).containsPattern(
+            "\tat " + logger + ".testStacktraceExists(.*" + this.getClass().getSimpleName() + ".java:\\d+.*)\n"
+        );
+    }
+
     private String getThreadName() {
         return String.format("\\[%s\\] ", Thread.currentThread().getName());
     }

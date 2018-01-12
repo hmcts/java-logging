@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.logging.layout;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.ThrowableProxy;
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.LayoutBase;
 import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
@@ -61,11 +62,17 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
         log.append(String.format(" %s:%d: ", event.getLoggerName(), lineNumber));
 
+        ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
+
         if (requireAlertLevel || requireErrorCode) {
-            appendExtraExceptionFlags(log, AbstractLoggingException.getFromLogEvent(event));
+            appendExtraExceptionFlags(log, AbstractLoggingException.getFromLogEvent(proxy));
         }
 
         log.append(event.getFormattedMessage()).append(CoreConstants.LINE_SEPARATOR);
+
+        if (proxy != null) {
+            proxy.fullDump();
+        }
 
         return log.toString();
     }
