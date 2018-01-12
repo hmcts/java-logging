@@ -19,6 +19,9 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
 
+    // can be added to config
+    private static final int STACKTRACE_DEPTH = 3;
+
     /**
      * By default require thread to be logged.
      */
@@ -74,6 +77,26 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
         log.append(event.getFormattedMessage()).append(CoreConstants.LINE_SEPARATOR);
 
+        appendStackTrace(log, proxy);
+
+        if (proxy != null) {
+            loopCauses(log, proxy, 0);
+        }
+
+        return log.toString();
+    }
+
+    private void appendExtraExceptionFlags(StringBuilder log, AbstractLoggingException exception) {
+        if (exception != null && requireAlertLevel) {
+            log.append(String.format("[%s] ", exception.getAlertLevel().name()));
+        }
+
+        if (exception != null && requireErrorCode) {
+            log.append(String.format("%s. ", exception.getErrorCode()));
+        }
+    }
+
+    private void appendStackTrace(StringBuilder log, ThrowableProxy proxy) {
         if (proxy != null) {
             Stream<StackTraceElementProxy> trace = Arrays.stream(proxy.getStackTraceElementProxyArray());
 
@@ -89,17 +112,24 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
             trace.close();
         }
-
-        return log.toString();
     }
 
-    private void appendExtraExceptionFlags(StringBuilder log, AbstractLoggingException exception) {
-        if (exception != null && requireAlertLevel) {
-            log.append(String.format("[%s] ", exception.getAlertLevel().name()));
+    private void loopCauses(StringBuilder log, ThrowableProxy parentProxy, int depth) {
+        ThrowableProxy cause = (ThrowableProxy) parentProxy.getCause();
+
+        if (cause != null) {
+            log.append(String.format(
+                "Caused by: %s: %s",
+                cause.getThrowable().getClass().getCanonicalName(),
+                cause.getThrowable().getMessage()
+            ));
+            log.append(CoreConstants.LINE_SEPARATOR);
         }
 
-        if (exception != null && requireErrorCode) {
-            log.append(String.format("%s. ", exception.getErrorCode()));
+        appendStackTrace(log, cause);
+
+        if (cause != null && depth < STACKTRACE_DEPTH) {
+            loopCauses(log, cause, depth + 1);
         }
     }
 }

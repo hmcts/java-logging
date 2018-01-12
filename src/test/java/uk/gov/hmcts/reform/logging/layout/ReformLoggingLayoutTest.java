@@ -36,6 +36,10 @@ public class ReformLoggingLayoutTest {
         DummyP2Exception() {
             super(AlertLevel.P2, "0", "oh no");
         }
+
+        DummyP2Exception(Throwable cause) {
+            super(AlertLevel.P2, "0", "oh no", cause);
+        }
     }
 
     private class DummyP3Exception extends AbstractLoggingException {
@@ -100,7 +104,7 @@ public class ReformLoggingLayoutTest {
 
         String message = "test output with bad exception";
 
-        log.error(message, new InvalidClassException("oh no"));
+        log.error(message, new InvalidClassException("Class null is invalid"));
 
         String logger = AbstractLoggingException.class.getCanonicalName();
         String errorClass = InvalidClassException.class.getCanonicalName();
@@ -200,6 +204,12 @@ public class ReformLoggingLayoutTest {
         assertThat(baos.toString()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + logger + ":\\d+: \\[P2\\] 0. " + message + "\n"
                 + "\tat " + logger + ".testStacktraceExists(.*" + this.getClass().getSimpleName() + ".java:\\d+.*)\n"
+        );
+
+        log.error(message, new DummyP2Exception(new ArithmeticException("There is no such operation ':'")));
+
+        assertThat(baos.toString()).containsPattern(
+            "Caused by: " + ArithmeticException.class.getCanonicalName() + ": There is no such operation ':'\n"
         );
     }
 
