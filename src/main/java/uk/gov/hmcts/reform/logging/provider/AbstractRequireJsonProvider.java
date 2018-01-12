@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.logging.provider;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.ThrowableProxy;
 import com.fasterxml.jackson.core.JsonGenerator;
 import net.logstash.logback.composite.AbstractFieldJsonProvider;
 import net.logstash.logback.composite.JsonWritingUtils;
@@ -20,7 +21,8 @@ public abstract class AbstractRequireJsonProvider extends AbstractFieldJsonProvi
     @Override
     public void writeTo(JsonGenerator generator, ILoggingEvent event) throws IOException {
         if (require) {
-            AbstractLoggingException exception = AbstractLoggingException.getFromLogEvent(event);
+            ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
+            AbstractLoggingException exception = AbstractLoggingException.getFromThrowableProxy(proxy);
 
             if (exception != null) {
                 JsonWritingUtils.writeStringField(generator, getFieldName(), getValue(exception));

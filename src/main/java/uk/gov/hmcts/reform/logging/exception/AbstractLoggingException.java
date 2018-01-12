@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.logging.exception;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +46,7 @@ public abstract class AbstractLoggingException extends RuntimeException {
         log.error("Bad implementation of '" + cause.getClass().getCanonicalName() + "' in use", invalid);
     }
 
-    public static AbstractLoggingException getFromLogEvent(ILoggingEvent event) {
-        ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
-
+    public static AbstractLoggingException getFromThrowableProxy(ThrowableProxy proxy) {
         if (proxy != null) {
             Throwable eventException = proxy.getThrowable();
 
