@@ -1,7 +1,9 @@
 package uk.gov.hmcts.reform.logging.layout;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.StackTraceElementProxy;
 import ch.qos.logback.classic.spi.ThrowableProxy;
+import ch.qos.logback.classic.spi.ThrowableProxyUtil;
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.LayoutBase;
 import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
@@ -10,6 +12,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
 
@@ -71,7 +75,19 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         log.append(event.getFormattedMessage()).append(CoreConstants.LINE_SEPARATOR);
 
         if (proxy != null) {
-            proxy.fullDump();
+            Stream<StackTraceElementProxy> trace = Arrays.stream(proxy.getStackTraceElementProxyArray());
+
+            trace.forEach(step -> {
+                String string = step.toString();
+
+                log.append(CoreConstants.TAB).append(string);
+
+                ThrowableProxyUtil.subjoinPackagingData(log, step);
+
+                log.append(CoreConstants.LINE_SEPARATOR);
+            });
+
+            trace.close();
         }
 
         return log.toString();
