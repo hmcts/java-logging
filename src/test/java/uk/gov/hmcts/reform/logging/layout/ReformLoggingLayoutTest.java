@@ -41,6 +41,10 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         DummyP2Exception() {
             super(AlertLevel.P2, "0", "oh no");
         }
+
+        DummyP2Exception(Throwable cause) {
+            super(AlertLevel.P2, "0", "oh no", cause);
+        }
     }
 
     private class DummyP3Exception extends AbstractLoggingException {
@@ -97,7 +101,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         String message = "test output with bad exception";
 
-        log.error(message, new InvalidClassException("oh no"));
+        log.error(message, new InvalidClassException("Class null is invalid"));
 
         String errorClass = InvalidClassException.class.getCanonicalName();
         String message2 = String.format("Bad implementation of '%s' in use", errorClass);
@@ -199,7 +203,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
     }
 
     @Test
-    public void testStacktraceExists() throws JoranException, IOException {
+    public void testStacktraceExistsAfterTheLogEntry() throws JoranException, IOException {
         configLogback(LOGBACK);
 
         String message = "test stacktrace";
@@ -207,13 +211,16 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         log.error(message, new DummyP2Exception());
 
         String logger = this.getClass().getCanonicalName();
-        String output = baos.toString();
 
-        assertThat(output).containsPattern(
+        assertThat(baos.toString()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + logger + ":\\d+: \\[P2\\] 0. " + message + "\n"
+                + "\tat " + logger + ".testStacktraceExists(.*" + this.getClass().getSimpleName() + ".java:\\d+.*)\n"
         );
-        assertThat(output).containsPattern(
-            "\tat " + logger + ".testStacktraceExists(.*" + this.getClass().getSimpleName() + ".java:\\d+.*)\n"
+
+        log.error(message, new DummyP2Exception(new ArithmeticException("There is no such operation ':'")));
+
+        assertThat(baos.toString()).containsPattern(
+            "Caused by: " + ArithmeticException.class.getCanonicalName() + ": There is no such operation ':'\n"
         );
     }
 
