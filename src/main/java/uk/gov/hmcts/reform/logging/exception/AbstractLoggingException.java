@@ -46,7 +46,7 @@ public abstract class AbstractLoggingException extends RuntimeException {
         log.error("Bad implementation of '" + cause.getClass().getCanonicalName() + "' in use", invalid);
     }
 
-    public static AbstractLoggingException getFromLogEvent(ThrowableProxy proxy) {
+    public static AbstractLoggingException getFromThrowableProxy(ThrowableProxy proxy) {
         if (proxy != null) {
             Throwable eventException = proxy.getThrowable();
 
