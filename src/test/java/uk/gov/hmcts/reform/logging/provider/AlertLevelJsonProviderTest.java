@@ -19,7 +19,9 @@ public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
     private static final Logger log = LoggerFactory.getLogger(AlertLevelJsonProviderTest.class);
 
     @Before
+    @Override
     public void setUp() {
+        super.setUp();
         setJsonConsoleAppender();
     }
 
@@ -34,7 +36,7 @@ public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
         log.error(message, new ProviderException("oh no"));
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(baos.toString());
+        JsonNode node = mapper.readTree(systemOut.getLog());
 
         assertThat(AlertLevel.valueOf(node.at("/alertLevel").asText())).isEqualByComparingTo(AlertLevel.P1);
         assertThat(node.at("/message").asText()).isEqualTo(message);
@@ -50,7 +52,7 @@ public class AlertLevelJsonProviderTest extends AbstractLoggingTestSuite {
         log.error(message, new ProviderException("oh no"));
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(baos.toString());
+        JsonNode node = mapper.readTree(systemOut.getLog());
 
         assertThat(node.at("/alertLevel").isMissingNode()).isTrue();
         assertThat(node.at("/message").asText()).isEqualTo(message);

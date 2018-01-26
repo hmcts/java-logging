@@ -18,7 +18,9 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
     private static final Logger log = LoggerFactory.getLogger(ErrorCodeJsonProviderTest.class);
 
     @Before
+    @Override
     public void setUp() {
+        super.setUp();
         setJsonConsoleAppender();
     }
 
@@ -33,7 +35,7 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
         log.error(message, new ProviderException("oh no"));
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(baos.toString());
+        JsonNode node = mapper.readTree(systemOut.getLog());
 
         assertThat(node.at("/errorCode").asText()).isEqualTo("0");
         assertThat(node.at("/message").asText()).isEqualTo(message);
@@ -49,7 +51,7 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
         log.error(message, new ProviderException("oh no"));
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(baos.toString());
+        JsonNode node = mapper.readTree(systemOut.getLog());
 
         assertThat(node.at("/errorCode").isMissingNode()).isTrue();
         assertThat(node.at("/message").asText()).isEqualTo(message);

@@ -47,7 +47,9 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
     }
 
     @Before
+    @Override
     public void setUp() {
+        super.setUp();
         setDefaultConsoleAppender();
     }
 
@@ -59,7 +61,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         log.info(message);
 
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             DEFAULT_DATE_FORMAT + INFO + getThreadName() + CURRENT_CLASS_LOGGER + message + "\n"
         );
     }
@@ -72,7 +74,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         log.error(message, new DummyP2Exception());
 
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "\\[P2\\] 0. " + message + "\n"
         );
     }
@@ -91,7 +93,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         String message2 = String.format("Bad implementation of '%s' in use", errorClass);
 
         // there must be original log
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + message + "\n"
         );
         // alongside log about alert level misuse
@@ -112,7 +114,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         String timestamp = "\\d{2}-\\d{2}-\\d{4}";
 
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             timestamp + INFO + CURRENT_CLASS_LOGGER + message + "\n"
         );
     }
@@ -126,7 +128,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         log.error(message, new DummyP3Exception());
 
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "0. " + message + "\n"
         );
     }
@@ -140,7 +142,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         log.error(message, new DummyP3Exception());
 
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "\\[P3\\] " + message + "\n"
         );
     }
@@ -158,7 +160,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         String timestamp = "\\d{2}-\\d{2}-\\d{4}";
 
-        String output = baos.toString();
+        String output = systemOut.getLog();
 
         assertThat(output).containsPattern(
             timestamp + INFO + CURRENT_CLASS_LOGGER + message + "\n"
@@ -177,7 +179,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         log.error(message);
 
         // there must be original log
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + message + "\n"
         );
         // alongside log about alert level misuse
@@ -194,7 +196,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         log.error(message, new DummyP2Exception());
 
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "\\[P2\\] 0. " + message + "\n"
                 + "\tat " + this.getClass().getCanonicalName() + ".testStacktraceExistsAfterTheLogEntry\\("
                 + this.getClass().getSimpleName() + ".java:\\d+\\)\n"
@@ -202,7 +204,7 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
 
         log.error(message, new DummyP2Exception(new ArithmeticException("There is no such operation ':'")));
 
-        assertThat(baos.toString()).containsPattern(
+        assertThat(systemOut.getLog()).containsPattern(
             "Caused by: " + ArithmeticException.class.getCanonicalName() + ": There is no such operation ':'\n"
         );
     }
