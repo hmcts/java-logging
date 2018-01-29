@@ -198,6 +198,17 @@ Path to this file can adjusted by setting a `LOGBACK_INCLUDES_FILE` environment 
 Logback can print additional information while processing its configuration files. This can be enabled by setting
 `LOGBACK_CONFIGURATION_DEBUG` variable to `true`.
 
+Log pattern related configurations:
+
+| variable                    | default                     |
+| --------------------------- | --------------------------- |
+| LOGBACK_DATE_FORMAT         | yyyy-MM-dd'T'HH:mm:ss.SSSZZ |
+| LOGBACK_REQUIRE_THREAD      | true                        |
+| LOGBACK_REQUIRE_ALERT_LEVEL | true                        |
+| LOGBACK_REQUIRE_ERROR_CODE  | true                        |
+
+Date format is default logstash encoder date format. `REQUIRE` fields are flags representing show/hide feature.
+
 ## Development guide
 
 [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) will automatically download a
