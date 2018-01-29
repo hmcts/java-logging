@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.logging.httpcomponents;
+package uk.gov.hmcts.reform.logging;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -10,10 +10,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TestAppender extends AppenderBase<ILoggingEvent> {
+public class TestAppender extends AppenderBase<ILoggingEvent> {
     private final List<ILoggingEvent> events = new ArrayList<>();
 
-    TestAppender() {
+    public TestAppender() {
         super();
         start();
     }
@@ -29,7 +29,7 @@ class TestAppender extends AppenderBase<ILoggingEvent> {
         assertThat(event(index).getMarker()).isEqualTo(marker);
     }
 
-    public ILoggingEvent event(int index) {
+    private ILoggingEvent event(int index) {
         return events.get(index);
     }
 

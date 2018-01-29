@@ -18,22 +18,24 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
     private static final Logger log = LoggerFactory.getLogger(ErrorCodeJsonProviderTest.class);
 
     @Before
+    @Override
     public void setUp() {
-        System.setProperty("ROOT_APPENDER", "JSON_CONSOLE");
+        super.setUp();
+        setJsonConsoleAppender();
     }
 
     @Test
     public void testErrorCode() throws IOException, JoranException {
         captureOutput();
 
-        assertThat(System.getProperty("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
+        assertThat(System.getenv("ROOT_APPENDER")).isEqualTo("JSON_CONSOLE");
 
         String message = "test error code is present";
 
         log.error(message, new ProviderException("oh no"));
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(baos.toString());
+        JsonNode node = mapper.readTree(systemOut.getLog());
 
         assertThat(node.at("/errorCode").asText()).isEqualTo("0");
         assertThat(node.at("/message").asText()).isEqualTo(message);
@@ -41,7 +43,7 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
 
     @Test
     public void testDisableErrorCode() throws IOException, JoranException {
-        System.setProperty("LOGBACK_REQUIRE_ERROR_CODE", "false");
+        environmentVariables.set("LOGBACK_REQUIRE_ERROR_CODE", "false");
         captureOutput();
 
         String message = "test error code is not present";
@@ -49,7 +51,7 @@ public class ErrorCodeJsonProviderTest extends AbstractLoggingTestSuite {
         log.error(message, new ProviderException("oh no"));
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(baos.toString());
+        JsonNode node = mapper.readTree(systemOut.getLog());
 
         assertThat(node.at("/errorCode").isMissingNode()).isTrue();
         assertThat(node.at("/message").asText()).isEqualTo(message);

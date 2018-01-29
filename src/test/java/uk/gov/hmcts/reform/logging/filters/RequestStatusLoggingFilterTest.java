@@ -7,6 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.slf4j.LoggerFactory;
+import uk.gov.hmcts.reform.logging.TestAppender;
 
 import java.io.IOException;
 import java.time.Clock;

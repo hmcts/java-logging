@@ -8,7 +8,7 @@
             <layout class="uk.gov.hmcts.reform.logging.layout.ReformLoggingLayout" />
         </encoder>
     </appender>
-    <appender name="TEST_APPENDER" class="uk.gov.hmcts.reform.logging.spring.TestAppender"/>
+    <appender name="TEST_APPENDER" class="uk.gov.hmcts.reform.logging.TestAppender"/>
 
     <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>

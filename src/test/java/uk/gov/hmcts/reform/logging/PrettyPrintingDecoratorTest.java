@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.logging;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -14,10 +12,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(Parameterized.class)
-public class PrettyPrintingDecoratorTest {
-
-    @Rule
-    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
+public class PrettyPrintingDecoratorTest extends AbstractLoggingTestSuite {
 
     private final JsonGenerator jsonGenerator;
 
@@ -37,6 +32,8 @@ public class PrettyPrintingDecoratorTest {
     }
 
     public PrettyPrintingDecoratorTest(String parameterValue, boolean expectedPrettyPrint) {
+        super();
+
         this.parameterValue = parameterValue;
         this.invocationsCount = expectedPrettyPrint ? 1 : 0;
         jsonGenerator = mock(JsonGenerator.class);
