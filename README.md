@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/hmcts/java-logging.svg?branch=master)](https://travis-ci.org/hmcts/java-logging)
+[![GitHub version](https://badge.fury.io/gh/hmcts%2Fjava-logging.svg)](https://badge.fury.io/gh/hmcts%2Fjava-logging)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ebac86c131154ef2b59ab302d1d75fd9)](https://www.codacy.com/app/HMCTS/java-logging)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/ebac86c131154ef2b59ab302d1d75fd9)](https://www.codacy.com/app/HMCTS/java-logging)
+[![Known Vulnerabilities](https://snyk.io/test/github/hmcts/java-logging/badge.svg)](https://snyk.io/test/github/hmcts/java-logging)
 
 # Reform Java logging module
 
@@ -32,13 +34,13 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-spring</artifactId>
-    <version>1.2.1</version>
+    <version>1.4.2</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '1.2.1'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '1.4.2'
 ```
 
 #### java-logging-httpcomponents
@@ -50,13 +52,13 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-httpcomponents</artifactId>
-    <version>1.2.1</version>
+    <version>1.4.2</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '1.2.1'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '1.4.2'
 ```
 
 **Please note:** You will also need to implement a class that configures an HTTP client with interceptors for outbound HTTP requests and responses. See https://github.com/hmcts/cmc-claim-store/blob/master/src/main/java/uk/gov/hmcts/cmc/claimstore/clients/RestClient.java#L98 for an example.
@@ -174,7 +176,7 @@ As can be seen above the JSON format logs additional metadata information which 
 - `REFORM_SERVICE_NAME` which defaults to *undefined*,
 - `REFORM_TEAM` which defaults to *undefined*,
 - `REFORM_ENVIRONMENT` which defaults to *undefined*,
-- `HOSTNAME` which defaults to *undefined*, but in general should by set by the OS.
+- `HOSTNAME` which defaults to *undefined*, but in general should be set by the OS.
 
 ### Additional Logback configuration:
 
@@ -195,6 +197,17 @@ Path to this file can adjusted by setting a `LOGBACK_INCLUDES_FILE` environment 
 
 Logback can print additional information while processing its configuration files. This can be enabled by setting
 `LOGBACK_CONFIGURATION_DEBUG` variable to `true`.
+
+Log pattern related configurations:
+
+| variable                    | default                     |
+| --------------------------- | --------------------------- |
+| LOGBACK_DATE_FORMAT         | yyyy-MM-dd'T'HH:mm:ss.SSSZZ |
+| LOGBACK_REQUIRE_THREAD      | true                        |
+| LOGBACK_REQUIRE_ALERT_LEVEL | true                        |
+| LOGBACK_REQUIRE_ERROR_CODE  | true                        |
+
+Date format is default logstash encoder date format. `REQUIRE` fields are flags representing show/hide feature.
 
 ## Development guide
 
