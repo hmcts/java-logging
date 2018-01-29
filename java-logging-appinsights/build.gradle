@@ -1,3 +1,7 @@
+def versions = [
+  spring: '1.5.9.RELEASE'
+]
+
 publishing {
   publications {
     Insights(MavenPublication) {
@@ -28,8 +32,21 @@ bintray {
   }
 }
 
+repositories {
+  flatDir {
+    dirs "$projectDir/lib"
+  }
+}
+
 dependencies {
-  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: '1.5.9.RELEASE'
+  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
+
+  compile group: 'com.microsoft.azure', name: 'applicationinsights-agent', version: '2.0.0-BETA'
+  compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '2.0.0-BETA'
+
+  testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.17.1'
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.spring
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.spring
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
