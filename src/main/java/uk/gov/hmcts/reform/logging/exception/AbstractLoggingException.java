@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.logging.exception;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,29 +41,39 @@ public abstract class AbstractLoggingException extends RuntimeException {
         return errorCode;
     }
 
-    private static void triggerBadImplementationLog(Throwable cause) {
-        Throwable invalid = new InvalidExceptionImplementation("AlertLevel is mandatory as per configuration", cause);
+    public static AbstractLoggingException getFromThrowableProxy(ThrowableProxy proxy, Level eventLevel) {
+        Throwable eventException = proxy == null ? null : proxy.getThrowable();
+        AbstractLoggingException exception = eventException == null ? null : extractFromEventException(eventException);
 
-        log.error("Bad implementation of '" + cause.getClass().getCanonicalName() + "' in use", invalid);
+        if (eventLevel.isGreaterOrEqual(Level.ERROR) && exception == null) {
+            triggerBadImplementationLog(eventException);
+        }
+
+        return exception;
     }
 
-    public static AbstractLoggingException getFromThrowableProxy(ThrowableProxy proxy) {
-        if (proxy != null) {
-            Throwable eventException = proxy.getThrowable();
-
-            if (eventException instanceof AbstractLoggingException) {
-                return (AbstractLoggingException) eventException;
-            } else if (eventException.getCause() instanceof AbstractLoggingException) {
-                // for spring boot projects there's a generic exception wrapper
-                // let's try to cast the cause instead
-                return (AbstractLoggingException) eventException.getCause();
-            } else {
-                triggerBadImplementationLog(eventException);
-
-                return null;
-            }
+    private static AbstractLoggingException extractFromEventException(Throwable eventException) {
+        if (eventException instanceof AbstractLoggingException) {
+            return (AbstractLoggingException) eventException;
+        } else if (eventException.getCause() instanceof AbstractLoggingException) {
+            // for spring boot projects there's a generic exception wrapper
+            // let's try to cast the cause instead
+            return (AbstractLoggingException) eventException.getCause();
         }
 
         return null;
+    }
+
+    private static void triggerBadImplementationLog(Throwable cause) {
+        Throwable invalid = new InvalidExceptionImplementation("AlertLevel is mandatory as per configuration", cause);
+        String message;
+
+        if (cause == null) {
+            message = "Exception not found";
+        } else {
+            message = "Bad implementation of '" + cause.getClass().getCanonicalName() + "' in use";
+        }
+
+        log.error(message, invalid);
     }
 }

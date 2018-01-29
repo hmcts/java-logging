@@ -72,7 +72,7 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
 
         if (requireAlertLevel || requireErrorCode) {
-            appendExtraExceptionFlags(log, AbstractLoggingException.getFromThrowableProxy(proxy));
+            appendExtraExceptionFlags(log, AbstractLoggingException.getFromThrowableProxy(proxy, event.getLevel()));
         }
 
         log.append(event.getFormattedMessage()).append(CoreConstants.LINE_SEPARATOR);
