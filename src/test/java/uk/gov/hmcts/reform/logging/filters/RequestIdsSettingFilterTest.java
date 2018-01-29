@@ -38,7 +38,7 @@ public class RequestIdsSettingFilterTest {
     }
 
     @Test
-    public void allRequestHeadersShouldBeReusedIfRequestIdHeaderIsProvided() throws Exception {
+    public void allRequestHeadersShouldBeReusedIfRequestIdHeaderIsProvided() throws IOException, ServletException {
         HttpServletRequest request = requestWithHeaders("id", "originId", "rootId");
         filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getRequestId()).isEqualTo("id");
@@ -48,7 +48,7 @@ public class RequestIdsSettingFilterTest {
     }
 
     @Test
-    public void originIdShouldNotBeSetWhenItsBlankAndRequestIdIsPresent() throws Exception {
+    public void originIdShouldNotBeSetWhenItsBlankAndRequestIdIsPresent() throws IOException, ServletException {
         HttpServletRequest request = requestWithHeaders("id", null, null);
         filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getRequestId()).isEqualTo("id");
@@ -57,7 +57,7 @@ public class RequestIdsSettingFilterTest {
     }
 
     @Test
-    public void rootIdShouldBeSetToRequestIdWhenItsBlankAndRequestIdIsPresent() throws Exception {
+    public void rootIdShouldBeSetToRequestIdWhenItsBlankAndRequestIdIsPresent() throws IOException, ServletException {
         HttpServletRequest request = requestWithHeaders("id", null, null);
         filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getRequestId()).isEqualTo("id");
@@ -66,7 +66,7 @@ public class RequestIdsSettingFilterTest {
     }
 
     @Test
-    public void requestAndRootRequestIdsShouldBeSetWhenRequestIdIsNull() throws Exception {
+    public void requestAndRootRequestIdsShouldBeSetWhenRequestIdIsNull() throws IOException, ServletException {
         HttpServletRequest request = requestWithHeaders(null, null, null);
         filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getRequestId()).isEqualTo(GENERATED_REQUEST_ID);
@@ -76,7 +76,7 @@ public class RequestIdsSettingFilterTest {
     }
 
     @Test
-    public void requestAndRootRequestIdsShouldBeSetWhenRequestIdIsBlank() throws Exception {
+    public void requestAndRootRequestIdsShouldBeSetWhenRequestIdIsBlank() throws IOException, ServletException {
         HttpServletRequest request = requestWithHeaders("", null, null);
         filter.doFilter(request, response, (req, resp) -> {
             assertThat(MdcFields.getRequestId()).isEqualTo(GENERATED_REQUEST_ID);
