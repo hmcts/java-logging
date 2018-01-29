@@ -1,5 +1,5 @@
 def versions = [
-  spring: '1.5.8.RELEASE'
+  spring: '1.5.9.RELEASE'
 ]
 
 publishing {
