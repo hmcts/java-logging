@@ -176,7 +176,7 @@ As can be seen above the JSON format logs additional metadata information which 
 - `REFORM_SERVICE_NAME` which defaults to *undefined*,
 - `REFORM_TEAM` which defaults to *undefined*,
 - `REFORM_ENVIRONMENT` which defaults to *undefined*,
-- `HOSTNAME` which defaults to *undefined*, but in general should by set by the OS.
+- `HOSTNAME` which defaults to *undefined*, but in general should be set by the OS.
 
 ### Additional Logback configuration:
 
