@@ -23,7 +23,11 @@ stack. It allows a number of configuration options to customize the logging to y
 
 ### Basic usage
 
-The module comprises two components; simply add a component as your project's dependency to use it.
+The module comprises of three components; simply add a component as your project's dependency to use it.
+
+#### java-logging-insights
+
+Use for automatic configuration of Azure Application Insights for a Spring Boot project. [Read more](java-logging-appinsights/README.md)
 
 #### java-logging-spring
 

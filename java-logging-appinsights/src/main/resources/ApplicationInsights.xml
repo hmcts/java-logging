@@ -7,7 +7,16 @@
         <Add type="com.microsoft.applicationinsights.web.extensibility.modules.WebUserTrackingTelemetryModule"/>
     </TelemetryModules>
 
+    <ContextInitializers>
+        <!-- core -->
+        <Add type="com.microsoft.applicationinsights.extensibility.initializer.DeviceInfoContextInitializer"/>
+        <Add type="com.microsoft.applicationinsights.extensibility.initializer.SdkVersionContextInitializer"/>
+    </ContextInitializers>
+
     <TelemetryInitializers>
+        <!-- core -->
+        <Add type="com.microsoft.applicationinsights.extensibility.initializer.SequencePropertyInitializer"/>
+        <Add type="com.microsoft.applicationinsights.extensibility.initializer.TimestampPropertyInitializer"/>
         <!-- web -->
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebOperationIdTelemetryInitializer"/>
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebOperationNameTelemetryInitializer"/>
@@ -15,22 +24,6 @@
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebUserTelemetryInitializer"/>
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebUserAgentTelemetryInitializer"/>
     </TelemetryInitializers>
-
-    <ContextInitializers>
-        <!-- core -->
-        <Add type="com.microsoft.applicationinsights.extensibility.initializer.DeviceInfoContextInitializer"/>
-        <Add type="com.microsoft.applicationinsights.extensibility.initializer.SdkVersionContextInitializer"/>
-    </ContextInitializers>
-
-    <PropertyInitializers>
-        <!-- core -->
-        <Add type="com.microsoft.applicationinsights.extensibility.initializer.SequencePropertyInitializer"/>
-        <Add type="com.microsoft.applicationinsights.extensibility.initializer.TimestampPropertyInitializer"/>
-    </PropertyInitializers>
-
-    <PerformanceCounters>
-        <UseBuiltIn>False</UseBuiltIn>
-    </PerformanceCounters>
 
     <Channel>
         <DeveloperMode>true</DeveloperMode>
