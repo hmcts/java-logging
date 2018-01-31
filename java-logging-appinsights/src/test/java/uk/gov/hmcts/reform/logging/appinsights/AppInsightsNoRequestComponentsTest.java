@@ -16,14 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)
-public class AppInsightsAllComponentsTest {
+@SpringBootTest(
+    properties = {
+        "app-insights.request-component=off",
+        "app-insights.dev-mode=true"
+    },
+    webEnvironment = RANDOM_PORT
+)
+public class AppInsightsNoRequestComponentsTest {
 
     @ClassRule
     public static EnvironmentVariables variables = new EnvironmentVariables();
-
-    @Autowired
-    private AbstractAppInsights insights;
 
     @Autowired
     private ApplicationContext context;
@@ -35,10 +38,9 @@ public class AppInsightsAllComponentsTest {
 
     @Test
     public void contextLoads() {
-        assertThat(TelemetryConfiguration.getActive().getChannel().isDeveloperMode()).isFalse();
-        assertThat(insights).isInstanceOf(SpringBootTestApplication.AppInsightsImp.class);
-        assertThat(context.containsBean(InterceptorRegistry.class.getName())).isTrue();
-        assertThat(context.containsBean("webRequestTrackingFilter")).isTrue();
+        assertThat(TelemetryConfiguration.getActive().getChannel().isDeveloperMode()).isTrue();
+        assertThat(context.containsBean(InterceptorRegistry.class.getName())).isFalse();
+        assertThat(context.containsBean("webRequestTrackingFilter")).isFalse();
         assertThat(context.containsBean("telemetryClient")).isTrue();
     }
 }

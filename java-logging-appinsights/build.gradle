@@ -51,6 +51,7 @@ dependencies {
   compile group: 'com.microsoft.azure', name: 'applicationinsights-agent', version: versions.appInsights
   compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appInsights
 
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.0'
   testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.17.1'
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.spring
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.spring
