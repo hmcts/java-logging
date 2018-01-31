@@ -84,12 +84,49 @@ For custom telemetry metrics implement `AbstractAppInsights` already provided wi
 - WebUserTelemetryInitializer
 - WebUserAgentTelemetryInitializer
 
-#### Debug mode
+#### Developer mode
 
-By default debug mode is on. To turn it off set in configuration manually (for request filter and interceptor to pick it up):
+By default developer mode is off. To turn it on set in configuration manually (for telemetry client to pick it up):
 
 ```java
-TelemetryConfiguration.getActive().getChannel().setDeveloperMode(false);
+TelemetryConfiguration.getActive().getChannel().setDeveloperMode(true);
 ```
 
-In case project will use custom telemetry metrics (via `AbstractAppInsights` class), just provide `devMode=false` during instantiation.
+or simply turn on by configuration:
+
+```yaml
+app-insights.dev-mode=on
+```
+
+#### Flags
+
+```yaml
+app-insights:
+  dev-mode: on # by default it's not present and turned off
+  request-component: on # default
+  telemetry-component: on # default
+```
+
+Dev mode causes significant overhead in CPU and network bandwidth. But sends each telemetry one by one instantly available on Azure.
+
+Request components stand fo WebRequestNameInterceptor and WebRequestTrackingFilter - automatically configured in library
+
+Request component, WebRequestTrackingFilter in particular, requires application name to be present:
+
+```yaml
+spring:
+  application:
+    name: My Application Insights WebApp
+```
+
+Telemetry component stands for TelemetryClient Bean configuration so all the application needs to implement is component as follows:
+
+```java
+@Component
+public class AppInsights extends AbstractAppInsights {
+
+    public AppInsights(TelemetryClient client) {
+        super(client);
+    }
+}
+```
