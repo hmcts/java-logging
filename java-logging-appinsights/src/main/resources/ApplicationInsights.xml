@@ -24,8 +24,4 @@
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebUserTelemetryInitializer"/>
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebUserAgentTelemetryInitializer"/>
     </TelemetryInitializers>
-
-    <Channel>
-        <DeveloperMode>true</DeveloperMode>
-    </Channel>
 </ApplicationInsights>
