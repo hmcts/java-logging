@@ -33,7 +33,6 @@ deploy:
   file:
   - build/libs/java-logging-*.jar
   - java-logging-appinsights/build/libs/java-logging-appinsights-*.jar
-  - java-logging-appinsights/lib/applicationinsights-agent-*.jar
   - java-logging-httpcomponents/build/libs/java-logging-httpcomponents-*.jar
   - java-logging-spring/build/libs/java-logging-spring-*.jar
   skip_cleanup: true

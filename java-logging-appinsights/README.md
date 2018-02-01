@@ -8,16 +8,9 @@ The module provides all Telemetry modules and initialisers available from web ar
 
 ### Basic usage
 
-Note. Java logging library provides application insights agent accessible from repository. Since there is none present by microsoft - have to include into dependency list otherwise request tracking will not be sufficient.
-
 Maven:
 
 ```xml
-<dependency>
-    <groupId>uk.gov.hmcts.reform</groupId>
-    <artifactId>applicationinsights-agent</artifactId>
-    <version>2.0.0-BETA</version>
-</dependency>
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
@@ -28,7 +21,6 @@ Maven:
 Gradle:
 
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'hmcts-applicationinsights-agent', version: '2.0.0-BETA'
 compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '1.5.1'
 ```
 
