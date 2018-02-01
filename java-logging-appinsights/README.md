@@ -21,7 +21,7 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ Gradle:
 
 ```groovy
 compile group: 'uk.gov.hmcts.reform', name: 'hmcts-applicationinsights-agent', version: '2.0.0-BETA'
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '1.5.0'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '1.5.1'
 ```
 
 It will automatically include Request Name interceptor and Request Tracking Filter configurations into spring boot web application.
