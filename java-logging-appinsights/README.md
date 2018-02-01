@@ -95,7 +95,8 @@ TelemetryConfiguration.getActive().getChannel().setDeveloperMode(true);
 or simply turn on by configuration:
 
 ```yaml
-app-insights.dev-mode=on
+app-insights:
+  dev-mode: on
 ```
 
 #### Flags
