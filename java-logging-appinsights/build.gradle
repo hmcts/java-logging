@@ -15,7 +15,7 @@ publishing {
     }
     Azure(MavenPublication) {
       artifact "$projectDir/lib/applicationinsights-agent-${versions.appInsights}.jar"
-      groupId 'com.microsoft.azure'
+      groupId project.group
       artifactId 'applicationinsights-agent'
       version versions.appInsights
     }
@@ -48,7 +48,7 @@ repositories {
 dependencies {
   compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
 
-  compile group: 'com.microsoft.azure', name: 'applicationinsights-agent', version: versions.appInsights
+  compileOnly group: 'com.microsoft.azure', name: 'applicationinsights-agent', version: versions.appInsights
   compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appInsights
 
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.0'
