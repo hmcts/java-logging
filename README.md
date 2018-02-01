@@ -23,7 +23,11 @@ stack. It allows a number of configuration options to customize the logging to y
 
 ### Basic usage
 
-The module comprises two components; simply add a component as your project's dependency to use it.
+The module comprises of three components; simply add a component as your project's dependency to use it.
+
+#### java-logging-insights
+
+Use for automatic configuration of Azure Application Insights for a Spring Boot project. [Read more](java-logging-appinsights/README.md)
 
 #### java-logging-spring
 
@@ -34,13 +38,13 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-spring</artifactId>
-    <version>1.4.2</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '1.4.2'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '1.5.0'
 ```
 
 #### java-logging-httpcomponents
@@ -52,13 +56,13 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-httpcomponents</artifactId>
-    <version>1.4.2</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '1.4.2'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '1.5.0'
 ```
 
 **Please note:** You will also need to implement a class that configures an HTTP client with interceptors for outbound HTTP requests and responses. See https://github.com/hmcts/cmc-claim-store/blob/master/src/main/java/uk/gov/hmcts/cmc/claimstore/clients/RestClient.java#L98 for an example.

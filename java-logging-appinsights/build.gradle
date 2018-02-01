@@ -1,0 +1,73 @@
+def versions = [
+  spring: '1.5.9.RELEASE',
+  appInsights: '2.0.0-BETA'
+]
+
+publishing {
+  publications {
+    Insights(MavenPublication) {
+      from components.java
+      artifact sourcesJar
+      artifact javadocJar
+      groupId project.group
+      artifactId 'java-logging-appinsights'
+      version project.version
+    }
+    Azure(MavenPublication) {
+      artifact "$projectDir/lib/applicationinsights-agent-${versions.appInsights}.jar"
+      groupId 'com.microsoft.azure'
+      artifactId 'applicationinsights-agent'
+      version versions.appInsights
+    }
+  }
+}
+
+bintray {
+  user = System.getenv('BINTRAY_USER')
+  key = System.getenv('BINTRAY_KEY')
+  publications = ['Insights', 'Azure']
+  publish = true
+  pkg {
+    repo = 'hmcts-maven'
+    name = 'java-logging-appinsights'
+    userOrg = 'hmcts'
+    licenses = ['MIT']
+    vcsUrl = 'https://github.com/hmcts/java-logging'
+    version {
+      name = project.version
+    }
+  }
+}
+
+repositories {
+  flatDir {
+    dirs "$projectDir/lib"
+  }
+}
+
+dependencies {
+  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
+
+  compile group: 'com.microsoft.azure', name: 'applicationinsights-agent', version: versions.appInsights
+  compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appInsights
+
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.0'
+  testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.17.1'
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.spring
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.spring
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}

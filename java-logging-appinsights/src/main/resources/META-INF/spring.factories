@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+uk.gov.hmcts.reform.logging.appinsights.AppInsightsRequestComponentConfiguration,\
+uk.gov.hmcts.reform.logging.appinsights.AppInsightsTelemetryComponentConfiguration
