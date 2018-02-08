@@ -120,6 +120,14 @@ spring:
     name: My Application Insights WebApp
 ```
 
+In case service does not need request component, it is recommended to exclude auto-injected library from the project dependencies:
+
+```groovy
+configurations {
+  runtime.exclude group: 'com.microsoft.azure', module: 'applicationinsights-agent'
+}
+```
+
 Telemetry component stands for TelemetryClient Bean configuration so all the application needs to implement is component as follows:
 
 ```java
