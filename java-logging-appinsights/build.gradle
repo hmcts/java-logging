@@ -25,7 +25,7 @@ publishing {
 bintray {
   user = System.getenv('BINTRAY_USER')
   key = System.getenv('BINTRAY_KEY')
-  publications = ['Insights', 'Azure']
+  publications = ['Insights']
   publish = true
   pkg {
     repo = 'hmcts-maven'
