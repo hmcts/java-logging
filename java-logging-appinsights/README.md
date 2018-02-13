@@ -1,6 +1,6 @@
 # Azure Application Insights
 
-Logging module to auto configure Request Name Interceptor and Web Request Tracking Filter for Azure Application Insights app.
+Logging module to auto configure Request Name Interceptor and Web Request Tracking Filter for Azure Application Insights app. Module also tracks logback INFO events for `uk.gov.hmcts` loggers
 
 ## User guide
 
@@ -14,14 +14,14 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 
 Gradle:
 
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '1.5.0'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '1.6.0'
 ```
 
 It will automatically include Request Name interceptor and Request Tracking Filter configurations into spring boot web application.
