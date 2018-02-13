@@ -1,6 +1,6 @@
 # Azure Application Insights
 
-Logging module to auto configure Request Name Interceptor and Web Request Tracking Filter for Azure Application Insights app.
+Logging module to auto configure Request Name Interceptor and Web Request Tracking Filter for Azure Application Insights app. Module also tracks logback INFO events for `uk.gov.hmcts` loggers
 
 ## User guide
 
