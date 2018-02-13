@@ -27,7 +27,6 @@ bintray {
   key = System.getenv('BINTRAY_KEY')
   publications = ['Insights', 'Azure']
   publish = true
-  override = true
   pkg {
     repo = 'hmcts-maven'
     name = 'java-logging-appinsights'
