@@ -8,9 +8,19 @@ The module provides all Telemetry modules and initialisers available from web ar
 
 ### Basic usage
 
+Latest working library of Microsoft's Application Insights Agent is not present in Maven repositories. Module publishes it to HMCTS one. Until it is not updated and available from Microsoft, project will have to include additional repository.
+
 Maven:
 
 ```xml
+<repositories>
+    <repository>
+        <id>hmcts-maven</id>
+        <name>HMCTS Maven</name>
+        <url>https://dl.bintray.com/hmcts/hmcts-maven</url>
+    </repository>
+</repositories>
+
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
@@ -21,7 +31,15 @@ Maven:
 Gradle:
 
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '1.6.1'
+repositories {
+  maven {
+    url  "https://dl.bintray.com/hmcts/hmcts-maven"
+  }
+}
+
+dependencies {
+  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '1.6.1'
+}
 ```
 
 It will automatically include Request Name interceptor and Request Tracking Filter configurations into spring boot web application.
