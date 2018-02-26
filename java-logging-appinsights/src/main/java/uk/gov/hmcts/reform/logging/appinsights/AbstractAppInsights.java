@@ -16,7 +16,7 @@ public abstract class AbstractAppInsights { // NOPMD
     protected AbstractAppInsights(TelemetryClient telemetry) {
         requireNonNull(
             telemetry.getContext().getInstrumentationKey(),
-            "Missing APPLICATION_INSIGHTS_IKEY environment variable"
+            "Missing APPINSIGHTS_INSTRUMENTATIONKEY environment variable"
         );
 
         this.telemetry = telemetry;
