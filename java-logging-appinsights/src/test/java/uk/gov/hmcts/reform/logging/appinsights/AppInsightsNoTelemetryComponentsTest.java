@@ -29,7 +29,7 @@ public class AppInsightsNoTelemetryComponentsTest {
 
     @BeforeClass
     public static void setUp() {
-        variables.set("APPLICATION_INSIGHTS_IKEY", "some-key");
+        variables.set("APPINSIGHTS_INSTRUMENTATIONKEY", "some-key");
     }
 
     @Test

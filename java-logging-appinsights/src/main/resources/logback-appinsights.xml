@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
     <appender name="APP_INSIGHTS" class="com.microsoft.applicationinsights.logback.ApplicationInsightsAppender">
-        <instrumentationKey>${APPLICATION_INSIGHTS_IKEY}</instrumentationKey>
+        <instrumentationKey>${APPINSIGHTS_INSTRUMENTATIONKEY}</instrumentationKey>
     </appender>
 
     <logger name="uk.gov.hmcts" level="info">
