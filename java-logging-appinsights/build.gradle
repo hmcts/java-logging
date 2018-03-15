@@ -1,6 +1,6 @@
 def versions = [
   spring: '1.5.9.RELEASE',
-  appInsights: '2.0.0-BETA'
+  appInsights: '2.0.1'
 ]
 
 publishing {
