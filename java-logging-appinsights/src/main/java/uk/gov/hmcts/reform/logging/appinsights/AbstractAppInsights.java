@@ -18,6 +18,7 @@ public abstract class AbstractAppInsights { // NOPMD
             telemetry.getContext().getInstrumentationKey(),
             "Missing APPINSIGHTS_INSTRUMENTATIONKEY environment variable"
         );
+        telemetry.getContext().getComponent().setVersion(getClass().getPackage().getImplementationVersion());
 
         this.telemetry = telemetry;
     }

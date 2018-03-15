@@ -157,3 +157,31 @@ public class AppInsights extends AbstractAppInsights {
     }
 }
 ```
+
+#### SDK version
+
+In project resources create `sdk-version.properties` to override java version. Default file contents:
+
+```properties
+version=1.8
+```
+
+#### Product version
+
+AppInsights uses application version in most if not all metrics. This is now set via MANIFEST property:
+
+```manifest
+Implementation-Version: 0.0.1
+```
+
+In spring boot template this will be set by default in jar task where name of the file is defined for CNP deployment. Example:
+
+```groovy
+jar {
+  archiveName 'spring-boot-template.jar'
+
+  manifest {
+    attributes('Implementation-Version': project.version.toString())
+  }
+}
+```
