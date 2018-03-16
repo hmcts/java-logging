@@ -158,14 +158,6 @@ public class AppInsights extends AbstractAppInsights {
 }
 ```
 
-#### SDK version
-
-In project resources create `sdk-version.properties` to override java version. Default file contents:
-
-```properties
-version=1.8
-```
-
 #### Product version
 
 AppInsights uses application version in most if not all metrics. This is now set via MANIFEST property:
