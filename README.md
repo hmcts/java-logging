@@ -245,6 +245,15 @@ To install the artifact to a local Maven repository:
 ./gradlew install
 ```
 
+### Exception logging
+
+Since [v1.5.0](https://github.com/hmcts/java-logging/releases/tag/1.5.0) Alert level and error code are required fields for any exception to be logged.
+In order to correctly stream log events for all exceptions one must be extended with `AbstractLoggingException`.
+Error code is introduced as legacy error group not minding the fact exceptions themselves represent relevant error group.
+There is a helper `UnknownErrorCodeException` class which populates the field with `UNKNOWN` as error code.
+
+Alert level is still required.
+
 ## Future development considerations
 
 - [MDC](https://logback.qos.ch/manual/mdc.html) for capturing and logging request identifiers.
