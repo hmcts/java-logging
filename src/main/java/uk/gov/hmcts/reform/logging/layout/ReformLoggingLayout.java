@@ -65,14 +65,22 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
             log.append(String.format(" [%s]", event.getThreadName()));
         }
 
+        String loggerName = event.getLoggerName();
         int lineNumber = event.getCallerData().length > 0 ? event.getCallerData()[0].getLineNumber() : 0;
 
-        log.append(String.format(" %s:%d: ", event.getLoggerName(), lineNumber));
+        log.append(String.format(" %s:%d: ", loggerName, lineNumber));
 
         ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
 
         if (requireAlertLevel || requireErrorCode) {
-            appendExtraExceptionFlags(log, AbstractLoggingException.getFromThrowableProxy(proxy, event.getLevel()));
+            appendExtraExceptionFlags(
+                log,
+                AbstractLoggingException.getFromThrowableProxy(
+                    proxy,
+                    loggerName,
+                    event.getLevel()
+                )
+            );
         }
 
         log.append(event.getFormattedMessage()).append(CoreConstants.LINE_SEPARATOR);

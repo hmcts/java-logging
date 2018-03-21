@@ -24,6 +24,7 @@ public abstract class AbstractRequireJsonProvider extends AbstractFieldJsonProvi
             ThrowableProxy proxy = (ThrowableProxy) event.getThrowableProxy();
             AbstractLoggingException exception = AbstractLoggingException.getFromThrowableProxy(
                 proxy,
+                event.getLoggerName(),
                 event.getLevel()
             );
 

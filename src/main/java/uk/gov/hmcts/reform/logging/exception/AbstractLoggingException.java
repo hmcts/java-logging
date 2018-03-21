@@ -41,11 +41,15 @@ public abstract class AbstractLoggingException extends RuntimeException {
         return errorCode;
     }
 
-    public static AbstractLoggingException getFromThrowableProxy(ThrowableProxy proxy, Level eventLevel) {
+    public static AbstractLoggingException getFromThrowableProxy(
+        ThrowableProxy proxy,
+        String logger,
+        Level eventLevel
+    ) {
         Throwable eventException = proxy == null ? null : proxy.getThrowable();
         AbstractLoggingException exception = eventException == null ? null : extractFromEventException(eventException);
 
-        if (eventLevel.isGreaterOrEqual(Level.ERROR) && exception == null) {
+        if (eventLevel.isGreaterOrEqual(Level.ERROR) && exception == null && logger.startsWith("uk.gov.hmcts")) {
             triggerBadImplementationLog(eventException);
         }
 
