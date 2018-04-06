@@ -80,7 +80,35 @@ distributions {
 }
 ```
 
-For custom telemetry metrics implement `AbstractAppInsights` already provided within module. It contains telemetry client ready for usage.
+### Custom telemetry metrics
+
+For custom metrics implement `AbstractAppInsights` already provided within module.
+It contains telemetry client ready for usage.
+
+```java
+import org.springframework.stereotype.Component;
+import uk.gov.hmcts.reform.logging.appinsights.AbstractAppInsights;
+
+@Component
+public class AppInsights extends AbstractAppInsights {
+    public AppInsights(TelemetryClient telemetry) {
+        super(telemetry);
+    }
+}
+```
+
+`AbstractAppInsights` already contains dependency tracking available for any project with custom dependencies.
+Wherever there is a need to automatically track such information be sure to extract into completely separate method and use annotation `Dependency` as follows:
+
+```java
+@Dependency(name = "SomeDependency", command = "SomeDistinguishingCommand")
+public void someMethod() {
+    // code
+}
+```
+
+Return type can be anything.
+Should throw exceptions otherwise your dependency tracker will always be success.
 
 ### Configuration defaults
 
