@@ -254,6 +254,10 @@ There is a helper `UnknownErrorCodeException` class which populates the field wi
 
 Alert level is still required.
 
+### Releasing
+
+Run the script `./prepare-for-release.sh` select an appropriate version and follow the instructions the script provides
+
 ## Future development considerations
 
 - [MDC](https://logback.qos.ch/manual/mdc.html) for capturing and logging request identifiers.
