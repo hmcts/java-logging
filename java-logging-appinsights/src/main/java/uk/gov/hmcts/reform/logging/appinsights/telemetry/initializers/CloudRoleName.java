@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CloudRoleName {
-    private static String springApplicationNAme;
+    private static String springApplicationName;
 
     public static String get() {
-        return springApplicationNAme;
+        return springApplicationName;
     }
 
     @Value("${spring.application.name}")
     public void setCloudRoleName(String springApplicationName) {
-        CloudRoleName.springApplicationNAme = springApplicationName;
+        CloudRoleName.springApplicationName = springApplicationName;
     }
 }
