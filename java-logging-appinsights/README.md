@@ -44,7 +44,7 @@ dependencies {
 
 It will automatically include Request Name interceptor and Request Tracking Filter configurations into spring boot web application.
 
-Request Tracking Filter needs agent to be configured. By default agent uses built in configuration but you can provide your own. There are 2 _problems_ with this:
+Request Tracking Filter needs agent to be configured. By default agent uses built in configuration but you can provide your own. 
 
 Sample of `AI-Agent.xml`:
 
