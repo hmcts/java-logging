@@ -101,6 +101,7 @@ For custom telemetry metrics implement `AbstractAppInsights` already provided wi
 - WebSessionTelemetryInitializer
 - WebUserTelemetryInitializer
 - WebUserAgentTelemetryInitializer
+- CloudRoleNameInitializer
 
 #### Developer mode
 
@@ -137,6 +138,8 @@ spring:
   application:
     name: My Application Insights WebApp
 ```
+
+This configuration entry is also used by [`CloudRoleNameInitializer`](src/main/java/uk/gov/hmcts/reform/logging/appinsights/telemetry/initializers/CloudRoleNameInitializer.java) to set the `cloud_RoleName` App Insights tag. This makes distinguishing between services easier in cases where a number of related services uses the same App Insights instance.
 
 In case service does not need request component, it is recommended to exclude auto-injected library from the project dependencies:
 
