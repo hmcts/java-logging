@@ -10,7 +10,8 @@ public class CloudRoleNameInitializer extends WebTelemetryInitializerBase {
         if (SpringApplicationName.get() == null) {
             throw new IllegalStateException("spring.application.name configuration property is not set");
         } else {
-            telemetry.getContext().getTags().put(ContextTagKeys.getKeys().getDeviceRoleName(), SpringApplicationName.get());
+            telemetry.getContext().getTags().put(ContextTagKeys.getKeys().getDeviceRoleName(),
+                SpringApplicationName.get());
         }
     }
 }
