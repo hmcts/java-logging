@@ -1,6 +1,6 @@
 def versions = [
   spring: '1.5.9.RELEASE',
-  appInsights: '2.0.1'
+  appInsights: '2.0.2'
 ]
 
 publishing {
@@ -12,12 +12,6 @@ publishing {
       groupId project.group
       artifactId 'java-logging-appinsights'
       version project.version
-    }
-    Azure(MavenPublication) {
-      artifact "$projectDir/lib/applicationinsights-agent-${versions.appInsights}.jar"
-      groupId 'com.microsoft.azure'
-      artifactId 'applicationinsights-agent'
-      version versions.appInsights
     }
   }
 }
@@ -48,7 +42,6 @@ repositories {
 dependencies {
   compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
 
-  compile group: 'com.microsoft.azure', name: 'applicationinsights-agent', version: versions.appInsights
   compile group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: versions.appInsights
   compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appInsights
 
