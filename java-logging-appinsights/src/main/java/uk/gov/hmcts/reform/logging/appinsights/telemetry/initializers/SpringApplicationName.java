@@ -9,15 +9,15 @@ import org.springframework.stereotype.Component;
  * a static method in order to access it.
  */
 @Component
-public class CloudRoleName {
-    private static String springApplicationName;
+public class SpringApplicationName {
+    private static String value;
 
     public static String get() {
-        return springApplicationName;
+        return value;
     }
 
     @Value("${spring.application.name}")
-    public void setCloudRoleName(String springApplicationName) {
-        CloudRoleName.springApplicationName = springApplicationName;
+    public void setCloudRoleName(String value) {
+        SpringApplicationName.value = value;
     }
 }
