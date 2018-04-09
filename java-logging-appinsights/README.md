@@ -8,7 +8,7 @@ The module provides all Telemetry modules and initialisers available from web ar
 
 ### Basic usage
 
-Latest working library of Microsoft's Application Insights Agent is not present in Maven repositories. Module publishes it to HMCTS one. Until it is not updated and available from Microsoft, project will have to include additional repository.
+For now you need to add the HMCTS maven repository: 
 
 Maven:
 
@@ -46,9 +46,6 @@ It will automatically include Request Name interceptor and Request Tracking Filt
 
 Request Tracking Filter needs agent to be configured. By default agent uses built in configuration but you can provide your own. There are 2 _problems_ with this:
 
-- Configuration must be named `AI-Agent.xml`
-- File must be in the same path as the injected agent jar.
-
 Sample of `AI-Agent.xml`:
 
 ```xml
@@ -66,19 +63,8 @@ Sample of `AI-Agent.xml`:
 </ApplicationInsightsAgent>
 ```
 
-Sample code to sync configuration file to lib directory where gradle compiles distribution:
-
-```groovy
-distributions {
-  main {
-    contents {
-      from(file("$projectDir/lib/AI-Agent.xml")) {
-        into "lib"
-      }
-    }
-  }
-}
-```
+This file must be placed in a `<repository-root>/lib` directory for applications running on CNP along with the agent jar that matches the current app insights version here
+Retrieve the jar from github, i.e. https://github.com/Microsoft/ApplicationInsights-Java/releases
 
 For custom telemetry metrics implement `AbstractAppInsights` already provided within module. It contains telemetry client ready for usage.
 
