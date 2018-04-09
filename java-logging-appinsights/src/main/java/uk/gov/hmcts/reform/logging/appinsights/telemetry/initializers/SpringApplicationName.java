@@ -17,7 +17,7 @@ public class SpringApplicationName {
     }
 
     @Value("${spring.application.name}")
-    public void setCloudRoleName(String value) {
+    public void setValue(String value) {
         SpringApplicationName.value = value;
     }
 }
