@@ -7,14 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CloudRoleNameInitializer extends WebTelemetryInitializerBase {
-    private static final Logger logger = LoggerFactory.getLogger(CloudRoleNameInitializer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CloudRoleNameInitializer.class);
 
     @Override
     protected void onInitializeTelemetry(Telemetry telemetry) {
         if (CloudRoleName.get() != null) {
             telemetry.getContext().getTags().put(ContextTagKeys.getKeys().getDeviceRoleName(), CloudRoleName.get());
         } else {
-            logger.warn("Cloud role name not provided");
+            LOG.warn("Cloud role name not provided");
         }
     }
 }
