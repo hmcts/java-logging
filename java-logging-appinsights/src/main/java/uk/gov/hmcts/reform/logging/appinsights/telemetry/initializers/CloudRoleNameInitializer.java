@@ -11,10 +11,10 @@ public class CloudRoleNameInitializer extends WebTelemetryInitializerBase {
 
     @Override
     protected void onInitializeTelemetry(Telemetry telemetry) {
-        if (CloudRoleName.get() != null) {
-            telemetry.getContext().getTags().put(ContextTagKeys.getKeys().getDeviceRoleName(), CloudRoleName.get());
-        } else {
+        if (CloudRoleName.get() == null) {
             LOG.warn("Cloud role name not provided");
+        } else {
+            telemetry.getContext().getTags().put(ContextTagKeys.getKeys().getDeviceRoleName(), CloudRoleName.get());
         }
     }
 }
