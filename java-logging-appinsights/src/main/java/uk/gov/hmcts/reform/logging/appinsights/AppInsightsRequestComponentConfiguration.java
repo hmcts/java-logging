@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.logging.appinsights;
 
 import com.microsoft.applicationinsights.web.internal.WebRequestTrackingFilter;
 import com.microsoft.applicationinsights.web.spring.internal.InterceptorRegistry;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -25,12 +24,10 @@ import org.springframework.context.annotation.Import;
 public class AppInsightsRequestComponentConfiguration {
 
     @Bean("webRequestTrackingFilter")
-    public FilterRegistrationBean registerWebRequestTrackingFilter(
-        @Value("${spring.application.name}") String appName
-    ) {
+    public FilterRegistrationBean registerWebRequestTrackingFilter() {
         FilterRegistrationBean bean = new FilterRegistrationBean();
 
-        bean.setFilter(new WebRequestTrackingFilter(appName));
+        bean.setFilter(new WebRequestTrackingFilter(SpringApplicationName.get()));
 
         return bean;
     }

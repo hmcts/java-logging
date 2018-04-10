@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.logging.appinsights;
 
 import com.microsoft.applicationinsights.TelemetryConfiguration;
+import com.microsoft.applicationinsights.extensibility.context.ContextTagKeys;
 import com.microsoft.applicationinsights.web.spring.internal.InterceptorRegistry;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -40,5 +41,11 @@ public class AppInsightsAllComponentsTest {
         assertThat(context.containsBean(InterceptorRegistry.class.getName())).isTrue();
         assertThat(context.containsBean("webRequestTrackingFilter")).isTrue();
         assertThat(context.containsBean("telemetryClient")).isTrue();
+
+        assertThat(insights.telemetry
+            .getContext()
+            .getTags()
+            .getOrDefault(ContextTagKeys.getKeys().getDeviceRoleName(), "Unknown")
+        ).isEqualTo(SpringApplicationName.get());
     }
 }
