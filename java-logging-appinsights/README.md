@@ -78,8 +78,13 @@ For custom telemetry metrics implement `AbstractAppInsights` already provided wi
 
 #### Initialisers
 
+##### Context
 - DeviceInfoContextInitializer
 - SdkVersionContextInitializer
+- CloudRoleNameInitializer
+
+##### Telemetry
+
 - SequencePropertyInitializer
 - TimestampPropertyInitializer
 - WebOperationIdTelemetryInitializer
@@ -87,7 +92,6 @@ For custom telemetry metrics implement `AbstractAppInsights` already provided wi
 - WebSessionTelemetryInitializer
 - WebUserTelemetryInitializer
 - WebUserAgentTelemetryInitializer
-- CloudRoleNameInitializer
 
 #### Developer mode
 
@@ -113,19 +117,19 @@ app-insights:
   telemetry-component: on # default
 ```
 
-Dev mode causes significant overhead in CPU and network bandwidth. But sends each telemetry one by one instantly available on Azure.
+Dev mode causes significant overhead in CPU and network bandwidth.
+But sends each telemetry one by one instantly available on Azure.
 
 Request components stand fo WebRequestNameInterceptor and WebRequestTrackingFilter - automatically configured in library
 
-Request component, WebRequestTrackingFilter in particular, requires application name to be present:
+Request component, WebRequestTrackingFilter in particular, requires application name to be present (`app-name.properties` in resources):
 
-```yaml
-spring:
-  application:
-    name: My Application Insights WebApp
+```properties
+name:My Application Insights WebApp
 ```
 
-This configuration entry is also used by [`CloudRoleNameInitializer`](src/main/java/uk/gov/hmcts/reform/logging/appinsights/telemetry/initializers/CloudRoleNameInitializer.java) to set the `cloud_RoleName` App Insights tag. This makes distinguishing between services easier in cases where a number of related services uses the same App Insights instance.
+This configuration entry is also used by [`CloudRoleNameInitializer`](src/main/java/uk/gov/hmcts/reform/logging/appinsights/initializers/context/CloudRoleNameInitializer.java) to set the `cloud_RoleName` App Insights tag.
+This makes distinguishing between services easier in cases where a number of related services uses the same App Insights instance.
 
 In case service does not need request component, it is recommended to exclude auto-injected library from the project dependencies:
 

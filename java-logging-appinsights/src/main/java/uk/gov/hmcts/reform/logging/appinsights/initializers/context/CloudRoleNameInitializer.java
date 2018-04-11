@@ -4,6 +4,9 @@ import com.microsoft.applicationinsights.extensibility.ContextInitializer;
 import com.microsoft.applicationinsights.telemetry.TelemetryContext;
 import uk.gov.hmcts.reform.logging.appinsights.SpringApplicationName;
 
+/**
+ * Context initializer which sets device role name for Microsoft cloud application.
+ */
 public class CloudRoleNameInitializer implements ContextInitializer {
 
     @Override
