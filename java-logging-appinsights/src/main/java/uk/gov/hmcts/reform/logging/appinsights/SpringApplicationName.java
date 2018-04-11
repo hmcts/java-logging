@@ -31,4 +31,8 @@ public final class SpringApplicationName {
     public static String get() {
         return value;
     }
+
+    private SpringApplicationName() {
+        // Utility class constructor
+    }
 }
