@@ -1,7 +1,3 @@
 app-insights:
   request-component: on
   telemetry-component: on
-
-spring:
-  application:
-    name: App Insights Test Suite

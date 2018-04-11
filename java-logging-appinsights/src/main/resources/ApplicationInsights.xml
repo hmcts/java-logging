@@ -8,9 +8,10 @@
     </TelemetryModules>
 
     <ContextInitializers>
-        <!-- core -->
-        <Add type="com.microsoft.applicationinsights.extensibility.initializer.DeviceInfoContextInitializer"/>
-        <Add type="com.microsoft.applicationinsights.extensibility.initializer.SdkVersionContextInitializer"/>
+        <!-- DeviceInfo and SdkVersion are now part of the library defaults -->
+
+        <!-- custom -->
+        <Add type="uk.gov.hmcts.reform.logging.appinsights.initializers.context.CloudRoleNameInitializer"/>
     </ContextInitializers>
 
     <TelemetryInitializers>
@@ -23,6 +24,5 @@
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebSessionTelemetryInitializer"/>
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebUserTelemetryInitializer"/>
         <Add type="com.microsoft.applicationinsights.web.extensibility.initializers.WebUserAgentTelemetryInitializer"/>
-        <Add type="uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.CloudRoleNameInitializer"/>
     </TelemetryInitializers>
 </ApplicationInsights>
