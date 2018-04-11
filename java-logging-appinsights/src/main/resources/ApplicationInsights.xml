@@ -11,8 +11,7 @@
         <!-- DeviceInfo and SdkVersion are now part of the library defaults -->
 
         <!-- custom -->
-        <Add type="uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ApplicationVersionInitializer"/>
-        <Add type="uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.CloudRoleNameInitializer"/>
+        <Add type="uk.gov.hmcts.reform.logging.appinsights.initializers.context.CloudRoleNameInitializer"/>
     </ContextInitializers>
 
     <TelemetryInitializers>

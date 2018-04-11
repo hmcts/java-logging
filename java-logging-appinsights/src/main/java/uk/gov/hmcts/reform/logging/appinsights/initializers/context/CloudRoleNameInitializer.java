@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers;
+package uk.gov.hmcts.reform.logging.appinsights.initializers.context;
 
 import com.microsoft.applicationinsights.extensibility.ContextInitializer;
 import com.microsoft.applicationinsights.telemetry.TelemetryContext;
