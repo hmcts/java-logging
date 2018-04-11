@@ -64,7 +64,8 @@ Sample of `AI-Agent.xml`:
 ```
 
 This file must be placed in a `<repository-root>/lib` directory for applications running on CNP along with the agent jar that matches the current app insights version here
-Retrieve the jar from github, i.e. https://github.com/Microsoft/ApplicationInsights-Java/releases
+Retrieve the jar from [github](https://github.com/Microsoft/ApplicationInsights-Java/releases).
+In case service does not need request component - there is absolutely no need of having this directory.
 
 For custom telemetry metrics implement `AbstractAppInsights` already provided within module. It contains telemetry client ready for usage.
 
@@ -130,14 +131,6 @@ name:My Application Insights WebApp
 
 This configuration entry is also used by [`CloudRoleNameInitializer`](src/main/java/uk/gov/hmcts/reform/logging/appinsights/initializers/context/CloudRoleNameInitializer.java) to set the `cloud_RoleName` App Insights tag.
 This makes distinguishing between services easier in cases where a number of related services uses the same App Insights instance.
-
-In case service does not need request component, it is recommended to exclude auto-injected library from the project dependencies:
-
-```groovy
-configurations {
-  runtime.exclude group: 'com.microsoft.azure', module: 'applicationinsights-agent'
-}
-```
 
 Telemetry component stands for TelemetryClient Bean configuration so all the application needs to implement is component as follows:
 
