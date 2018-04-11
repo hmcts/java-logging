@@ -97,21 +97,18 @@ For custom telemetry metrics implement `AbstractAppInsights` already provided wi
 - CloudRoleNameInitializer
 
 `WebSyntheticRequestTelemetryInitializer` provides functionality to separate out requests via so called Synthetic Source tag.
-Unfortunately, custom headers are package private.
-In order to use this feature add following headers at will:
+All headers are available in helper class [SyntheticHeaders](java-logging-appinsights/src/main/java/uk/gov/hmcts/reform/logging/appinsights/SyntheticHeaders).
+All headers are optional and by default will be assumed `Application Insights Availability Monitoring` as Synthetic source name.
+Additionally default setup tries to include `SyntheticTest-RunId` and `SyntheticTest-Location` if present.
+For particular requests required to be separated, case can provide additional header `SyntheticTest-Source` which will replace default source name.
+Along with custom Source name there are more optional headers to be applied at will:
 
-- When `SyntheticTest-Source` is present:
-  - `SyntheticTest-Source` as Source name
-  - `SyntheticTest-UserId`
-  - `SyntheticTest-SessionId`
-  - `SyntheticTest-OperationId`
-  - `SyntheticTest-TestName`
-  - `SyntheticTest-RunId`
-  - `SyntheticTest-Location`
-- Otherwise:
-  - `Application Insights Availability Monitoring` as Source name
-  - `SyntheticTest-RunId`
-  - `SyntheticTest-Location`
+- `SyntheticTest-UserId`
+- `SyntheticTest-SessionId`
+- `SyntheticTest-OperationId`
+- `SyntheticTest-TestName`
+- `SyntheticTest-RunId`
+- `SyntheticTest-Location`
 
 #### Developer mode
 
