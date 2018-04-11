@@ -11,8 +11,8 @@ cache:
   - $HOME/.gradle/wrapper/
 script:
 - ./gradlew build
-- ./gradlew codeCoverageReport
 after_success:
+- ./gradlew codeCoverageReport
 - bash <(curl -s https://codecov.io/bash)
 deploy:
 - provider: script
