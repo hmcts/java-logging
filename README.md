@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/hmcts/java-logging.svg?branch=master)](https://travis-ci.org/hmcts/java-logging)
 [![GitHub version](https://badge.fury.io/gh/hmcts%2Fjava-logging.svg)](https://badge.fury.io/gh/hmcts%2Fjava-logging)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ebac86c131154ef2b59ab302d1d75fd9)](https://www.codacy.com/app/HMCTS/java-logging)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/ebac86c131154ef2b59ab302d1d75fd9)](https://www.codacy.com/app/HMCTS/java-logging)
+[![codecov](https://codecov.io/gh/hmcts/java-logging/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/java-logging)
 [![Known Vulnerabilities](https://snyk.io/test/github/hmcts/java-logging/badge.svg)](https://snyk.io/test/github/hmcts/java-logging)
 
 # Reform Java logging module
