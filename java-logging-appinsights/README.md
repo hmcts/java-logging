@@ -24,7 +24,7 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
-    <version>2.1.1</version>
+    <version>2.2.0</version>
 </dependency>
 ```
 
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '2.1.1'
+  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '2.2.0'
 }
 ```
 
@@ -78,16 +78,40 @@ For custom telemetry metrics implement `AbstractAppInsights` already provided wi
 
 #### Initialisers
 
+
+##### Context
+
 - DeviceInfoContextInitializer
 - SdkVersionContextInitializer
+
+##### Telemetry
+
 - SequencePropertyInitializer
 - TimestampPropertyInitializer
 - WebOperationIdTelemetryInitializer
 - WebOperationNameTelemetryInitializer
 - WebSessionTelemetryInitializer
+- WebSyntheticRequestTelemetryInitializer
 - WebUserTelemetryInitializer
 - WebUserAgentTelemetryInitializer
 - CloudRoleNameInitializer
+
+`WebSyntheticRequestTelemetryInitializer` provides functionality to separate out requests via so called Synthetic Source tag.
+Unfortunately, custom headers are package private.
+In order to use this feature add following headers at will:
+
+- When `SyntheticTest-Source` is present:
+  - `SyntheticTest-Source` as Source name
+  - `SyntheticTest-UserId`
+  - `SyntheticTest-SessionId`
+  - `SyntheticTest-OperationId`
+  - `SyntheticTest-TestName`
+  - `SyntheticTest-RunId`
+  - `SyntheticTest-Location`
+- Otherwise:
+  - `Application Insights Availability Monitoring` as Source name
+  - `SyntheticTest-RunId`
+  - `SyntheticTest-Location`
 
 #### Developer mode
 
