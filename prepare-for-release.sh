@@ -13,7 +13,7 @@ fi
 
 set -u
 
-sed -i '' -e "s/${CURRENT_VERSION}/${NEW_VERSION}/" $(find . -name "README.md" -o -name "gradle.properties" | xargs -n 1)
+sed -i '' -e "s|${CURRENT_VERSION}|${NEW_VERSION}|" $(find . -name "README.md" -o -name "gradle.properties" | xargs -n 1)
 git add $(find . -name "README.md" -o -name "gradle.properties" | xargs -n 1)
 git commit -m "Release ${NEW_VERSION}"
 
