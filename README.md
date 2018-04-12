@@ -127,7 +127,7 @@ Which produces:
   "environment" : "undefined"
 }
 {
-  "timestamp" : "2017-02-02T12:32:38.2.2.10:00",
+  "timestamp" : "2017-02-02T12:32:38.252+00:00",
   "level" : "INFO",
   "message" : "Reflections took 80 ms to scan 1 urls, producing 79 keys and 87 values ",
   "type" : "java",
