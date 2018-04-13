@@ -1,6 +1,6 @@
-def versions = [
-  spring: '1.5.9.RELEASE'
-]
+plugins {
+  id 'io.spring.dependency-management' version '1.0.5.RELEASE'
+}
 
 publishing {
   publications {
@@ -32,15 +32,27 @@ bintray {
   }
 }
 
+def versions = [
+  springBoot: '2.0.1.RELEASE'
+]
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:${versions.springBoot}"
+  }
+}
+
 dependencies {
   compile project(':')
-  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
+  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
 
   testCompile project(':').sourceSets.test.output
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.spring
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.spring
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.spring
-  testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.3.RELEASE'
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+  testCompile group: 'org.springframework.security', name: 'spring-security-test'
+
   testCompile group: 'com.google.code.tempus-fugit', name: 'tempus-fugit', version: '1.1'
 }
 
