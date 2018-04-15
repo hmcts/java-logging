@@ -1,5 +1,9 @@
+plugins {
+  id 'io.spring.dependency-management' version '1.0.5.RELEASE'
+}
+
 def versions = [
-  spring: '1.5.9.RELEASE',
+  springBoot: '2.0.1.RELEASE',
   appInsights: '2.0.2'
 ]
 
@@ -39,16 +43,24 @@ repositories {
   }
 }
 
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:${versions.springBoot}"
+  }
+}
+
 dependencies {
-  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: versions.spring
+  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
 
   compile group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: versions.appInsights
   compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appInsights
 
-  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.0'
   testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.17.1'
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.spring
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.spring
+
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.0'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
