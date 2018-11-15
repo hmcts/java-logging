@@ -36,7 +36,15 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         }
 
         DummyP2Exception(Throwable cause) {
-            super(AlertLevel.P2, "0", "oh no", cause);
+            this("oh no", cause);
+        }
+
+        DummyP2Exception(String message) {
+            this(message, null);
+        }
+
+        DummyP2Exception(String message, Throwable cause) {
+            super(AlertLevel.P2, "0", message, cause);
         }
     }
 
@@ -71,12 +79,15 @@ public class ReformLoggingLayoutTest extends AbstractLoggingTestSuite {
         captureOutput();
 
         String message = "test output with P2 exception and error code";
+        String exceptionMessage = "message to be found in the output 123";
 
-        log.error(message, new DummyP2Exception());
+        log.error(message, new DummyP2Exception(exceptionMessage));
 
         assertThat(systemOut.getLog()).containsPattern(
             DEFAULT_DATE_FORMAT + ERROR + getThreadName() + CURRENT_CLASS_LOGGER + "\\[P2\\] 0. " + message + "\n"
         );
+
+        assertThat(systemOut.getLog()).containsSequence(exceptionMessage);
     }
 
     @Test
