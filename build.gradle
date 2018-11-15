@@ -42,6 +42,12 @@ allprojects {
     jcenter()
   }
 
+  configurations.all {
+    resolutionStrategy {
+      force "com.google.guava:guava:24.1.1-jre"
+    }
+  }
+
   dependencies {
     compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '5.2'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
