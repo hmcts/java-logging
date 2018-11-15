@@ -88,7 +88,7 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         appendStackTrace(log, proxy);
 
         if (proxy != null) {
-            loopCauses(log, proxy, 0);
+            logCause(log, proxy, 0);
         }
 
         return log.toString();
@@ -122,22 +122,21 @@ public class ReformLoggingLayout extends LayoutBase<ILoggingEvent> {
         }
     }
 
-    private void loopCauses(StringBuilder log, ThrowableProxy parentProxy, int depth) {
-        ThrowableProxy cause = (ThrowableProxy) parentProxy.getCause();
+    private void logCause(StringBuilder log, ThrowableProxy cause, int depth) {
+        log.append(String.format(
+            "Caused by: %s: %s",
+            cause.getThrowable().getClass().getCanonicalName(),
+            cause.getThrowable().getMessage()
+        ));
 
-        if (cause != null) {
-            log.append(String.format(
-                "Caused by: %s: %s",
-                cause.getThrowable().getClass().getCanonicalName(),
-                cause.getThrowable().getMessage()
-            ));
-            log.append(CoreConstants.LINE_SEPARATOR);
-        }
+        log.append(CoreConstants.LINE_SEPARATOR);
 
         appendStackTrace(log, cause);
 
-        if (cause != null && depth < STACKTRACE_DEPTH) {
-            loopCauses(log, cause, depth + 1);
+        ThrowableProxy baseCause = (ThrowableProxy) cause.getCause();
+
+        if (baseCause != null && depth < STACKTRACE_DEPTH) {
+            logCause(log, baseCause, depth + 1);
         }
     }
 }
