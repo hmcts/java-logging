@@ -5,6 +5,8 @@ import ch.qos.logback.classic.spi.ThrowableProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//Will be removed in future enhancement revision
+@Deprecated
 public abstract class AbstractLoggingException extends RuntimeException {
 
     private final AlertLevel alertLevel;

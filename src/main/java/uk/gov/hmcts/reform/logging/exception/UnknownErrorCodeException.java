@@ -7,6 +7,8 @@ import static uk.gov.hmcts.reform.logging.exception.ErrorCode.UNKNOWN;
  * Since exception classes are favoured over error codes it is irrelevant feature we must implement.
  * Underlined "error code" in use: UNKNOWN
  */
+//Will be removed in future enhancement revision
+@Deprecated
 public class UnknownErrorCodeException extends AbstractLoggingException {
 
     protected UnknownErrorCodeException(AlertLevel alertLevel, Throwable cause) {

@@ -4,7 +4,11 @@
         <instrumentationKey>${APPINSIGHTS_INSTRUMENTATIONKEY}</instrumentationKey>
     </appender>
 
-    <logger name="uk.gov.hmcts" level="info">
+    <appender name="ASYNC_APP_INSIGHTS" class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">
         <appender-ref ref="APP_INSIGHTS" />
+    </appender>
+
+    <logger name="uk.gov.hmcts" level="info">
+        <appender-ref ref="ASYNC_APP_INSIGHTS" />
     </logger>
 </included>
