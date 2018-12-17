@@ -6,11 +6,7 @@
 
 # Reform Java logging module
 
-A Java module which allows to configure [Logback](https://logback.qos.ch/) to log in a format which we can feed into
-Logstash. Uses the [logback-logstash-encoder](https://github.com/logstash/logstash-logback-encoder) to produce JSON
-output.
-
-Detailed documentation can be found [here](docs/logging.md)
+A Java module which standardises the logging for the reform projects.
 
 ## Prerequisites
 
@@ -18,8 +14,9 @@ Detailed documentation can be found [here](docs/logging.md)
 
 ## User guide
 
-The module provides a `logback.xml` configuration file which configures Logback to use a format expected by our ELK
-stack. It allows a number of configuration options to customize the logging to your needs.
+The module provides a `logback.xml` configuration file which configures Logback to use a default reform format.
+It allows a number of configuration options to customize the logging to your needs.
+
 
 ### Basic usage
 
@@ -38,13 +35,13 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-spring</artifactId>
-    <version>3.0.4</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '3.0.4'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '4.0.0'
 ```
 
 #### java-logging-httpcomponents
@@ -56,13 +53,13 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-httpcomponents</artifactId>
-    <version>3.0.4</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '3.0.4'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '4.0.0'
 ```
 
 **Please note:** You will also need to implement a class that configures an HTTP client with interceptors for outbound HTTP requests and responses. See https://github.com/hmcts/cmc-claim-store/blob/master/src/main/java/uk/gov/hmcts/cmc/claimstore/clients/RestClient.java#L98 for an example.
@@ -90,88 +87,6 @@ By default the module will use a simple, human-friendly logging format which can
 ```
 
 Root logging level will be set to `INFO`. It can be adjusted by setting a `ROOT_LOGGING_LEVEL` environment variable.
-
-### Changing the output format
-
-Changing the output format to JSON can be done by setting an environment variable:
-
-```bash
-ROOT_APPENDER="JSON_CONSOLE"
-```
-
-The result will be similar to something like this:
-
-```
-{"timestamp":"2017-02-02T12:29:43.749+00:00","level":"INFO","message":"Registering AssetBundle with name: swagger-assets for path /swagger-static/*","type":"java","microservice":"claim-store","team":"cmc","hostname":"ultron.local","environment":"undefined"}
-{"timestamp":"2017-02-02T12:29:43.860+00:00","level":"INFO","message":"Reflections took 62 ms to scan 1 urls, producing 79 keys and 87 values ","type":"java","microservice":"claim-store","team":"cmc","hostname":"ultron.local","environment":"undefined"}
-{"timestamp":"2017-02-02T12:29:44.673+00:00","level":"INFO","message":"Registering jersey handler with root path prefix: /","type":"java","microservice":"claim-store","team":"cmc","hostname":"ultron.local","environment":"undefined"}
-```
-
-JSON output can be made more human-friendly with a pretty printing environment variable:
-
-```bash
-JSON_CONSOLE_PRETTY_PRINT="true"
-```
-
-Which produces:
-
-```
-{
-  "timestamp" : "2017-02-02T12:32:38.123+00:00",
-  "level" : "INFO",
-  "message" : "Registering AssetBundle with name: swagger-assets for path /swagger-static/*",
-  "type" : "java",
-  "microservice" : "undefined",
-  "team" : "undefined",
-  "hostname" : "ultron.local",
-  "environment" : "undefined"
-}
-{
-  "timestamp" : "2017-02-02T12:32:38.252+00:00",
-  "level" : "INFO",
-  "message" : "Reflections took 80 ms to scan 1 urls, producing 79 keys and 87 values ",
-  "type" : "java",
-  "microservice" : "undefined",
-  "team" : "undefined",
-  "hostname" : "ultron.local",
-  "environment" : "undefined"
-}
-{
-  "timestamp" : "2017-02-02T12:32:39.142+00:00",
-  "level" : "INFO",
-  "message" : "Registering jersey handler with root path prefix: /",
-  "type" : "java",
-  "microservice" : "undefined",
-  "team" : "undefined",
-  "hostname" : "ultron.local",
-  "environment" : "undefined"
-}
-```
-
-If you want to log any extra fields you can use the [StructuredArguments](https://github.com/logstash/logstash-logback-encoder#event-specific-custom-fields)
-feature like this:
-
-```java
-log.info("An important business process has finished", keyValue("transactionId", id));
-```
-
-This will result in the following output:
-
-```
-{
-  "timestamp" : "2017-02-03T11:15:39.077+00:00",
-  "level" : "INFO",
-  "message" : "An important business process has finished",
-  "type" : "java",
-  "microservice" : "undefined",
-  "team" : "undefined",
-  "hostname" : "ultron.local",
-  "environment" : "undefined",
-  "fields" : {
-    "transactionId" : 1234567
-  }
-}
-```
 
 ### Service details configuration
 
@@ -207,11 +122,14 @@ Log pattern related configurations:
 | variable                    | default                     |
 | --------------------------- | --------------------------- |
 | LOGBACK_DATE_FORMAT         | yyyy-MM-dd'T'HH:mm:ss.SSSZZ |
-| LOGBACK_REQUIRE_THREAD      | true                        |
-| LOGBACK_REQUIRE_ALERT_LEVEL | true                        |
-| LOGBACK_REQUIRE_ERROR_CODE  | true                        |
+| EXCEPTION_LENGTH            | 50                          |
+| LOGGER_LENGTH               | 50                          |
+| CONSOLE_LOG_PATTERN         | %d{${LOGBACK_DATE_FORMAT}} %-5level [%thread] %logger{${LOGGER_LENGTH}}%ex{${EXCEPTION_LENGTH}} %msg%n}                        |
 
-Date format is default logstash encoder date format. `REQUIRE` fields are flags representing show/hide feature.
+where
+ - LOGBACK_DATE_FORMAT: Date format is default logstash encoder date format. `REQUIRE` fields are flags representing show/hide feature.
+ - EXCEPTION_LENGTH: how many lines to show in an exception stack trace ( per exception not including causes)
+ - LOGGER_LENGTH: how long the logger name can be before logback starts abbreviating the package names
 
 ## Development guide
 
