@@ -39,8 +39,9 @@ allprojects {
   sourceCompatibility = 1.8
 
   repositories {
-    jcenter()
     mavenLocal()
+    mavenCentral()
+    jcenter()
   }
 
   configurations.all {

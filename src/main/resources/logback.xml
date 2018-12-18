@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="${LOGBACK_CONFIGURATION_DEBUG:-false}">
-    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator"/>
-    <include optional="true" resource="logback-appinsights.xml"/>
-    <include optional="true" resource="${LOGBACK_INCLUDES_FILE:-logback-includes.xml}"/>
-    <include resource="reform-console-appender.xml" />
+   <include resource="reform-base.xml"/>
 
     <root level="${ROOT_LOGGING_LEVEL:-INFO}">
         <appender-ref ref="${ROOT_APPENDER:-ASYNC_CONSOLE}"/>
     </root>
-    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
 </configuration>
