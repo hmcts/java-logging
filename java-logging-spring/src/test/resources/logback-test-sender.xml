@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="uk.gov.hmcts.reform.logging.layout.ReformLoggingLayout" />
-        </encoder>
-    </appender>
+    <include resource="reform-base.xml" />
 
     <appender name="SOCKET" class="ch.qos.logback.classic.net.SocketAppender">
         <remoteHost>localhost</remoteHost>

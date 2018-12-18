@@ -1,60 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="${LOGBACK_CONFIGURATION_DEBUG:-false}">
-    <include optional="true" resource="logback-appinsights.xml"/>
-    <include optional="true" resource="${LOGBACK_INCLUDES_FILE:-logback-includes.xml}"/>
+   <include resource="reform-base.xml"/>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="uk.gov.hmcts.reform.logging.layout.ReformLoggingLayout">
-                <dateFormat>${LOGBACK_DATE_FORMAT:-yyyy-MM-dd'T'HH:mm:ss.SSSZZ}</dateFormat>
-                <requireThread>${LOGBACK_REQUIRE_THREAD:-true}</requireThread>
-                <requireAlertLevel>${LOGBACK_REQUIRE_ALERT_LEVEL:-true}</requireAlertLevel>
-                <requireErrorCode>${LOGBACK_REQUIRE_ERROR_CODE:-true}</requireErrorCode>
-            </layout>
-        </encoder>
-    </appender>
-    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <jsonGeneratorDecorator class="uk.gov.hmcts.reform.logging.PrettyPrintingDecorator"/>
-            <providers class="uk.gov.hmcts.reform.logging.provider.EventJsonProviders">
-                <timestamp>
-                    <fieldName>timestamp</fieldName>
-                    <timeZone>UTC</timeZone>
-                </timestamp>
-                <alertLevel>
-                    <require>${LOGBACK_REQUIRE_ALERT_LEVEL:-true}</require>
-                </alertLevel>
-                <errorCode>
-                    <require>${LOGBACK_REQUIRE_ERROR_CODE:-true}</require>
-                </errorCode>
-                <pattern>
-                    <pattern>
-                        {
-                            "level": "%level",
-                            "message": "%message",
-                            "type": "${REFORM_SERVICE_TYPE:-java}",
-                            "microservice": "${REFORM_SERVICE_NAME:-undefined}",
-                            "team": "${REFORM_TEAM:-undefined}",
-                            "hostname": "${HOSTNAME:-undefined}",
-                            "environment": "${REFORM_ENVIRONMENT:-undefined}",
-                            "sessionId": "%X{sessionId}",
-                            "requestId": "%X{requestId}",
-                            "rootRequestId": "%X{rootRequestId}",
-                            "originRequestId": "%X{originRequestId}"
-                        }
-                    </pattern>
-                </pattern>
-                <logstashMarkers/>
-                <arguments>
-                    <fieldName>fields</fieldName>
-                </arguments>
-                <stackTrace>
-                    <fieldName>stacktrace</fieldName>
-                </stackTrace>
-            </providers>
-        </encoder>
-    </appender>
     <root level="${ROOT_LOGGING_LEVEL:-INFO}">
-        <appender-ref ref="${ROOT_APPENDER:-CONSOLE}" />
+        <appender-ref ref="${ROOT_APPENDER:-ASYNC_CONSOLE}"/>
     </root>
+
 </configuration>

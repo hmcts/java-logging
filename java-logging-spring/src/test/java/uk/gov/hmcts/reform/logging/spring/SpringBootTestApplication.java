@@ -8,8 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.logging.exception.AbstractLoggingException;
-import uk.gov.hmcts.reform.logging.exception.AlertLevel;
 
 @SpringBootApplication
 @SuppressWarnings("HideUtilityClassConstructor")
@@ -21,9 +19,9 @@ public class SpringBootTestApplication {
     @RestController
     public static class TestController {
 
-        private class RequestMappingException extends AbstractLoggingException {
+        private class RequestMappingException extends RuntimeException {
             RequestMappingException(String message) {
-                super(AlertLevel.P1, "0", message);
+                super(message);
             }
         }
 
@@ -49,10 +47,10 @@ public class SpringBootTestApplication {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                    .authorizeRequests()
-                    .antMatchers("/public").permitAll()
-                    .antMatchers("/failing").permitAll()
-                    .antMatchers("/protected").authenticated();
+                .authorizeRequests()
+                .antMatchers("/public").permitAll()
+                .antMatchers("/failing").permitAll()
+                .antMatchers("/protected").authenticated();
         }
     }
 }
