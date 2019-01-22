@@ -1,11 +1,12 @@
 package uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers;
 
+import com.microsoft.applicationinsights.extensibility.TelemetryInitializer;
 import com.microsoft.applicationinsights.telemetry.Telemetry;
-import com.microsoft.applicationinsights.web.extensibility.initializers.WebTelemetryInitializerBase;
 
-public class CloudRoleNameInitializer extends WebTelemetryInitializerBase {
+public class CloudRoleNameInitializer implements TelemetryInitializer {
+
     @Override
-    protected void onInitializeTelemetry(Telemetry telemetry) {
+    public void initialize(Telemetry telemetry) {
         if (SpringApplicationName.get() == null) {
             throw new IllegalStateException("spring.application.name configuration property is not set");
         } else {
