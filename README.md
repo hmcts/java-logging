@@ -35,13 +35,13 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-spring</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '4.0.0'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '4.0.1'
 ```
 
 #### java-logging-httpcomponents
@@ -53,13 +53,13 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-httpcomponents</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '4.0.0'
+compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '4.0.1'
 ```
 
 **Please note:** You will also need to implement a class that configures an HTTP client with interceptors for outbound HTTP requests and responses. See https://github.com/hmcts/cmc-claim-store/blob/master/src/main/java/uk/gov/hmcts/cmc/claimstore/clients/RestClient.java#L98 for an example.
