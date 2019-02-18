@@ -7,6 +7,7 @@ import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +23,9 @@ public class AppInsightsAllComponentsTest {
     @Autowired
     private AbstractAppInsights insights;
 
+    @Autowired
+    private ApplicationContext context;
+
     @BeforeClass
     public static void setUp() {
         variables.set("APPINSIGHTS_INSTRUMENTATIONKEY", "some-key");
@@ -30,5 +34,6 @@ public class AppInsightsAllComponentsTest {
     @Test
     public void contextLoads() {
         assertThat(insights).isInstanceOf(SpringBootTestApplication.AppInsightsImp.class);
+        assertThat(context.containsBean("contextVersionInitializer")).isTrue();
     }
 }
