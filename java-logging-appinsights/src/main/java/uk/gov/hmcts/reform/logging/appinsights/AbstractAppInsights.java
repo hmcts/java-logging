@@ -5,10 +5,14 @@ import com.microsoft.applicationinsights.TelemetryClient;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * <h1> @deprecated see
+ * {@link uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextVersionInitializer} </h1>
  * Application Insights class to send custom telemetry to AppInsights.
  *
  * <code>// NO PMD</code> is for pmd rule to skip the check of any abstract methods being present in abstract class.
+ *
  */
+@Deprecated
 public abstract class AbstractAppInsights { // NOPMD
 
     protected final TelemetryClient telemetry;
