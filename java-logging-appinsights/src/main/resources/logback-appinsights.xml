@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
     <appender name="APP_INSIGHTS" class="com.microsoft.applicationinsights.logback.ApplicationInsightsAppender">
-        <instrumentationKey>${APPINSIGHTS_INSTRUMENTATIONKEY}</instrumentationKey>
     </appender>
 
     <appender name="ASYNC_APP_INSIGHTS" class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">

@@ -25,9 +25,6 @@ public class AppInsightsAllComponentsTest {
     @Autowired
     private AbstractAppInsights insights;
 
-    @Autowired
-    private ApplicationContext context;
-
     @BeforeClass
     public static void setUp() {
         variables.set("APPINSIGHTS_INSTRUMENTATIONKEY", "some-key");
@@ -35,10 +32,6 @@ public class AppInsightsAllComponentsTest {
 
     @Test
     public void contextLoads() {
-        assertThat(TelemetryConfiguration.getActive().getChannel().isDeveloperMode()).isFalse();
         assertThat(insights).isInstanceOf(SpringBootTestApplication.AppInsightsImp.class);
-        assertThat(context.containsBean(InterceptorRegistry.class.getName())).isTrue();
-        assertThat(context.containsBean("webRequestTrackingFilter")).isTrue();
-        assertThat(context.containsBean("telemetryClient")).isTrue();
     }
 }
