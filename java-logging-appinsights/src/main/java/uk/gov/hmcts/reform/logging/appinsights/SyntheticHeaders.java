@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.logging.appinsights;
 /**
  * Utility class to provide headers used in WebSyntheticRequestTelemetryInitializer.
  * It has package private access to those fields - making it public here for re-usability.
+ * If https://github.com/Microsoft/ApplicationInsights-Java/pull/813 is accepted we can deprecate / remove this class
  */
 public final class SyntheticHeaders {
 

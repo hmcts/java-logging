@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.logging.appinsights;
 
-import com.microsoft.applicationinsights.TelemetryConfiguration;
-import com.microsoft.applicationinsights.web.spring.internal.InterceptorRegistry;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -35,10 +33,11 @@ public class AppInsightsAllComponentsTest {
 
     @Test
     public void contextLoads() {
-        assertThat(TelemetryConfiguration.getActive().getChannel().isDeveloperMode()).isFalse();
         assertThat(insights).isInstanceOf(SpringBootTestApplication.AppInsightsImp.class);
-        assertThat(context.containsBean(InterceptorRegistry.class.getName())).isTrue();
-        assertThat(context.containsBean("webRequestTrackingFilter")).isTrue();
-        assertThat(context.containsBean("telemetryClient")).isTrue();
+        assertThat(context.containsBean("contextVersionInitializer")).isTrue();
+        assertThat(context.containsBean("sequencePropertyInitializer")).isTrue();
+        assertThat(context.containsBean("timestampPropertyInitializer")).isTrue();
+        assertThat(context.containsBean("webSyntheticRequestTelemetryInitializer")).isTrue();
+
     }
 }

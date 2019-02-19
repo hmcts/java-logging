@@ -3,8 +3,9 @@ plugins {
 }
 
 def versions = [
-  springBoot: '2.0.8.RELEASE',
-  appInsights: '2.1.2'
+  springBoot: '2.1.2.RELEASE',
+  appInsights: '2.3.1',
+  appInsightsStarter: '1.1.2'
 ]
 
 publishing {
@@ -53,7 +54,7 @@ dependencies {
   compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
 
   compile group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: versions.appInsights
-  compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: versions.appInsights
+  compile group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: versions.appInsightsStarter
 
   testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
 
