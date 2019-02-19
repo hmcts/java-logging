@@ -4,7 +4,7 @@ Logging module to auto configure necessary components for Azure Application Insi
 
 ## User guide
 
-The module provides all Telemetry modules and initialisers available from web artifact.
+The module provides all Telemetry modules and initializers available from web artifact.
 
 ### Basic usage
 
@@ -24,7 +24,7 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
-    <version>4.0.3</version>
+    <version>5.0.0</version>
 </dependency>
 ```
 
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '4.0.3'
+  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '5.0.0'
 }
 ```
 
@@ -67,6 +67,14 @@ This file must be placed in a `<repository-root>/lib` directory for applications
 Retrieve the jar from github, i.e. https://github.com/Microsoft/ApplicationInsights-Java/releases
 
 TelemetryClient can be `autowired`  to implement custom telemetry metrics.
+
+#### Provide Instrumentation Key
+     
+Add below to your application properties to be compatible with current shared CNP configurations.
+
+```properties
+azure.application-insights.instrumentation-key=${APPINSIGHTS_INSTRUMENTATIONKEY}
+```
 
 ### Configuration defaults
 
