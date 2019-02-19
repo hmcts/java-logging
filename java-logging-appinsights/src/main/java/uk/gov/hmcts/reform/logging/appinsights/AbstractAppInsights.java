@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.logging.appinsights;
 
 import com.microsoft.applicationinsights.TelemetryClient;
-import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextVersionInitializer;
 
 import static java.util.Objects.requireNonNull;
 
