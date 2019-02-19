@@ -66,7 +66,7 @@ Sample of `AI-Agent.xml`:
 This file must be placed in a `<repository-root>/lib` directory for applications running on CNP along with the agent jar that matches the current app insights version here
 Retrieve the jar from github, i.e. https://github.com/Microsoft/ApplicationInsights-Java/releases
 
-`AbstractAppInsights` is now `deprecated` TelemetryClient can be `autowired`  to implement custom telemetry metrics.
+TelemetryClient can be `autowired`  to implement custom telemetry metrics.
 
 ### Configuration defaults
 
