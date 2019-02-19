@@ -6,8 +6,8 @@ import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextVer
 import static java.util.Objects.requireNonNull;
 
 /**
- * <h1> @deprecated see
- * {@link ContextVersionInitializer} </h1>
+ * <h1> @deprecated TelemetryClient can be directly used for any custom implementation.</h1>
+ * Setting of context component version has been moved to a custom initializer {@link ContextVersionInitializer}
  * Application Insights class to send custom telemetry to AppInsights.
  *
  * <code>// NO PMD</code> is for pmd rule to skip the check of any abstract methods being present in abstract class.
