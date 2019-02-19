@@ -34,7 +34,7 @@ public class AppInsightsAllComponentsTest {
     @Test
     public void contextLoads() {
         assertThat(insights).isInstanceOf(SpringBootTestApplication.AppInsightsImp.class);
-        assertThat(context.containsBean("contextInitializer")).isTrue();
+        assertThat(context.containsBean("contextVersionInitializer")).isTrue();
         assertThat(context.containsBean("sequencePropertyInitializer")).isTrue();
         assertThat(context.containsBean("timestampPropertyInitializer")).isTrue();
         assertThat(context.containsBean("webSyntheticRequestTelemetryInitializer")).isTrue();

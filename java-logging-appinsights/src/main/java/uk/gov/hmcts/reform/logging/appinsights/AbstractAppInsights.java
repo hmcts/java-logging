@@ -1,13 +1,13 @@
 package uk.gov.hmcts.reform.logging.appinsights;
 
 import com.microsoft.applicationinsights.TelemetryClient;
-import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextInitializer;
+import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextVersionInitializer;
 
 import static java.util.Objects.requireNonNull;
 
 /**
  * <h1> @deprecated see
- * {@link ContextInitializer} </h1>
+ * {@link ContextVersionInitializer} </h1>
  * Application Insights class to send custom telemetry to AppInsights.
  *
  * <code>// NO PMD</code> is for pmd rule to skip the check of any abstract methods being present in abstract class.

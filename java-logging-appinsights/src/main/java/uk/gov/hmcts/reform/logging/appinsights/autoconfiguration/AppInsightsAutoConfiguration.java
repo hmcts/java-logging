@@ -1,12 +1,11 @@
 package uk.gov.hmcts.reform.logging.appinsights.autoconfiguration;
 
-import com.microsoft.applicationinsights.autoconfigure.initializer.SpringBootTelemetryInitializer;
 import com.microsoft.applicationinsights.extensibility.initializer.SequencePropertyInitializer;
 import com.microsoft.applicationinsights.extensibility.initializer.TimestampPropertyInitializer;
 import com.microsoft.applicationinsights.web.extensibility.initializers.WebSyntheticRequestTelemetryInitializer;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextInitializer;
+import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextVersionInitializer;
 
 /**
  * <h1>Core Application Insights Configuration</h1> .
@@ -15,28 +14,38 @@ import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextIni
  */
 public class AppInsightsAutoConfiguration {
 
+    public static final String HAVING_VALUE_TRUE = "true";
+
     /**
-     * Bean for ContextInitializer.
+     * Bean for ContextVersionInitializer.
      *
-     * @return instance of {@link ContextInitializer}
+     * @return instance of {@link ContextVersionInitializer}
      */
     @Bean
-    @ConditionalOnBean(SpringBootTelemetryInitializer.class)
-    public ContextInitializer contextInitializer() {
-        return new ContextInitializer();
+    @ConditionalOnProperty(value = "application-insights.custom.modules.ContextVersionInitializer.enabled",
+        havingValue = HAVING_VALUE_TRUE, matchIfMissing = true)
+    public ContextVersionInitializer contextVersionInitializer() {
+        return new ContextVersionInitializer();
     }
 
     @Bean
+    @ConditionalOnProperty(value = "application-insights.default.modules.TimestampPropertyInitializer.enabled",
+        havingValue = HAVING_VALUE_TRUE, matchIfMissing = true)
     public TimestampPropertyInitializer timestampPropertyInitializer() {
         return new TimestampPropertyInitializer();
     }
 
     @Bean
+    @ConditionalOnProperty(value = "application-insights.default.modules.SequencePropertyInitializer.enabled",
+        havingValue = HAVING_VALUE_TRUE, matchIfMissing = true)
     public SequencePropertyInitializer sequencePropertyInitializer() {
         return new SequencePropertyInitializer();
     }
 
     @Bean
+    @ConditionalOnProperty
+        (value = "application-insights.default.modules.WebSyntheticRequestTelemetryInitializer.enabled",
+        havingValue = HAVING_VALUE_TRUE, matchIfMissing = true)
     public WebSyntheticRequestTelemetryInitializer webSyntheticRequestTelemetryInitializer() {
         return new WebSyntheticRequestTelemetryInitializer();
     }
