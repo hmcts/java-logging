@@ -24,7 +24,7 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.1</version>
 </dependency>
 ```
 
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '5.0.0'
+  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '5.0.1'
 }
 ```
 
@@ -70,12 +70,13 @@ TelemetryClient can be `autowired`  to implement custom telemetry metrics.
 
 #### Provide Instrumentation Key
      
-Add below to your application properties to be compatible with current shared CNP configurations.
+Set the environment variable: AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY. If you are deploying using the CNP pipeline this will be automatically added for you.
+
+You can also set it using a spring property (useful for tests):
 
 ```properties
-azure.application-insights.instrumentation-key=${APPINSIGHTS_INSTRUMENTATIONKEY}
+azure.application-insights.instrumentation-key=<key here>
 ```
-
 ### Configuration defaults
 
 #### Modules configured by spring starter
