@@ -28,7 +28,7 @@ public class AppInsightsAllComponentsTest {
 
     @BeforeClass
     public static void setUp() {
-        variables.set("APPINSIGHTS_INSTRUMENTATIONKEY", "some-key");
+        variables.set("AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY", "some-key");
     }
 
     @Test
