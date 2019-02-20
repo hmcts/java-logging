@@ -71,6 +71,7 @@ TelemetryClient can be `autowired`  to implement custom telemetry metrics.
 #### Provide Instrumentation Key
      
 Set the environment variable: AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY. If you are deploying using the CNP pipeline this will be automatically added for you.
+You can also set it using a spring property (useful for tests):
 ```properties
 azure.application-insights.instrumentation-key=<key here>
 ```
