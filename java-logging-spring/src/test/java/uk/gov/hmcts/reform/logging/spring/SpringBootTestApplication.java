@@ -20,7 +20,9 @@ public class SpringBootTestApplication {
     public static class TestController {
 
         private class RequestMappingException extends RuntimeException {
-            RequestMappingException(String message) {
+            public static final long serialVersionUID = 4328743; // copy from pmd docs :D
+
+            /* default */ RequestMappingException(String message) {
                 super(message);
             }
         }

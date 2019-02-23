@@ -26,7 +26,7 @@ public class OutboundRequestLoggingInterceptor implements HttpRequestInterceptor
         this(systemUTC());
     }
 
-    OutboundRequestLoggingInterceptor(Clock clock) {
+    /* default */ OutboundRequestLoggingInterceptor(Clock clock) {
         this.clock = clock;
     }
 

@@ -8,7 +8,7 @@ class FakeClock extends Clock {
     private long elapsed;
     private final long increment;
 
-    FakeClock(int increment) {
+    /* default */ FakeClock(int increment) {
         super();
         this.increment = increment;
     }

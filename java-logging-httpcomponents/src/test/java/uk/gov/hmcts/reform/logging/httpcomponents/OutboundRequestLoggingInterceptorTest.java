@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.logging.httpcomponents;
 
 import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.message.BasicHttpResponse;
@@ -71,7 +72,8 @@ public class OutboundRequestLoggingInterceptorTest {
         interceptor.process(new BasicHttpRequest("GET", "/something"), context);
         interceptor.process(new BasicHttpResponse(new BasicStatusLine(ANY_PROTOCOL, 200, "any")), context);
 
-        assertThat(testAppender.getEvents()).extracting("message")
+        assertThat(testAppender.getEvents())
+            .extracting(ILoggingEvent::getMessage)
             .contains("Outbound request start", Index.atIndex(0))
             .contains("Outbound request finish", Index.atIndex(1));
     }
