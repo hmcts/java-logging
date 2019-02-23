@@ -36,6 +36,10 @@ allprojects {
     ruleSetFiles = files("$rootProject.projectDir/config/pmd/ruleset.xml")
   }
 
+  jacoco {
+    toolVersion = "0.8.3"
+  }
+
   sourceCompatibility = 1.8
 
   repositories {
