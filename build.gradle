@@ -24,7 +24,7 @@ allprojects {
   apply plugin: 'pmd'
 
   checkstyle {
-    toolVersion = '8.9'
+    toolVersion = '8.17'
     maxWarnings = 0
     configDir = new File(rootDir, "config/checkstyle")
   }
