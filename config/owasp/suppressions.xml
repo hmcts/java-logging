@@ -6,7 +6,14 @@
         <gav regex="true">^com.google.guava:guava:20\.0$</gav>
         <cve>CVE-2018-10237</cve>
     </suppress>
-    
+
+    <suppress>
+        <notes><![CDATA[Shadowed dependency from AppInsights]]></notes>
+        <gav regex="true">^io\.netty:netty-tcnative-boringssl-static:2\.0\.17\.Final$</gav>
+        <cve>CVE-2014-3488</cve>
+        <cve>CVE-2015-2156</cve>
+    </suppress>
+
     <suppress>
         <notes><![CDATA[ slf4j only has a beta version released with the 'fix', looks like lots of changes in it... ]]></notes>
         <cve>CVE-2018-8088</cve>
