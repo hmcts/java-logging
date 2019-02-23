@@ -1,9 +1,9 @@
 plugins {
-  id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.7.RELEASE'
 }
 
 def versions = [
-  springBoot: '2.1.2.RELEASE',
+  springBoot: '2.1.3.RELEASE',
   appInsights: '2.3.1',
   appInsightsStarter: '1.1.2'
 ]
@@ -55,8 +55,6 @@ dependencies {
 
   compile group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: versions.appInsights
   compile group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: versions.appInsightsStarter
-
-  testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
 
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
