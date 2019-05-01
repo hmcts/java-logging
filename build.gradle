@@ -6,7 +6,7 @@ buildscript {
 
 plugins {
   id 'org.owasp.dependencycheck' version '4.0.2'
-  id 'com.github.ben-manes.versions' version '0.20.0'
+  id 'com.github.ben-manes.versions' version '0.21.0'
 }
 
 allprojects {
