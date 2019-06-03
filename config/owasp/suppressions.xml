@@ -14,9 +14,4 @@
         <cve>CVE-2015-2156</cve>
     </suppress>
 
-    <suppress>
-        <notes><![CDATA[ slf4j only has a beta version released with the 'fix', looks like lots of changes in it... ]]></notes>
-        <cve>CVE-2018-8088</cve>
-    </suppress>
-
 </suppressions>
