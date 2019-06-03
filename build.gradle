@@ -55,7 +55,7 @@ allprojects {
   }
 
   dependencies {
-    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '5.3'
+    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.0'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
     compile group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.26'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
@@ -81,6 +81,10 @@ allprojects {
     // range of 0-10 fails the build, anything greater and it doesn't fail the build
     failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
     suppressionFile = "$rootDir/config/owasp/suppressions.xml"
+    analyzers {
+      // Disable scanning of .NET related binaries
+      assemblyEnabled = false
+    }
   }
 }
 
