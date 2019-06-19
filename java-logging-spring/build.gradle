@@ -33,7 +33,7 @@ bintray {
 }
 
 def versions = [
-  springBoot: '2.1.5.RELEASE'
+  springBoot: '2.1.6.RELEASE'
 ]
 
 dependencyManagement {
