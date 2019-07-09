@@ -139,7 +139,7 @@ bintray {
 }
 
 dependencies {
-  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.28.2'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
   testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
   testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
