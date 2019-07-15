@@ -50,7 +50,14 @@ allprojects {
 
   configurations.all {
     resolutionStrategy {
-      force "com.google.guava:guava:28.0-jre"
+      eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group in ['com.fasterxml.jackson.core', 'com.fasterxml.jackson.module', 'com.fasterxml.jackson.datatype']) {
+          details.useVersion '2.9.9.1'
+        }
+        if (details.requested.group in ['com.google.guava']) {
+          details.useVersion '28.0-jre'
+        }
+      }
     }
   }
 
