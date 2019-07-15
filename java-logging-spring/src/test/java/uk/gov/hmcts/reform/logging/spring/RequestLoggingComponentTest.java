@@ -51,10 +51,10 @@ public class RequestLoggingComponentTest {
         loggerContext.reset();
         JoranConfigurator configurator = new JoranConfigurator();
 
-        InputStream configStream = ResourceUtils.getURL("classpath:logback-test-receiver.xml").openStream();
-        configurator.setContext(loggerContext);
-        configurator.doConfigure(configStream);
-        configStream.close();
+        try (InputStream configStream = ResourceUtils.getURL("classpath:logback-test-receiver.xml").openStream()) {
+            configurator.setContext(loggerContext);
+            configurator.doConfigure(configStream);
+        }
     }
 
     private Condition eventCondition(String message) {
