@@ -24,7 +24,7 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
-    <version>5.0.1</version>
+    <version>5.1.0-beta</version>
 </dependency>
 ```
 
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '5.0.1'
+  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '5.1.0-beta'
 }
 ```
 
