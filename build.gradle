@@ -24,20 +24,20 @@ allprojects {
   apply plugin: 'pmd'
 
   checkstyle {
-    toolVersion = '8.18'
+    toolVersion = '8.22'
     maxWarnings = 0
     configDir = new File(rootDir, "config/checkstyle")
   }
 
   pmd {
-    toolVersion = "6.11.0"
+    toolVersion = "6.16.0"
     sourceSets = [sourceSets.main, sourceSets.test]
     reportsDir = file("$rootProject.buildDir/reports/pmd/$project.name")
     ruleSetFiles = files("$rootProject.projectDir/config/pmd/ruleset.xml")
   }
 
   jacoco {
-    toolVersion = "0.8.3"
+    toolVersion = "0.8.4"
   }
 
   sourceCompatibility = 1.8
@@ -50,7 +50,14 @@ allprojects {
 
   configurations.all {
     resolutionStrategy {
-      force "com.google.guava:guava:28.0-jre"
+      eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group in ['com.fasterxml.jackson.core', 'com.fasterxml.jackson.module', 'com.fasterxml.jackson.datatype']) {
+          details.useVersion '2.9.9'
+        }
+        if (details.requested.name == 'guava') {
+          details.useVersion '28.0-jre'
+        }
+      }
     }
   }
 
