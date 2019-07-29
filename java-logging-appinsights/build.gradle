@@ -66,7 +66,7 @@ dependencies {
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 
-  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.13.0'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
