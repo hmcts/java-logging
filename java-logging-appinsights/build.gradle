@@ -4,7 +4,7 @@ plugins {
 
 def versions = [
   springBoot: '2.1.8.RELEASE',
-  appInsights: '2.5.0-BETA'
+  appInsights: '2.5.0-BETA.5'
 ]
 
 publishing {
