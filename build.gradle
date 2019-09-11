@@ -124,7 +124,7 @@ publishing {
       artifact sourcesJar
       artifact javadocJar
       groupId project.group
-      artifactId 'java-logging'
+      artifactId 'logging'
       version project.version
     }
   }
@@ -137,7 +137,7 @@ bintray {
   publish = true
   pkg {
     repo = 'hmcts-maven'
-    name = 'java-logging'
+    name = 'logging'
     userOrg = 'hmcts'
     licenses = ['MIT']
     vcsUrl = 'https://github.com/hmcts/java-logging'

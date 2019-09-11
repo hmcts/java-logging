@@ -5,7 +5,7 @@ publishing {
       artifact sourcesJar
       artifact javadocJar
       groupId project.group
-      artifactId 'java-logging-httpcomponents'
+      artifactId 'logging-httpcomponents'
       version project.version
     }
   }
@@ -18,7 +18,7 @@ bintray {
   publish = true
   pkg {
     repo = 'hmcts-maven'
-    name = 'java-logging-httpcomponents'
+    name = 'logging-httpcomponents'
     userOrg = 'hmcts'
     licenses = ['MIT']
     vcsUrl = 'https://github.com/hmcts/java-logging'

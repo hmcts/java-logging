@@ -9,7 +9,7 @@ publishing {
       artifact sourcesJar
       artifact javadocJar
       groupId project.group
-      artifactId 'java-logging-spring'
+      artifactId 'logging-spring'
       version project.version
     }
   }
@@ -22,7 +22,7 @@ bintray {
   publish = true
   pkg {
     repo = 'hmcts-maven'
-    name = 'java-logging-spring'
+    name = 'logging-spring'
     userOrg = 'hmcts'
     licenses = ['MIT']
     vcsUrl = 'https://github.com/hmcts/java-logging'
