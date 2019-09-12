@@ -24,7 +24,7 @@ Maven:
 <dependency>
     <groupId>uk.gov.hmcts.reform</groupId>
     <artifactId>java-logging-appinsights</artifactId>
-    <version>5.1.0-beta</version>
+    <version>5.1.0-rc</version>
 </dependency>
 ```
 
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: '5.1.0-beta'
+  compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: '5.1.0-rc'
 }
 ```
 
@@ -104,7 +104,7 @@ azure.application-insights.instrumentation-key=<key here>
 - CloudInfoContextInitializer
 - SpringBootTelemetryInitializer
 
-#### Initializers configured by java-logging-appinsights
+#### Initializers configured by logging-appinsights
 
 ##### Context
 ContextInitializer ( Custom Initializer to set component version to context)

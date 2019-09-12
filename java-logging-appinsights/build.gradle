@@ -4,7 +4,7 @@ plugins {
 
 def versions = [
   springBoot: '2.1.8.RELEASE',
-  appInsights: '2.5.0-BETA'
+  appInsights: '2.5.0-BETA.5'
 ]
 
 publishing {
@@ -14,7 +14,7 @@ publishing {
       artifact sourcesJar
       artifact javadocJar
       groupId project.group
-      artifactId 'java-logging-appinsights'
+      artifactId 'logging-appinsights'
       version project.version
     }
   }
@@ -27,7 +27,7 @@ bintray {
   publish = true
   pkg {
     repo = 'hmcts-maven'
-    name = 'java-logging-appinsights'
+    name = 'logging-appinsights'
     userOrg = 'hmcts'
     licenses = ['MIT']
     vcsUrl = 'https://github.com/hmcts/java-logging'

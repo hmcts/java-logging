@@ -30,36 +30,19 @@ Use for automatic configuration of Azure Application Insights for a Spring Boot 
 
 Use for formatting log output in Spring Boot applications.
 
-Maven:
-```xml
-<dependency>
-    <groupId>uk.gov.hmcts.reform</groupId>
-    <artifactId>java-logging-spring</artifactId>
-    <version>4.0.1</version>
-</dependency>
-```
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '4.0.1'
+compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: '4.0.1'
 ```
 
 #### java-logging-httpcomponents
 
 Use for adding request IDs to external HTTP / HTTPS requests.
 
-Maven:
-```xml
-<dependency>
-    <groupId>uk.gov.hmcts.reform</groupId>
-    <artifactId>java-logging-httpcomponents</artifactId>
-    <version>4.0.1</version>
-</dependency>
-```
-
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '4.0.1'
+compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: '4.0.1'
 ```
 
 **Please note:** You will also need to implement a class that configures an HTTP client with interceptors for outbound HTTP requests and responses. See https://github.com/hmcts/cmc-claim-store/blob/master/src/main/java/uk/gov/hmcts/cmc/claimstore/clients/RestClient.java#L98 for an example.
@@ -87,15 +70,6 @@ By default the module will use a simple, human-friendly logging format which can
 ```
 
 Root logging level will be set to `INFO`. It can be adjusted by setting a `ROOT_LOGGING_LEVEL` environment variable.
-
-### Service details configuration
-
-As can be seen above the JSON format logs additional metadata information which is configurable via environment variables:
-- `REFORM_SERVICE_TYPE` which defaults to *java*,
-- `REFORM_SERVICE_NAME` which defaults to *undefined*,
-- `REFORM_TEAM` which defaults to *undefined*,
-- `REFORM_ENVIRONMENT` which defaults to *undefined*,
-- `HOSTNAME` which defaults to *undefined*, but in general should be set by the OS.
 
 ### Additional Logback configuration:
 
