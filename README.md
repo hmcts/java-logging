@@ -33,7 +33,7 @@ Use for formatting log output in Spring Boot applications.
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: '4.0.1'
+compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: '5.1.0'
 ```
 
 #### java-logging-httpcomponents
@@ -42,7 +42,7 @@ Use for adding request IDs to external HTTP / HTTPS requests.
 
 Gradle:
 ```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: '4.0.1'
+compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: '5.1.0'
 ```
 
 **Please note:** You will also need to implement a class that configures an HTTP client with interceptors for outbound HTTP requests and responses. See https://github.com/hmcts/cmc-claim-store/blob/master/src/main/java/uk/gov/hmcts/cmc/claimstore/clients/RestClient.java#L98 for an example.
