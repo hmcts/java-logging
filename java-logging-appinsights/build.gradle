@@ -4,7 +4,7 @@ plugins {
 
 def versions = [
   springBoot: '2.1.8.RELEASE',
-  appInsights: '2.5.0-BETA.5'
+  appInsights: '2.5.0'
 ]
 
 publishing {
@@ -44,14 +44,6 @@ repositories {
 }
 
 dependencyManagement {
-  dependencies {
-    // solves CVE-2019-12086
-    // remove once spring manager incorporates these changes
-    dependencySet(group: 'com.fasterxml.jackson.core', version: '2.9.9') {
-      entry 'jackson-core'
-      entry 'jackson-databind'
-    }
-  }
   imports {
     mavenBom "org.springframework.boot:spring-boot-dependencies:${versions.springBoot}"
   }
