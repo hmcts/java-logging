@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-  id 'org.owasp.dependencycheck' version '5.2.1'
+  id 'org.owasp.dependencycheck' version '5.2.2'
   id 'com.github.ben-manes.versions' version '0.25.0'
 }
 
@@ -55,7 +55,7 @@ allprojects {
           details.useVersion '2.9.9'
         }
         if (details.requested.name == 'jackson-databind') {
-          details.useVersion '2.9.9.3'
+          details.useVersion '2.9.10'
         }
         if (details.requested.name == 'guava') {
           details.useVersion '28.0-jre'
