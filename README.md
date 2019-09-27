@@ -3,6 +3,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ebac86c131154ef2b59ab302d1d75fd9)](https://www.codacy.com/app/HMCTS/java-logging)
 [![codecov](https://codecov.io/gh/hmcts/java-logging/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/java-logging)
 [![Known Vulnerabilities](https://snyk.io/test/github/hmcts/java-logging/badge.svg)](https://snyk.io/test/github/hmcts/java-logging)
+[ ![Download](https://api.bintray.com/packages/hmcts/hmcts-maven/logging/images/download.svg) ](https://bintray.com/hmcts/hmcts-maven/logging/_latestVersion)
 
 # Reform Java logging module
 
