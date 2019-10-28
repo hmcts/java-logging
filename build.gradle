@@ -152,7 +152,7 @@ bintray {
 
 dependencies {
   testCompile group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
-  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
   testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
   testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
   testCompile group: 'com.google.code.tempus-fugit', name: 'tempus-fugit', version: '1.1'

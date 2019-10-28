@@ -34,7 +34,7 @@ dependencies {
 
   testCompile project(':').sourceSets.test.output
   testCompile group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
-  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
   testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 }
 
