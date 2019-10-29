@@ -7,7 +7,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.logging.filters.RequestIdsSettingFilter;
-import uk.gov.hmcts.reform.logging.filters.RequestStatusLoggingFilter;
 
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 
@@ -24,11 +23,4 @@ public class RequestLoggingAutoConfiguration {
         return filterRegistrationBean;
     }
 
-    @Bean
-    public FilterRegistrationBean requestStatusLoggingFilter() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-        filterRegistrationBean.setFilter(new RequestStatusLoggingFilter());
-        filterRegistrationBean.setOrder(HIGHEST_PRECEDENCE + 1);
-        return filterRegistrationBean;
-    }
 }
