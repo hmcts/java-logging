@@ -37,29 +37,6 @@ Gradle:
 compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: '5.1.1-BETA'
 ```
 
-#### java-logging-httpcomponents
-
-Use for adding request IDs to external HTTP / HTTPS requests.
-
-Gradle:
-```groovy
-compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: '5.1.1-BETA'
-```
-
-**Please note:** You will also need to implement a class that configures an HTTP client with interceptors for outbound HTTP requests and responses. See https://github.com/hmcts/cmc-claim-store/blob/master/src/main/java/uk/gov/hmcts/cmc/claimstore/clients/RestClient.java#L98 for an example.
-
-After that you can log like you would do with any [SLF4J](https://www.slf4j.org/) logger. Define it as a class field:
-
-```java
-private static final Logger log = LoggerFactory.getLogger(SomeResource.class);
-```
-
-And do the actual logging, e.g.:
-
-```java
-log.info("An important business process has finished");
-```
-
 ### Configuration defaults
 
 By default the module will use a simple, human-friendly logging format which can be used out-of-the-box for development:
