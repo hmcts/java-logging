@@ -33,7 +33,7 @@ dependencies {
   compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
 
   testCompile project(':').sourceSets.test.output
-  testCompile group: 'org.mockito', name: 'mockito-core', version: '3.2.4'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.1'
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
   testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 }
