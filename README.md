@@ -23,7 +23,7 @@ It allows a number of configuration options to customize the logging to your nee
 
 Simply add base component as your project's dependency and then one or more of three components discussed below to use it.
 
-Base dependency:
+Base component dependency:
 ```groovy
 compile group: 'uk.gov.hmcts.reform', name: 'logging', version: '5.1.1'
 ```
