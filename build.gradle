@@ -9,9 +9,28 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
+def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
+
+
+
+dependencyUpdates.resolutionStrategy {
+  componentSelection { rules ->
+    rules.all {
+      def isNonStable = { String version ->
+        ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'b', 'ea'].any { qualifier ->
+          version ==~ /(?i).*[.-]\$qualifier[.\\d-+]*/
+        }
+      }
+      if (isNonStable(candidate.version) && !isNonStable(currentVersion)) {
+        selection.reject('Release candidate')
+      }
+    }
+  }
+}
+
 allprojects {
   group 'uk.gov.hmcts.reform'
-  version "${version}"
+  version buildNumber
 
   apply plugin: 'java'
   apply plugin: 'java-library'
