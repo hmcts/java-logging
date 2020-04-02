@@ -21,7 +21,12 @@ It allows a number of configuration options to customize the logging to your nee
 
 ### Basic usage
 
-The module comprises of three components; simply add a component as your project's dependency to use it.
+Simply add base component as your project's dependency and then one or more of three components discussed below to use it.
+
+Base component dependency, gradle:
+```groovy
+compile group: 'uk.gov.hmcts.reform', name: 'logging', version: '5.1.1'
+```
 
 #### java-logging-insights
 
