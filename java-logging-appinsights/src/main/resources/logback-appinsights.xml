@@ -7,7 +7,7 @@
         <appender-ref ref="APP_INSIGHTS" />
     </appender>
 
-    <logger name="uk.gov.hmcts" level="info">
+    <logger name="uk.gov.hmcts" level="${ROOT_LOGGING_LEVEL:-INFO}">
         <appender-ref ref="ASYNC_APP_INSIGHTS" />
     </logger>
 </included>
