@@ -34,7 +34,6 @@ allprojects {
 
   apply plugin: 'java'
   apply plugin: 'java-library'
-  apply plugin: 'maven'
   apply plugin: 'maven-publish'
   apply plugin: 'checkstyle'
   apply plugin: 'com.jfrog.bintray'
@@ -139,12 +138,15 @@ task codeCoverageReport(type: JacocoReport, dependsOn: allprojects*.test) {
   }
 }
 
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
 publishing {
   publications {
     Main(MavenPublication) {
       from components.java
-      artifact sourcesJar
-      artifact javadocJar
       groupId project.group
       artifactId 'logging'
       version project.version
@@ -175,19 +177,4 @@ dependencies {
   testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
   testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
   testCompile group: 'com.google.code.tempus-fugit', name: 'tempus-fugit', version: '1.1'
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-  classifier = 'sources'
-  from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
-  from javadoc.destinationDir
-}
-
-artifacts {
-  archives sourcesJar
-  archives javadocJar
 }

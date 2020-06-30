@@ -1,9 +1,12 @@
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
 publishing {
   publications {
     HttpComponents(MavenPublication) {
       from components.java
-      artifact sourcesJar
-      artifact javadocJar
       groupId project.group
       artifactId 'logging-httpcomponents'
       version project.version
@@ -36,19 +39,4 @@ dependencies {
   testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.1'
   testCompile group: 'org.assertj', name: 'assertj-core', version: '3.15.0'
   testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-  classifier = 'sources'
-  from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
-  from javadoc.destinationDir
-}
-
-artifacts {
-  archives sourcesJar
-  archives javadocJar
 }
