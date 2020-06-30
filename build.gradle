@@ -32,6 +32,7 @@ allprojects {
 
   pmd {
     toolVersion = "6.25.0"
+    ignoreFailures = true
     incrementalAnalysis = true
     sourceSets = [sourceSets.main, sourceSets.test]
     reportsDir = file("$rootProject.buildDir/reports/pmd/$project.name")
