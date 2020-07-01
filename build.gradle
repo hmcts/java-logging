@@ -11,30 +11,12 @@ plugins {
 
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
 
-
-
-dependencyUpdates.resolutionStrategy {
-  componentSelection { rules ->
-    rules.all {
-      def isNonStable = { String version ->
-        ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'b', 'ea'].any { qualifier ->
-          version ==~ /(?i).*[.-]\$qualifier[.\\d-+]*/
-        }
-      }
-      if (isNonStable(candidate.version) && !isNonStable(currentVersion)) {
-        selection.reject('Release candidate')
-      }
-    }
-  }
-}
-
 allprojects {
   group 'uk.gov.hmcts.reform'
   version buildNumber
 
   apply plugin: 'java'
   apply plugin: 'java-library'
-  apply plugin: 'maven'
   apply plugin: 'maven-publish'
   apply plugin: 'checkstyle'
   apply plugin: 'com.jfrog.bintray'
@@ -45,11 +27,13 @@ allprojects {
   checkstyle {
     toolVersion = '8.24'
     maxWarnings = 0
-    configDir = new File(rootDir, "config/checkstyle")
+    getConfigDirectory().set(new File(rootDir, "config/checkstyle"))
   }
 
   pmd {
-    toolVersion = "6.16.0"
+    toolVersion = "6.25.0"
+    ignoreFailures = true
+    incrementalAnalysis = true
     sourceSets = [sourceSets.main, sourceSets.test]
     reportsDir = file("$rootProject.buildDir/reports/pmd/$project.name")
     ruleSetFiles = files("$rootProject.projectDir/config/pmd/ruleset.xml")
@@ -92,20 +76,17 @@ allprojects {
     testCompile group: 'junit', name: 'junit', version: '4.13'
   }
 
-  dependencyUpdates.resolutionStrategy {
-  componentSelection { rules ->
-    rules.all {
-      def isNonStable = { String version ->
-        ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'b', 'ea'].any { qualifier ->
-          version ==~ /(?i).*[.-]\$qualifier[.\\d-+]*/
-        }
-      }
-      if (isNonStable(candidate.version) && !isNonStable(currentVersion)) {
-        selection.reject('Release candidate')
-      }
+  // before committing a change, make sure task still works
+  dependencyUpdates {
+    def isNonStable = { String version ->
+      def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { qualifier -> version.toUpperCase().contains(qualifier) }
+      def regex = /^[0-9,.v-]+$/
+      return !stableKeyword && !(version ==~ regex)
+    }
+    rejectVersionIf { selection -> // <---- notice how the closure argument is named
+      return isNonStable(selection.candidate.version) && !isNonStable(selection.currentVersion)
     }
   }
-}
 
   dependencyCheck {
     // Specifies if the build should be failed if a CVSS score above a specified level is identified.
@@ -139,12 +120,15 @@ task codeCoverageReport(type: JacocoReport, dependsOn: allprojects*.test) {
   }
 }
 
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
 publishing {
   publications {
     Main(MavenPublication) {
       from components.java
-      artifact sourcesJar
-      artifact javadocJar
       groupId project.group
       artifactId 'logging'
       version project.version
@@ -175,19 +159,4 @@ dependencies {
   testCompile group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
   testCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
   testCompile group: 'com.google.code.tempus-fugit', name: 'tempus-fugit', version: '1.1'
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-  classifier = 'sources'
-  from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
-  from javadoc.destinationDir
-}
-
-artifacts {
-  archives sourcesJar
-  archives javadocJar
 }
