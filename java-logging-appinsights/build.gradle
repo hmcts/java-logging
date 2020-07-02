@@ -53,13 +53,13 @@ dependencyManagement {
 }
 
 dependencies {
-  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
+  api group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
 
-  compile group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: versions.appInsights
-  compile group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: versions.appInsights
+  api group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: versions.appInsights
+  api group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: versions.appInsights
 
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 
-  testCompile group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
+  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
 }

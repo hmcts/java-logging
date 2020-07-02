@@ -46,15 +46,15 @@ dependencyManagement {
 }
 
 dependencies {
-  compile project(':')
-  compileOnly group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
+  implementation project(':')
+  api group: 'org.springframework.boot', name: 'spring-boot-autoconfigure'
 
-  testCompile project(':').sourceSets.test.output
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
-  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  testImplementation project(':').sourceSets.test.output
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-  testCompile group: 'org.springframework.security', name: 'spring-security-test'
+  testImplementation group: 'org.springframework.security', name: 'spring-security-test'
 
-  testCompile group: 'com.google.code.tempus-fugit', name: 'tempus-fugit', version: '1.1'
+  testImplementation group: 'com.google.code.tempus-fugit', name: 'tempus-fugit', version: '1.1'
 }
