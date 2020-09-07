@@ -61,5 +61,5 @@ dependencies {
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 
-  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
+  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.17.2'
 }
