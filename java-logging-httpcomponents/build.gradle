@@ -33,7 +33,7 @@ bintray {
 
 dependencies {
   implementation project(':')
-  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
   testImplementation project(':').sourceSets.test.output
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.6.28'
