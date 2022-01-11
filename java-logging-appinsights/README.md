@@ -1,6 +1,8 @@
 # Azure Application Insights
 
-Logging module to auto configure necessary components for Azure Application Insights app. It uses [azure-application-insights-spring-boot-starter](https://github.com/Microsoft/ApplicationInsights-Java/tree/v2.3.1/azure-application-insights-spring-boot-starter) and adds some specific initializers as Spring beans. Module also tracks logback INFO events for `uk.gov.hmcts` loggers
+Logging module to auto configure necessary components for Azure Application Insights app.
+It uses [azure-application-insights-spring-boot-starter](https://github.com/Microsoft/ApplicationInsights-Java/tree/v2.3.1/azure-application-insights-spring-boot-starter) and adds some specific initializers as Spring beans.
+Module also tracks logback INFO events for `uk.gov.hmcts` loggers
 
 ## User guide
 
@@ -8,43 +10,21 @@ The module provides all Telemetry modules and initializers available from web ar
 
 ### Basic usage
 
-For now you need to add the HMCTS maven repository: 
-
-Maven:
-
-```xml
-<repositories>
-    <repository>
-        <id>hmcts-maven</id>
-        <name>HMCTS Maven</name>
-        <url>https://dl.bintray.com/hmcts/hmcts-maven</url>
-    </repository>
-</repositories>
-
-<dependency>
-    <groupId>uk.gov.hmcts.reform</groupId>
-    <artifactId>java-logging-appinsights</artifactId>
-    <version>5.1.1</version>
-</dependency>
-```
-
 Gradle:
 
 ```groovy
 repositories {
-  maven {
-    url  "https://dl.bintray.com/hmcts/hmcts-maven"
-  }
+  maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: '5.1.1'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '5.1.9'
 }
 ```
 
 It will automatically include Request Name interceptor and Request Tracking Filter configurations into spring boot web application.
 
-Request Tracking Filter needs agent to be configured. By default agent uses built in configuration but you can provide your own. 
+Request Tracking Filter needs agent to be configured. By default agent uses built in configuration but you can provide your own.
 
 Sample of `AI-Agent.xml`:
 
@@ -69,7 +49,7 @@ Retrieve the jar from github, i.e. https://github.com/Microsoft/ApplicationInsig
 TelemetryClient can be `autowired`  to implement custom telemetry metrics.
 
 #### Provide Instrumentation Key
-     
+
 Set the environment variable: AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY. If you are deploying using the CNP pipeline this will be automatically added for you.
 
 You can also set it using a spring property (useful for tests):
@@ -132,7 +112,7 @@ Along with custom Source name there are more optional headers to be applied at w
 
 [SyntheticHeaders](java-logging-appinsights/src/main/java/uk/gov/hmcts/reform/logging/appinsights/SyntheticHeaders) might be deprecated in future based on Microsoft making the constants public.
 
-#### To disable Application insights completely 
+#### To disable Application insights completely
 
 Refer [Spring Starter disabling App Insights](https://github.com/Microsoft/ApplicationInsights-Java/tree/v2.3.1/azure-application-insights-spring-boot-starter#completely-disable-application-insights-using-applicationproperties)
 
@@ -174,7 +154,7 @@ This configuration entry is also used by [`SpringBootTelemetryInitializer`](http
 
 For Spring starter configurations , Refer [configure-more-parameters-using-applicationproperties](https://github.com/Microsoft/ApplicationInsights-Java/tree/v2.3.1/azure-application-insights-spring-boot-starter#configure-more-parameters-using-applicationproperties)
 
-Additional properties : 
+Additional properties :
 ```properties
 application-insights.custom.modules.ContextInitializer.enabled=true
 application-insights.default.modules.TimestampPropertyInitializer.enabled=true

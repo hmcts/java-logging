@@ -23,23 +23,6 @@ publishing {
   }
 }
 
-bintray {
-  user = System.getenv('BINTRAY_USER')
-  key = System.getenv('BINTRAY_KEY')
-  publications = ['Insights']
-  publish = true
-  pkg {
-    repo = 'hmcts-maven'
-    name = 'logging-appinsights'
-    userOrg = 'hmcts'
-    licenses = ['MIT']
-    vcsUrl = 'https://github.com/hmcts/java-logging'
-    version {
-      name = project.version
-    }
-  }
-}
-
 repositories {
   flatDir {
     dirs "$projectDir/lib"
