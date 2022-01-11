@@ -1,5 +1,3 @@
 rootProject.name = 'java-logging'
 
-include 'java-logging-httpcomponents'
-include 'java-logging-spring'
 include 'java-logging-appinsights'

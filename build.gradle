@@ -1,11 +1,5 @@
-buildscript {
-  dependencies {
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
-  }
-}
-
 plugins {
-  id 'org.owasp.dependencycheck' version '6.3.2'
+  id 'org.owasp.dependencycheck' version '6.5.2.1'
   id 'com.github.ben-manes.versions' version '0.39.0'
 }
 
@@ -19,19 +13,18 @@ allprojects {
   apply plugin: 'java-library'
   apply plugin: 'maven-publish'
   apply plugin: 'checkstyle'
-  apply plugin: 'com.jfrog.bintray'
   apply plugin: 'jacoco'
   apply plugin: 'com.github.ben-manes.versions'
   apply plugin: 'pmd'
 
   checkstyle {
-    toolVersion = '8.24'
+    toolVersion = '9.2.1'
     maxWarnings = 0
     getConfigDirectory().set(new File(rootDir, "config/checkstyle"))
   }
 
   pmd {
-    toolVersion = "6.25.0"
+    toolVersion = "6.41.0"
     ignoreFailures = true
     incrementalAnalysis = true
     sourceSets = [sourceSets.main, sourceSets.test]
@@ -43,36 +36,18 @@ allprojects {
     toolVersion = "0.8.4"
   }
 
-  sourceCompatibility = 1.8
+  java {
+    toolchain {
+      languageVersion = JavaLanguageVersion.of(11)
+    }
+  }
 
   repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
-  }
-
-  configurations.all {
-    resolutionStrategy {
-      eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group in ['com.fasterxml.jackson.core', 'com.fasterxml.jackson.module', 'com.fasterxml.jackson.datatype']) {
-          details.useVersion '2.9.9'
-        }
-        if (details.requested.name == 'jackson-databind') {
-          details.useVersion '2.9.10'
-        }
-        if (details.requested.name == 'guava') {
-          details.useVersion '28.0-jre'
-        }
-      }
-    }
   }
 
   dependencies {
-    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '6.6'
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
-    implementation group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.32'
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.6'
-    api group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     testImplementation group: 'junit', name: 'junit', version: '4.13.2'
   }
 
@@ -112,10 +87,10 @@ task codeCoverageReport(type: JacocoReport, dependsOn: allprojects*.test) {
   }
 
   reports {
-    csv.enabled = false
-    html.enabled = true
+    csv.required = false
+    html.required = true
     html.destination = file("${buildDir}/reports/jacoco/html")
-    xml.enabled = true
+    xml.required = true
     xml.destination = file("${buildDir}/reports/jacoco/jacocoTestReport.xml")
   }
 }
@@ -132,23 +107,6 @@ publishing {
       groupId project.group
       artifactId 'logging'
       version project.version
-    }
-  }
-}
-
-bintray {
-  user = System.getenv('BINTRAY_USER')
-  key = System.getenv('BINTRAY_KEY')
-  publications = ['Main']
-  publish = true
-  pkg {
-    repo = 'hmcts-maven'
-    name = 'logging'
-    userOrg = 'hmcts'
-    licenses = ['MIT']
-    vcsUrl = 'https://github.com/hmcts/java-logging'
-    version {
-      name = project.version
     }
   }
 }

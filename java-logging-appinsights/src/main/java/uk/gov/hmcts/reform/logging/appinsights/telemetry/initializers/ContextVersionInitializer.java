@@ -8,7 +8,6 @@ import com.microsoft.applicationinsights.telemetry.TelemetryContext;
  *
  * <p>This Telemetry Initializer is used to auto-configure version field as current spring boot starter for
  * app insights is not setting this.
- * This is to deprecate {@link uk.gov.hmcts.reform.logging.appinsights.AbstractAppInsights} </p>
  */
 public class ContextVersionInitializer implements ContextInitializer {
     @Override
