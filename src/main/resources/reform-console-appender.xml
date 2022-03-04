@@ -16,7 +16,7 @@ Console appender logback configuration for Reform logging
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
-    <appender name="ASYNC_CONSOLE" class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="CONSOLE"/>
     </appender>
 
