@@ -18,7 +18,7 @@ allprojects {
   apply plugin: 'pmd'
 
   checkstyle {
-    toolVersion = '10.12.4'
+    toolVersion = '10.12.5'
     maxWarnings = 0
     getConfigDirectory().set(new File(rootDir, "config/checkstyle"))
   }
