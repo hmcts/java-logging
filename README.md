@@ -8,7 +8,7 @@ A Java module which standardises the logging for the reform projects.
 
 ## Prerequisites
 
-- [Java 11](https://adoptium.net/)
+- [Java 17](https://adoptium.net/)
 
 ## User guide
 
