@@ -1,5 +1,5 @@
 [![GitHub version](https://badge.fury.io/gh/hmcts%2Fjava-logging.svg)](https://badge.fury.io/gh/hmcts%2Fjava-logging)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ebac86c131154ef2b59ab302d1d75fd9)](https://www.codacy.com/app/HMCTS/java-logging)
+[![JitPack Badge](https://github.com/hmcts/java-logging/actions/workflows/jitpack_build.yml/badge.svg)](https://github.com/hmcts/java-logging/actions/workflows/jitpack_build.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/hmcts/java-logging/badge.svg)](https://snyk.io/test/github/hmcts/java-logging)
 
 # Java logging
@@ -109,4 +109,10 @@ To install the artifact to a local Maven repository:
 
 ### Releasing
 
-Create a release via the GitHub UI, the tag selected will be used as the version number
+Before releasing a new version create a PR and run the following script to update the README to use the new version number.
+
+```bash
+./prepare-for-release.sh
+```
+
+To publish a new release create a new release via the GitHub UI. The tag selected will be used as the version number.
