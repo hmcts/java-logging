@@ -10,8 +10,7 @@ import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextVer
 /**
  * Core Application Insights Configuration.
  *
- * <p>
- * This class provides the custom Configuration for AppInsights.
+ * <p>This class provides the custom Configuration for AppInsights.
  */
 public class AppInsightsAutoConfiguration {
 
