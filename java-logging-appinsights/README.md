@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.1.1'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.1.2'
 }
 ```
 

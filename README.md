@@ -22,7 +22,7 @@ Simply add base component as your project's dependency and then one or more of t
 
 Base component dependency, gradle:
 ```groovy
-implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.1.1'
+implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.1.2'
 ```
 
 #### java-logging-insights
