@@ -6,7 +6,7 @@ import com.microsoft.applicationinsights.telemetry.TelemetryContext;
 /**
  * ContextVersionInitializer  to set version to telemetry.
  *
- * <p>This Telemetry Initializer is used to auto-configure version field as current spring boot starter for
+ * This Telemetry Initializer is used to autoconfigure version field as current spring boot starter for
  * app insights is not setting this.
  */
 public class ContextVersionInitializer implements ContextInitializer {
