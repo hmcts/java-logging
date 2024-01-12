@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import uk.gov.hmcts.reform.logging.appinsights.telemetry.initializers.ContextVersionInitializer;
 
 /**
- * <h1>Core Application Insights Configuration</h1> .
+ * <h2>Core Application Insights Configuration</h2> .
  *
  * <p>This class provides the custom Configuration for AppInsights .</p>
  */
