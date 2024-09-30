@@ -112,7 +112,7 @@ publishing {
 }
 
 dependencies {
-  testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.13.0'
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.14.0'
   testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.26.3'
   testImplementation group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
   testImplementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
