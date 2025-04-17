@@ -17,7 +17,6 @@ resources:
     type: github
     ref: refs/heads/azure-artifact-stage
     name: hmcts/cnp-azuredevops-libraries
-    endpoint: 'hmcts (1)'
 
 jobs:
   - job: PublishToAzureArtifacts
