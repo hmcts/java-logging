@@ -30,4 +30,4 @@ steps:
       AZURE_DEVOPS_ARTIFACT_USERNAME: $(AZURE-DEVOPS-ARTIFACT-USERNAME)
       AZURE_DEVOPS_ARTIFACT_TOKEN: $(AZURE-DEVOPS-ARTIFACT-TOKEN)
       RELEASE_VERSION: $(artifactVersion)
-    displayName: 'Publish to Azure Artifacts'
+    displayName: 'Publish to Azure DevOps Artifacts'
