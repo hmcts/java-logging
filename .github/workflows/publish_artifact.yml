@@ -1,8 +1,7 @@
-name: Publish Build to Azure Artifacts
-on:
-  push:
-    tags: 
-      - '*'
+trigger:
+  tags:
+    include:
+    - '*'
 
 pool:
   vmImage: 'ubuntu-latest'
