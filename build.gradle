@@ -3,6 +3,8 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.52.0'
 }
 
+def buildDebug = System.getenv("RELEASE_VERSION")
+println "Publishing artifact with version: $buildDebug"
 def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
 
 allprojects {
