@@ -8,7 +8,7 @@ def buildNumber
 if (System.getenv("RELEASE_VERSION")?.contains("merge")) {
   // If it's a pull request merge ref, use DEV-SNAPSHOT
   def prNumber = System.getenv("RELEASE_VERSION").split("/")[2]
-  buildNumber = "DEV-SNAPSHOT-PR-${prNumber}"
+  buildNumber = "DEV-SNAPSHOT-PR${prNumber}"
 } else {
   // If building based on new tag
   buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
