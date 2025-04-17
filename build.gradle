@@ -3,9 +3,17 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.52.0'
 }
 
-def buildDebug = System.getenv("RELEASE_VERSION")
-println "Publishing artifact with version: $buildDebug"
-def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
+def buildNumber
+
+if (System.getenv("RELEASE_VERSION")?.contains("merge")) {
+    // If it's a pull request merge ref, use DEV-SNAPSHOT
+    def prNumber = System.getenv("RELEASE_VERSION").split("/")[2]
+    buildNumber = "DEV-SNAPSHOT-PR-${prNumber}"
+} else {
+  // If building based on new tag
+  def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
+}
+
 
 allprojects {
   group 'com.github.hmcts.java-logging'
