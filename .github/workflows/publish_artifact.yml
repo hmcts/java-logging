@@ -19,5 +19,8 @@ resources:
     name: hmcts/cnp-azuredevops-libraries
     endpoint: 'hmcts (1)'
 
-steps:
-- template: steps/publish-ado-artifact.yaml@cnp-azuredevops-libraries
+jobs:
+  - job: PublishToAzureArtifacts
+    displayName: 'Publish to Azure Artifacts'
+    steps:
+      - template: steps/publish-ado-artifact.yaml@cnp-azuredevops-libraries
