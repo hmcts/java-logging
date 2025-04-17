@@ -5,12 +5,11 @@ plugins {
 
 def buildNumber
 
-if (System.getenv("RELEASE_VERSION")?.contains("merge")) {
-  // If it's a pull request merge ref, use DEV-SNAPSHOT-PR(timestamp) format
-  def prNumber = System.getenv("RELEASE_VERSION").split("/")[2]
+if (System.getenv("BUILD_REASON")?.contains("Manual")) {
+  def ref = System.getenv("RELEASE_VERSION")
   def id =  System.currentTimeMillis()
-  // Need to add a timestamp for dev builds as ADO artifacts are immutable, subsequent PR runs would cause build failure
-  buildNumber = "DEV-SNAPSHOT-PR${prNumber}-${id}"
+  // Need to add a timestamp for dev builds as ADO artifacts are immutable, subsequent manual runs would cause build failure
+  buildNumber = "DEV-SNAPSHOT-${ref}-${id}"
 } else {
   // If building based on new tag
   buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
