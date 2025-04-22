@@ -24,3 +24,5 @@ jobs:
     displayName: 'Publish to Azure Artifacts'
     steps:
       - template: steps/publish-ado-artifact.yaml@cnp-azuredevops-libraries
+        parameters:
+          artifactVersion: $(artifactVersion)
