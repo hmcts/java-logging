@@ -18,7 +18,16 @@ repositories {
 }
 
 dependencies {
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.1.2'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.1.8'
+}
+```
+
+Note: if you're on an older version of Spring Boot you may need to bring it and the logging-spring libraries in on deprecated versions:
+```groovy
+dependencies {
+  implementation group: 'com.github.hmcts', name: 'java-logging', version: '6.1.8'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: '5.1.9'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '5.1.9'
 }
 ```
 
@@ -48,16 +57,36 @@ Retrieve the jar from github, i.e. https://github.com/Microsoft/ApplicationInsig
 
 TelemetryClient can be `autowired`  to implement custom telemetry metrics.
 
-#### Provide Instrumentation Key
+#### Provide App Insights Connection Key
+Microsoft ended support for Instrumentation Key Ingestion on March 31, 2025.
 
-Set the environment variable: AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY. If you are deploying using the CNP pipeline this will be automatically added for you.
+An app-insight-connection-key is provided in the Key Vault Secrets. (Note: It's sometimes spelled app-insights-connection-key.)
 
-You can also set it using a spring property (useful for tests):
-
-```properties
-azure.application-insights.instrumentation-key=<key here>
+Add to your projects secrets in cnp-flux-config:
 ```
-### Configuration defaults
+- name: app-insight-connection-key
+  alias: app-insight-connection-key
+```
+
+On your project:
+1. Add a applicationinsights.json file with connection key path in the lib/ directory
+```
+{
+  "connectionString": "${file:/mnt/secrets/adoption/app-insight-connection-key}",
+  "role": {
+    "name": "HMCTS MyProject"
+  }
+}
+```
+More information: https://docs.azure.cn/en-us/azure-monitor/app/java-standalone-config
+
+2. Add a step in your Dockerfile to move the new applicationinsights.json file to the correct location:
+```
+COPY lib/applicationinsights.json /opt/app/
+```
+
+
+### Optional Configuration defaults
 
 #### Modules configured by spring starter
 
