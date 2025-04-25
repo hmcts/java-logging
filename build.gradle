@@ -3,16 +3,7 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.52.0'
 }
 
-def buildNumber
-
-if (System.getenv("BUILD_REASON")?.contains("Manual")) {
-  def id =  System.currentTimeMillis()
-  // Need to add a timestamp for dev builds as ADO artifacts are immutable, subsequent manual runs would cause build failure
-  buildNumber = "DEV-SNAPSHOT-${id}"
-} else {
-  // If building based on new tag
-  buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
-}
+def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT-testing-ga"
 
 println("Version to be published is: ${buildNumber}")
 

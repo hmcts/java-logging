@@ -1,28 +1,29 @@
-trigger:
-  tags:
-    include:
-    - '*'
+name: Publish to Azure Artifacts
 
-pr: none
-
-pool:
-  vmImage: 'ubuntu-latest'
-
-variables:
-  artifactVersion: $[replace(variables['Build.SourceBranch'], 'refs/tags/', '')]
-
-resources:
-  repositories:
-  - repository: cnp-azuredevops-libraries
-    type: github
-    ref: refs/heads/azure-artifact-stage
-    name: hmcts/cnp-azuredevops-libraries
-    endpoint: 'hmcts'
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'  # Trigger on any tag push
 
 jobs:
-  - job: PublishToAzureArtifacts
-    displayName: 'Publish to Azure Artifacts'
+  PublishToAzureArtifacts:
+    runs-on: ubuntu-latest  # Similar to 'vmImage: ubuntu-latest'
+
     steps:
-      - template: steps/publish-ado-artifact.yaml@cnp-azuredevops-libraries
-        parameters:
-          artifactVersion: $(artifactVersion)
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set Artifact version
+        id: set_version
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Publish to Azure DevOps Artifacts
+        run: |
+          ./gradlew clean publish
+        env:
+          AZURE_DEVOPS_ARTIFACT_USERNAME: ${{ secrets.AZURE_DEVOPS_ARTIFACT_USERNAME }}
+          AZURE_DEVOPS_ARTIFACT_TOKEN: ${{ secrets.AZURE_DEVOPS_ARTIFACT_TOKEN }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+        shell: bash
