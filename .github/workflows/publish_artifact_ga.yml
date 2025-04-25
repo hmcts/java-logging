@@ -3,6 +3,8 @@ name: Publish to Azure Artifacts
 on:
   workflow_dispatch:
   push:
+    branches:
+      - "test-artifacts-gactions"
     tags:
       - '*'  # Trigger on any tag push
 
