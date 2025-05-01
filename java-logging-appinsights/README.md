@@ -14,11 +14,13 @@ Gradle:
 
 ```groovy
 repositories {
-  maven { url 'https://jitpack.io' }
+  maven {
+    url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+  }
 }
 
 dependencies {
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.1.8'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: 'LATEST_TAG'
 }
 ```
 
