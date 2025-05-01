@@ -1,5 +1,4 @@
 [![GitHub version](https://badge.fury.io/gh/hmcts%2Fjava-logging.svg)](https://badge.fury.io/gh/hmcts%2Fjava-logging)
-[![JitPack Badge](https://github.com/hmcts/java-logging/actions/workflows/jitpack_build.yml/badge.svg)](https://github.com/hmcts/java-logging/actions/workflows/jitpack_build.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/hmcts/java-logging/badge.svg)](https://snyk.io/test/github/hmcts/java-logging)
 
 # Java logging
@@ -22,7 +21,13 @@ Simply add base component as your project's dependency and then one or more of t
 
 Base component dependency, gradle:
 ```groovy
-implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.1.2'
+repositories {
+    maven {
+        url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+    }
+}
+
+implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: 'LATEST_TAG'
 ```
 
 #### java-logging-insights
