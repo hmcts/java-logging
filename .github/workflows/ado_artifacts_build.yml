@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 1.8
+          java-version: '8.0.452+9'
           cache: 'gradle'
 
       - name: Publish to Azure DevOps Artifacts
