@@ -1,16 +1,10 @@
-buildscript {
-  dependencies {
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-  }
-}
-
 plugins {
   id 'org.owasp.dependencycheck' version '3.1.2'
   id 'com.github.ben-manes.versions' version '0.17.0'
 }
 
 allprojects {
-  group 'uk.gov.hmcts.reform'
+  group 'com.github.hmcts.java-logging'
   version "${version}"
 
   apply plugin: 'java'
@@ -18,7 +12,6 @@ allprojects {
   apply plugin: 'maven'
   apply plugin: 'maven-publish'
   apply plugin: 'checkstyle'
-  apply plugin: 'com.jfrog.bintray'
   apply plugin: 'jacoco'
   apply plugin: 'com.github.ben-manes.versions'
   apply plugin: 'pmd'
@@ -41,7 +34,9 @@ allprojects {
   repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
+    maven {
+      url "https://maven.pkg.github.com/hmcts/service-auth-provider-java-client"
+    }
   }
 
   configurations.all {
@@ -107,25 +102,18 @@ publishing {
       artifact sourcesJar
       artifact javadocJar
       groupId project.group
-      artifactId 'java-logging'
+      artifactId 'logging'
       version project.version
     }
   }
-}
-
-bintray {
-  user = System.getenv('BINTRAY_USER')
-  key = System.getenv('BINTRAY_KEY')
-  publications = ['Main']
-  publish = true
-  pkg {
-    repo = 'hmcts-maven'
-    name = 'java-logging'
-    userOrg = 'hmcts'
-    licenses = ['MIT']
-    vcsUrl = 'https://github.com/hmcts/java-logging'
-    version {
-      name = project.version
+  repositories {
+    maven {
+      name = "AzureArtifacts"
+      url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+      credentials {
+        username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+        password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+      }
     }
   }
 }
