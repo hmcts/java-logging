@@ -3,7 +3,7 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.51.0'
 }
 
-def buildNumber = System.getenv("RELEASE_VERSION")?.replace("refs/tags/", "") ?: "DEV-SNAPSHOT"
+def buildNumber = System.getenv("RELEASE_VERSION")?: "DEV-SNAPSHOT"
 
 allprojects {
   group 'com.github.hmcts.java-logging'
@@ -107,6 +107,16 @@ publishing {
       groupId project.group
       artifactId 'logging'
       version project.version
+    }
+  }
+  repositories {
+    maven {
+      name = "AzureArtifacts"
+      url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+      credentials {
+        username = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
+        password = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
+      }
     }
   }
 }
