@@ -15,23 +15,6 @@ publishing {
   }
 }
 
-bintray {
-  user = System.getenv('BINTRAY_USER')
-  key = System.getenv('BINTRAY_KEY')
-  publications = ['Spring']
-  publish = true
-  pkg {
-    repo = 'hmcts-maven'
-    name = 'java-logging-spring'
-    userOrg = 'hmcts'
-    licenses = ['MIT']
-    vcsUrl = 'https://github.com/hmcts/java-logging'
-    version {
-      name = project.version
-    }
-  }
-}
-
 def versions = [
   springBoot: '2.0.3.RELEASE'
 ]
