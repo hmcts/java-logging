@@ -3,7 +3,7 @@ plugins {
 }
 
 def versions = [
-  springBoot: '3.5.3',
+  springBoot: '3.5.4',
   appInsights: '2.6.4'
 ]
 
