@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-uk.gov.hmcts.reform.logging.appinsights.autoconfiguration.AppInsightsAutoConfiguration

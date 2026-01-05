@@ -30,9 +30,27 @@ repositories {
 implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: 'LATEST_TAG'
 ```
 
-#### java-logging-insights
+#### Application Insights
 
-Use for automatic configuration of Azure Application Insights for a Spring Boot project. [Read more](java-logging-appinsights/README.md)
+The `java-logging-appinsights` module has been removed in version 7.0.0. If upgrading from 6.x, remove this dependency:
+```gradle
+// Remove this line:
+implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: 'x.x.x'
+```
+
+##### Application Insights Agent Setup
+
+Teams now add the Application Insights agent directly to their Dockerfile, for example it might look like this:
+
+```dockerfile
+# renovate: datasource=github-releases depName=microsoft/ApplicationInsights-Java
+ARG APP_INSIGHTS_AGENT_VERSION=3.4.9
+...
+
+COPY lib/applicationinsights.json /opt/app/
+...
+
+```
 
 ### Configuration defaults
 
