@@ -7,7 +7,7 @@ A Java module which standardises the logging for the reform projects.
 
 ## Prerequisites
 
-- [Java 17](https://adoptium.net/)
+- [Java 21](https://adoptium.net/)
 
 ## User guide
 
